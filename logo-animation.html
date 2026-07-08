@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lentopay Logo Motion — Animation Specification v1.0</title>
+<title>Lentopay Logo Motion - Animation Specification v1.0</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -205,7 +205,7 @@ footer .l{display:flex;align-items:center;gap:12px}
 footer .fx{font-size:13px;color:var(--text2);line-height:1.7}
 footer .fx b{color:#fff}
 
-/* ============ REDUCED MOTION — real fallback ============ */
+/* ============ REDUCED MOTION - real fallback ============ */
 @keyframes rmFade{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -236,15 +236,15 @@ footer .fx b{color:#fff}
 <div class="wrap">
 
 <div class="hero">
-  <div class="kicker">Lentopay Logo Motion — Animation Specification v1.0</div>
+  <div class="kicker">Lentopay Logo Motion - Animation Specification v1.0</div>
   <h1>The logo doesn't just sit there. It settles, like money arriving.</h1>
-  <p class="sub">Five sanctioned behaviours for the Lentopay mark — each demonstrated live below, each specified to the millisecond and the curve. Movement always means money moving: motion travels left&nbsp;&rarr;&nbsp;right or bottom&nbsp;&rarr;&nbsp;top, like a transaction completing.</p>
+  <p class="sub">Five sanctioned behaviours for the Lentopay mark - each demonstrated live below, each specified to the millisecond and the curve. Movement always means money moving: motion travels left&nbsp;&rarr;&nbsp;right or bottom&nbsp;&rarr;&nbsp;top, like a transaction completing.</p>
   <div class="verline"><b>Version 1.0</b><span class="dot"></span><span>July 2026</span><span class="dot"></span><span>Companion to Brand Guidelines v2.0</span></div>
 </div>
 
 <!-- ============ A ============ -->
 <section id="a">
-  <div class="sec-head"><span class="sec-tag">A</span><h2>The Flow — primary reveal</h2></div>
+  <div class="sec-head"><span class="sec-tag">A</span><h2>The Flow - primary reveal</h2></div>
   <p class="sec-lede"><b style="color:#fff">Recommended default.</b> The badge lands with a soft spring, the L draws itself as one continuous stroke, the P clicks into place, and the wordmark follows letter by letter. Total run: under 1.4 seconds.</p>
   <div class="stagecard">
     <div class="stage" id="stA">
@@ -270,8 +270,8 @@ footer .fx b{color:#fff}
 
 <!-- ============ B ============ -->
 <section id="b">
-  <div class="sec-head"><span class="sec-tag">B</span><h2>The Pulse — loading &amp; processing</h2></div>
-  <p class="sec-lede">The "transaction in flight" state. The badge breathes at +4% while a Cobalt ring expands and dissolves — calm, alive, never anxious. Loops until the transaction resolves, then hands off to The Handshake.</p>
+  <div class="sec-head"><span class="sec-tag">B</span><h2>The Pulse - loading &amp; processing</h2></div>
+  <p class="sec-lede">The "transaction in flight" state. The badge breathes at +4% while a Cobalt ring expands and dissolves - calm, alive, never anxious. Loops until the transaction resolves, then hands off to The Handshake.</p>
   <div class="stagecard">
     <div class="stage" id="stB" style="min-height:320px">
       <span class="statelbl">Loop · 1.2s cycle</span>
@@ -286,7 +286,7 @@ footer .fx b{color:#fff}
     <div class="spec"><div class="specwrap"><table>
       <thead><tr><th>Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
       <tbody>
-        <tr><td>Badge</td><td class="mono">scale 1 &rarr; 1.04 &rarr; 1</td><td class="num">1200ms loop</td><td class="num">0ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Peak at 45% of cycle. Subtle — a breath, not a bounce.</td></tr>
+        <tr><td>Badge</td><td class="mono">scale 1 &rarr; 1.04 &rarr; 1</td><td class="num">1200ms loop</td><td class="num">0ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Peak at 45% of cycle. Subtle - a breath, not a bounce.</td></tr>
         <tr><td>Glow ring 1</td><td class="mono">scale 1 &rarr; 1.5 · opacity 0.55 &rarr; 0</td><td class="num">1200ms loop</td><td class="num">0ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>2.5px Electric Cobalt stroke, badge-radius rounded square.</td></tr>
         <tr><td>Glow ring 2</td><td class="mono">scale 1 &rarr; 1.5 · opacity 0.55 &rarr; 0</td><td class="num">1200ms loop</td><td class="num">300ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Offset copy adds depth without extra elements moving.</td></tr>
       </tbody>
@@ -297,8 +297,8 @@ footer .fx b{color:#fff}
 
 <!-- ============ C ============ -->
 <section id="c">
-  <div class="sec-head"><span class="sec-tag">C</span><h2>The Handshake — success morph</h2></div>
-  <p class="sec-lede">The payment-success moment. The L-stroke flows out as a check draws in along the same visual path, while the badge tints Royal &rarr; Success Green — then everything returns home. The deal is done; the logo shook on it.</p>
+  <div class="sec-head"><span class="sec-tag">C</span><h2>The Handshake - success morph</h2></div>
+  <p class="sec-lede">The payment-success moment. The L-stroke flows out as a check draws in along the same visual path, while the badge tints Royal &rarr; Success Green - then everything returns home. The deal is done; the logo shook on it.</p>
   <div class="stagecard">
     <div class="stage" id="stC">
       <span class="statelbl">Success morph · plays once, auto-reverses</span>
@@ -311,9 +311,9 @@ footer .fx b{color:#fff}
       <thead><tr><th>Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
       <tbody>
         <tr><td>Badge fill</td><td class="mono">fill #2333D6 &rarr; #17B26A</td><td class="num">400ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Royal &rarr; Success Green. Reverses at t+1.4s over 400ms.</td></tr>
-        <tr><td>L stroke (out)</td><td class="mono">stroke-dashoffset 0 &rarr; 40</td><td class="num">400ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.4, 0, 1, 1)</td><td>Flows out in its draw direction — the stroke "completes".</td></tr>
+        <tr><td>L stroke (out)</td><td class="mono">stroke-dashoffset 0 &rarr; 40</td><td class="num">400ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.4, 0, 1, 1)</td><td>Flows out in its draw direction - the stroke "completes".</td></tr>
         <tr><td>P bowl</td><td class="mono">opacity 1 &rarr; 0</td><td class="num">300ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.4, 0, 1, 1)</td><td>Clears the field for the check.</td></tr>
-        <tr><td>Check (in)</td><td class="mono">stroke-dashoffset 30 &rarr; 0</td><td class="num">400ms</td><td class="num">200ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Same 4.5px rounded stroke as the L — reads as one line reshaping. In Lottie, ship as a true path morph.</td></tr>
+        <tr><td>Check (in)</td><td class="mono">stroke-dashoffset 30 &rarr; 0</td><td class="num">400ms</td><td class="num">200ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Same 4.5px rounded stroke as the L - reads as one line reshaping. In Lottie, ship as a true path morph.</td></tr>
         <tr><td>Hold, then reverse</td><td class="mono">all of the above, mirrored</td><td class="num">400ms</td><td class="num">1400ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Success is a moment, not a new logo. Always return to the mark.</td></tr>
       </tbody>
     </table></div></div>
@@ -323,7 +323,7 @@ footer .fx b{color:#fff}
 
 <!-- ============ D ============ -->
 <section id="d">
-  <div class="sec-head"><span class="sec-tag">D</span><h2>The Spin-up — app launch splash</h2></div>
+  <div class="sec-head"><span class="sec-tag">D</span><h2>The Spin-up - app launch splash</h2></div>
   <p class="sec-lede">Screen choreography for cold start. Full-screen Night; the badge draws on centered at 2.5&times; scale; the brand gradient sweeps diagonally (bottom-left &rarr; top-right, money direction); then badge and wordmark settle into the top-left corner as the interface arrives beneath them.</p>
   <div class="stagecard">
     <div class="stage" id="stD">
@@ -358,7 +358,7 @@ footer .fx b{color:#fff}
         <tr><td>3 · UI arrives</td><td class="mono">opacity 0 &rarr; 1 · translateY 10px &rarr; 0</td><td class="num">480ms</td><td class="num">1920ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Content rises bottom &rarr; top under the settled lockup.</td></tr>
       </tbody>
     </table></div></div>
-    <div class="totalline">Total: <b>2.4s</b> hard cap — never gate the app longer than this. If the app is ready sooner, cut to phase 3 early; never loop the splash.</div>
+    <div class="totalline">Total: <b>2.4s</b> hard cap - never gate the app longer than this. If the app is ready sooner, cut to phase 3 early; never loop the splash.</div>
   </div>
 </section>
 
@@ -437,7 +437,7 @@ footer .fx b{color:#fff}
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never run two logo animations simultaneously or back-to-back on one surface.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never loop The Flow, The Handshake or The Spin-up. Only The Pulse loops.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never play The Handshake for anything other than a genuinely completed action.</span></li>
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never animate the logo during error states — the mark stays still when things go wrong.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never animate the logo during error states - the mark stays still when things go wrong.</span></li>
       </ul>
     </div>
     <div class="icard">
@@ -445,7 +445,7 @@ footer .fx b{color:#fff}
       <ul>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Pulse &rarr; Handshake: finish the current pulse cycle, then morph. Never cut mid-breath.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Pulse &rarr; failure: stop the pulse at scale 1, fade the ring out in 150ms, show the error UI. No logo theatrics.</span></li>
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Spin-up &rarr; app: if load finishes early, jump to the settle phase — never stretch the splash.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Spin-up &rarr; app: if load finishes early, jump to the settle phase - never stretch the splash.</span></li>
       </ul>
     </div>
   </div>
@@ -462,14 +462,14 @@ footer .fx b{color:#fff}
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Animate <code>transform</code> and <code>opacity</code> only (plus <code>stroke-dashoffset</code> and <code>fill</code> on the SVG mark, which are cheap at logo scale).</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>No layout properties, no filters, no box-shadow animation. The Pulse glow is a scaled border, not a blur.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Apply <code>will-change: transform</code> only for the animation's lifetime; remove it after.</span></li>
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Test on mid-range Android over 3G-class connections — Lentopay's real-world floor.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Test on mid-range Android over 3G-class connections - Lentopay's real-world floor.</span></li>
       </ul>
     </div>
     <div class="icard">
       <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12h7"/></svg>prefers-reduced-motion</h4>
-      <p style="margin-bottom:10px">When the OS requests reduced motion, every animation on this very page collapses to the sanctioned fallback — a <b style="color:#fff">static logo fading in over 200ms, ease-out</b>. Nothing draws, springs, sweeps or loops.</p>
+      <p style="margin-bottom:10px">When the OS requests reduced motion, every animation on this very page collapses to the sanctioned fallback - a <b style="color:#fff">static logo fading in over 200ms, ease-out</b>. Nothing draws, springs, sweeps or loops.</p>
       <p><code style="display:block;background:var(--surface2);padding:12px 14px;border-radius:9px;font-size:12px;line-height:1.7;color:#C7D0FF">@media (prefers-reduced-motion: reduce) {<br>&nbsp;&nbsp;.logo-anim * { animation: none; }<br>&nbsp;&nbsp;.logo-anim { animation: fade 200ms<br>&nbsp;&nbsp;&nbsp;&nbsp;cubic-bezier(0,0,0.2,1) both; }<br>}</code></p>
-      <p style="margin-top:10px">Loading states still need feedback: keep a static badge plus a text label ("Processing&hellip;") — information never depends on motion.</p>
+      <p style="margin-top:10px">Loading states still need feedback: keep a static badge plus a text label ("Processing&hellip;") - information never depends on motion.</p>
     </div>
   </div>
 </section>
@@ -477,15 +477,15 @@ footer .fx b{color:#fff}
 <!-- ============ EXPORT ============ -->
 <section id="export">
   <div class="sec-head"><span class="sec-tag">&para;</span><h2>Export &amp; handoff</h2></div>
-  <p class="sec-lede">One source of truth per animation, exported per platform. Timings and curves in this document are normative — a Lottie that disagrees with this page is a bug.</p>
+  <p class="sec-lede">One source of truth per animation, exported per platform. Timings and curves in this document are normative - a Lottie that disagrees with this page is a bug.</p>
   <div class="cardrow">
     <div class="icard">
       <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>Lottie / After Effects</h4>
       <ul>
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Author in AE on a 480&times;480 comp (10&times; the 48-unit grid), 60fps, shape layers only — no rasters, no effects that Bodymovin can't serialize.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Author in AE on a 480&times;480 comp (10&times; the 48-unit grid), 60fps, shape layers only - no rasters, no effects that Bodymovin can't serialize.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Draw-on via Trim Paths; The Handshake as a true path morph between the L and the check.</span></li>
         <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Export with Bodymovin; verify in the Lottie web player and on-device (iOS + Android) before release.</span></li>
-        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Colors must reference the canonical hexes exactly — no AE color drift.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Colors must reference the canonical hexes exactly - no AE color drift.</span></li>
       </ul>
     </div>
     <div class="icard">
@@ -523,17 +523,17 @@ footer .fx b{color:#fff}
       <tr><td class="mono">--motion-slow</td><td class="num">400ms</td><td>Screen transitions, Handshake morph, badge tint</td></tr>
       <tr><td class="mono">--motion-draw</td><td class="num">600ms</td><td>Stroke draw-on (The Flow, The Spin-up)</td></tr>
       <tr><td class="mono">--motion-loop</td><td class="num">1200ms</td><td>The Pulse cycle length</td></tr>
-      <tr><td class="mono">--ease-spring</td><td class="num">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Badge landings, pops, nav springs — arrival with life</td></tr>
-      <tr><td class="mono">--ease-out</td><td class="num">cubic-bezier(0, 0, 0.2, 1)</td><td>All entrances — fast start, gentle stop</td></tr>
-      <tr><td class="mono">--ease-in</td><td class="num">cubic-bezier(0.4, 0, 1, 1)</td><td>All exits — gentle start, fast leave</td></tr>
-      <tr><td class="mono">--ease-inout</td><td class="num">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Loops, sweeps, settles — continuous movement</td></tr>
+      <tr><td class="mono">--ease-spring</td><td class="num">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Badge landings, pops, nav springs - arrival with life</td></tr>
+      <tr><td class="mono">--ease-out</td><td class="num">cubic-bezier(0, 0, 0.2, 1)</td><td>All entrances - fast start, gentle stop</td></tr>
+      <tr><td class="mono">--ease-in</td><td class="num">cubic-bezier(0.4, 0, 1, 1)</td><td>All exits - gentle start, fast leave</td></tr>
+      <tr><td class="mono">--ease-inout</td><td class="num">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Loops, sweeps, settles - continuous movement</td></tr>
     </tbody>
   </table></div>
 
   <footer>
     <div class="l">
       <svg viewBox="0 0 48 48" width="34" height="34"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
-      <div class="fx"><b>Lentopay Logo Motion — Animation Specification v1.0</b> — Prepared July 2026<br>Companion to <a href="brand-guidelines.html">Brand Guidelines v2.0</a></div>
+      <div class="fx"><b>Lentopay Logo Motion - Animation Specification v1.0</b> - Prepared July 2026<br>Companion to <a href="brand-guidelines.html">Brand Guidelines v2.0</a></div>
     </div>
     <div class="fx" style="text-align:right">Motion questions &amp; source files<br><b>brand@lentopay.com</b> · [contact placeholder]</div>
   </footer>
@@ -546,7 +546,7 @@ footer .fx b{color:#fff}
     var el=document.getElementById(id);
     if(!el)return;
     el.classList.remove('play');
-    void el.offsetWidth; // reflow — restarts CSS animations
+    void el.offsetWidth; // reflow - restarts CSS animations
     el.classList.add('play');
   }
   document.querySelectorAll('.replay').forEach(function(btn){
