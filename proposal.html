@@ -1,0 +1,580 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>03 Development Proposal & SOW — Lentopay Project Hub</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root{--royal:#2333D6;--cobalt:#4353FF;--night:#0A0E28;--gold:#F2A61A;--fog:#E9EDF8;--off:#FAFBFD;
+--success:#17B26A;--alert:#E5484D;--ink:#0A0E28;--muted:#5A6285;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--ink);line-height:1.65;font-size:16px}
+h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;line-height:1.25}
+a{color:var(--royal)}
+.lp-badge{width:34px;height:34px;border-radius:9px;flex:none}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(250,251,253,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--fog)}
+.topbar-in{max-width:1080px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.wordmark{font-family:'Sora',sans-serif;font-weight:700;font-size:19px;color:var(--night);text-decoration:none;display:flex;align-items:center;gap:10px}
+.wordmark span.hub{font-family:'DM Sans';font-weight:500;font-size:12px;color:var(--muted);border:1px solid var(--fog);border-radius:99px;padding:2px 10px;margin-left:2px}
+.secnav{display:flex;gap:6px;overflow-x:auto;margin-left:auto;scrollbar-width:none}
+.secnav::-webkit-scrollbar{display:none}
+.secnav a{flex:none;font-size:13px;font-weight:500;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:99px;min-height:32px;display:inline-flex;align-items:center}
+.secnav a:hover{background:var(--fog);color:var(--night)}
+.secnav a.active{background:var(--royal);color:#fff}
+.wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:10px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--royal)}
+.doc h1{font-size:34px;margin:18px 0 14px;color:var(--night)}
+.doc h2{font-size:24px;margin:44px 0 12px;padding-top:18px;border-top:1px solid var(--fog);color:var(--night)}
+.doc h3{font-size:18px;margin:28px 0 10px}
+.doc h4{font-size:15.5px;margin:22px 0 8px}
+.doc p{margin:12px 0}
+.doc ul,.doc ol{margin:12px 0 12px 26px}
+.doc li{margin:5px 0}
+.doc blockquote{border-left:3px solid var(--gold);background:#FDF6E9;padding:12px 16px;border-radius:0 10px 10px 0;margin:16px 0;color:#5c4a1e}
+.doc code{background:var(--fog);border-radius:5px;padding:1px 6px;font-size:.88em}
+.doc pre{background:var(--night);color:#E7EAFF;border-radius:12px;padding:18px;overflow-x:auto;margin:16px 0;font-size:13.5px;line-height:1.55}
+.doc pre code{background:none;padding:0;color:inherit}
+.doc table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;display:block;overflow-x:auto}
+.doc table th{background:var(--fog);font-family:'Sora';font-weight:600;font-size:13px;text-align:left}
+.doc table th,.doc table td{border:1px solid #D7DDF0;padding:9px 12px;vertical-align:top;min-width:90px}
+.doc table tr:nth-child(even) td{background:#F4F6FC}
+.doc hr{border:0;border-top:1px solid var(--fog);margin:32px 0}
+.doc img{max-width:100%}
+.doc strong{color:var(--night)}
+.dl{display:inline-flex;align-items:center;gap:8px;background:var(--royal);color:#fff;text-decoration:none;font-weight:500;font-size:14px;border-radius:10px;padding:11px 18px;margin:8px 0 6px}
+.dl:hover{background:var(--cobalt)}
+.dl svg{width:16px;height:16px}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:56px}
+.pn a{border:1px solid var(--fog);background:#fff;border-radius:14px;padding:16px 18px;text-decoration:none;color:var(--night);transition:box-shadow .18s ease,border-color .18s ease}
+.pn a:hover{border-color:var(--cobalt);box-shadow:0 4px 16px rgba(10,14,40,.08)}
+.pn .lbl{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.pn .ttl{font-family:'Sora';font-weight:600;font-size:15.5px;margin-top:4px}
+.pn a.next{text-align:right}
+.pn a.disabled{visibility:hidden}
+footer.site{border-top:1px solid var(--fog);padding:26px 24px;text-align:center;font-size:13px;color:var(--muted)}
+@media(max-width:720px){.doc h1{font-size:27px}.pn{grid-template-columns:1fr}.topbar-in{padding:10px 16px}.wrap{padding:36px 16px 64px}}
+</style></head><body>
+<header class="topbar"><div class="topbar-in"><a class="wordmark" href="index.html"><svg viewBox="0 0 48 48" class="lp-badge" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg> lentopay <span class="hub">Project Hub</span></a><nav class="secnav" aria-label="Sections"><a href="prd.html"  title="PRD v2.0">01 PRD v2.0</a><a href="strategy.html"  title="Market & Strategy Report">02 Market & Strategy Report</a><a href="proposal.html" class="active" title="Development Proposal & SOW">03 Development Proposal & SOW</a><a href="one-pager.html"  title="Executive One-Pager">04 Executive One-Pager</a><a href="research-market.html"  title="Research — Market & Regulation">05 Market & Regulation</a><a href="research-competitors.html"  title="Research — Competitors & Monetization">06 Competitors & Monetization</a><a href="brand-guidelines.html"  title="Brand Guidelines v2.0">07 Brand Guidelines v2.0</a><a href="logo-animation.html"  title="Logo Motion Spec">08 Logo Motion Spec</a><a href="prototype-mobile.html"  title="Mobile App Prototype">09 Mobile App</a><a href="prototype-admin.html"  title="Admin Console Prototype">10 Admin Console</a></nav></div></header>
+<main class="wrap"><div class="crumb"><a href="index.html">All sections</a> / Section 03</div><p><a class="dl" href="downloads/Lentopay-Development-Proposal-SOW.docx" download><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg> Download Word document</a></p><article class="doc"><h1>Lentopay Exchange — Development Proposal &amp; Statement of Work</h1>
+<p><strong>Version:</strong> 1.0
+<strong>Date:</strong> 8 July 2026
+<strong>Prepared by:</strong> [Developer Name/Studio]
+<strong>Prepared for:</strong> [Client Name] — Lentopay
+<strong>Validity:</strong> 30 days from the date above
+<strong>Status:</strong> Confidential — for the addressee only</p>
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>Date</th>
+<th>Author</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1.0</td>
+<td>8 July 2026</td>
+<td>[Developer Name/Studio]</td>
+<td>Initial proposal and statement of work</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>1. Letter of Introduction</h2>
+<p>Dear [Client Name],</p>
+<p>Thank you for sharing your PRD for the Lentopay crypto exchange platform. We have read it closely — and then we went further. Over the discovery period we researched the Nigerian crypto market, its regulators, its competitors and its failures, and we rebuilt your requirements into a delivery plan that can actually launch in today&#39;s Nigeria: SEC-licensed, bank-connected, and trusted by users who have been burned before.</p>
+<p>The opportunity is real. Nigeria received $92 billion in on-chain value in the twelve months to June 2025, roughly 22 million Nigerians hold crypto, and — since Yellow Card exited retail and Binance lost its naira rails — no licensed player offers the bundle you have specified: crypto trading, bill payments, gift cards and savings in one app. The constraint is equally real: since the Investments and Securities Act 2025, every one of your ten features has a regulatory gate, and some gates open later than others.</p>
+<p>Our proposal therefore does one thing differently from a conventional build plan: it sequences delivery around those gates, so you are always shipping the most valuable product that is legal to operate at that moment. We build the exchange core first, on rails that exist and partners that will bank you; we stage savings and E-Fund behind the approvals they require; and we bake compliance — FIRS reporting, AML monitoring, tiered KYC — into the ledger from day one rather than retrofitting it under enforcement pressure.</p>
+<p>We would be proud to build this with you. The pages that follow set out exactly what we will deliver, when, with whom, and for how much.</p>
+<p>Warm regards,</p>
+<p><strong>[Developer Name/Studio]</strong></p>
+<hr>
+<h2>2. Our Understanding of the Project</h2>
+<p>Your PRD v1.0 specifies a unified digital-asset platform with ten core features: (1) fiat and crypto deposits, (2) internal and external transfers, (3) buy crypto with fiat, (4) sell/withdraw to bank, (5) utility payments with crypto (airtime, data, electricity, TV), (6) E-Fund unlisted/tokenized-asset investing, (7) crypto savings with yield, (8) spot coin trading with market/limit orders, (9) gift card trading, and (10) account management with tiered KYC, bank linking, 2FA and referrals. All features are to be available on mobile (iOS/Android) with role-based admin tooling behind them. In short: a Nigeria-first &quot;everyday money&quot; app where crypto is the engine, not the point.</p>
+<p>Our market research confirms the thesis and sharpens it. The Nigerian market is stablecoin-shaped — USDT/USDC dominate because they hedge naira devaluation — so the product should quote and settle around stablecoins, with BTC/ETH secondary. The competitive gap is precisely your bundle: licensed exchanges (Busha, Quidax, Luno) do not do bills or gift cards; gift card apps (Cardtonic, Prestmit) do shallow crypto without licenses; and roughly 90% of volume sits with unlicensed offshore platforms whose users have no naira rails and no recourse. The battleground is trust: withdrawal reliability, proof-of-reserves, real support. The regulatory reality is that ISA 2025 makes digital assets securities, the SEC&#39;s ARIP program is the licensing path, CBN rules mean no SEC license = no bank account, and savings/E-Fund each require approvals beyond the base VASP license.</p>
+<p>As part of discovery we have already delivered a set of artifacts that this SOW builds upon: <strong>PRD v2.0</strong> (your scope, upgraded with compliance phasing, acceptance criteria and non-functional requirements), the <strong>Market &amp; Regulatory Strategy Report</strong>, the <strong>Brand Guide v2.0</strong> with canonical design tokens, the <strong>logo motion spec</strong>, and <strong>two interactive prototypes</strong> (the mobile app and the web admin console). These are referenced throughout this proposal and form the baseline for Phase 0. This proposal is the delivery plan for everything that follows.</p>
+<hr>
+<h2>3. Recommended Delivery Approach — Phased Releases Aligned to Regulatory Gates</h2>
+<p>We recommend five phases. Each phase ships a coherent, operable product increment, and each is gated on the regulatory precondition it actually needs — no feature waits on an approval it doesn&#39;t require, and no feature launches before the approval it does.</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Headline</th>
+<th>Regulatory gate</th>
+<th>Duration</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0</td>
+<td>Foundation &amp; compliance setup</td>
+<td>None (parallel to ARIP application)</td>
+<td>6 weeks</td>
+</tr>
+<tr>
+<td>Phase 1</td>
+<td>MVP: wallet, KYC, buy/sell/swap, fiat rails, bills, referrals, admin core</td>
+<td>SEC AIP + VASP bank account (to launch)</td>
+<td>16–20 weeks</td>
+</tr>
+<tr>
+<td>Phase 2</td>
+<td>Gift cards, alerts, more assets, admin review queues</td>
+<td>None beyond Phase 1</td>
+<td>8–10 weeks</td>
+</tr>
+<tr>
+<td>Phase 3</td>
+<td>Savings + spot order book</td>
+<td>Full VASP registration + SEC product approval (savings)</td>
+<td>10–12 weeks</td>
+</tr>
+<tr>
+<td>Phase 4</td>
+<td>E-Fund</td>
+<td>DAOP/crowdfunding license or licensed partner + per-offer clearance</td>
+<td>10–12 weeks</td>
+</tr>
+</tbody></table>
+<h3>Phase 0 — Foundation &amp; Compliance Setup (6 weeks)</h3>
+<p><strong>Regulatory gate:</strong> None to start; runs in parallel with the Client&#39;s SEC ARIP application.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>Technical architecture document and final vendor selections (custody, KYC, fiat rails, bills, liquidity) with the Client&#39;s sign-off.</li>
+<li>Support for the Client&#39;s licensing track: technical documentation for the SEC ARIP application (systems description, security policies, data-protection posture), and input to NDPC registration.</li>
+<li>Design system implementation from Brand Guide v2.0 (component library for mobile and admin).</li>
+<li>Core platform scaffolding: environments (dev/staging/prod), CI/CD, infrastructure-as-code, observability stack, secrets management.</li>
+<li>Double-entry ledger core with immutable journal — the foundation for all balances, and for FIRS monthly reporting from day one.</li>
+<li>Vendor sandbox integrations proven end-to-end: KYC (BVN/NIN/selfie), custody (MPC wallet creation, testnet transfers), virtual accounts (deposit webhook round-trip).</li>
+</ul>
+<p><strong>Out of scope:</strong> Any user-facing release; licensing legal fees and filings (Client&#39;s counsel leads; we support technically).</p>
+<p><strong>Exit / acceptance criteria:</strong> Architecture and vendor contracts approved by Client; design system covering all Phase 1 screens; a testnet transaction flows end-to-end through ledger, custody sandbox and a virtual-account sandbox; ARIP application submitted (Client-side milestone we support, not one we control).</p>
+<h3>Phase 1 — MVP Launch (16–20 weeks)</h3>
+<p><strong>Regulatory gate:</strong> SEC Approval-in-Principle (AIP) + designated VASP bank account, both Client-procured. We build against sandboxes regardless; public launch waits for the gate.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li><strong>Wallet &amp; accounts:</strong> custodial wallets (NGN + USDT/USDC + BTC/ETH), portfolio home, transaction history.</li>
+<li><strong>Tiered KYC:</strong> Tier 1 (BVN/NIN) through Tier 3 (ID + selfie liveness + proof of address) via Smile ID, with limits enforced per tier.</li>
+<li><strong>Buy / Sell / Swap:</strong> instant quote engine, USDT-quoted pricing, live spread shown on the quote screen; liquidity via OTC/API partner.</li>
+<li><strong>Fiat rails:</strong> naira deposits via dedicated virtual accounts (bank transfer), withdrawals to verified bank accounts with name-match, deposit/withdrawal status tracking.</li>
+<li><strong>Crypto deposit/withdrawal:</strong> per-user addresses (TRC20/BEP20/ERC20 + BTC), QR codes, on-chain confirmation tracking, withdrawal allow-listing and cool-downs.</li>
+<li><strong>Transfers:</strong> instant internal transfers by phone/email/tag; external sends with PIN/2FA confirmation.</li>
+<li><strong>Bills via aggregator (VTpass):</strong> airtime, data, electricity (prepaid/postpaid), TV — with live validation, auto-refund on failure, receipts.</li>
+<li><strong>Referrals:</strong> both-sides reward with activation gates (KYC + first trade), device/BVN-level dedupe.</li>
+<li><strong>Security:</strong> 2FA (TOTP), transaction PIN, device/session management, withdrawal cool-downs after credential changes.</li>
+<li><strong>Admin console (core):</strong> user management, KYC review queue, transaction monitoring and manual-review flags, balance/ledger views, roles &amp; permissions, audit log.</li>
+<li><strong>Compliance plumbing:</strong> AML transaction-monitoring rules, sanctions/KYT wallet screening, CTR/STR export workflows, FIRS monthly-report generation.</li>
+<li><strong>Launch hardening:</strong> third-party penetration test, load test, closed beta (500–1,000 users), app-store submissions.</li>
+</ul>
+<p><strong>Out of scope in Phase 1:</strong> gift cards, savings/yield, E-Fund, spot order book (instant swap only), price alerts, virtual cards, web trading UI for end users (mobile-first; admin is web).</p>
+<p><strong>Exit / acceptance criteria:</strong> All Phase 1 acceptance tests pass on production infrastructure; pen-test criticals/highs remediated; 95% of naira withdrawals complete in under 5 minutes in beta; FIRS report generated for a full test month; apps approved in both stores; go-live sign-off jointly with Client&#39;s compliance officer.</p>
+<h3>Phase 2 — Engagement &amp; Breadth (8–10 weeks)</h3>
+<p><strong>Regulatory gate:</strong> none beyond Phase 1 (gift cards sit inside the existing VASP/AML perimeter but require hardened fraud ops).</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li><strong>Gift card trading:</strong> upload flow (card details + photos, encrypted), rate calculator, quote engine, admin review queue with fraud checks, delayed-settlement windows, payout to NGN or USDT.</li>
+<li><strong>Price alerts &amp; notifications:</strong> price alerts, deposit/withdrawal push + email + SMS confirmations.</li>
+<li><strong>Asset expansion:</strong> additional vetted tokens, plus cNGN listing for regulatory goodwill.</li>
+<li><strong>Admin review queues v2:</strong> gift card review, fraud case management, withdrawal-risk scoring queue, support ticketing with published SLAs.</li>
+<li><strong>Engagement loop:</strong> bill-payment cashback (funded from aggregator margin), savings-goal-style streaks groundwork.</li>
+</ul>
+<p><strong>Out of scope:</strong> P2P marketplace (deliberately — Quidax&#39;s P2P died in 5 months), virtual dollar cards (optional later change request).</p>
+<p><strong>Exit / acceptance criteria:</strong> Gift card flow live with fraud-review SLA ≤ 24h; alert delivery ≥ 99% within 60 seconds; chargeback/fraud loss on gift cards within agreed risk budget during 4-week pilot.</p>
+<h3>Phase 3 — Savings &amp; Spot Order Book (10–12 weeks)</h3>
+<p><strong>Regulatory gate:</strong> <strong>Savings launches only after full VASP registration and specific SEC product approval</strong>, with assets held by a licensed Digital Assets Custodian and proof-of-reserves in place. Order book has no extra gate.</p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li><strong>Savings:</strong> flexible and fixed-term stablecoin plans, daily interest accrual, maturity payouts, admin-configurable rates/lock periods, interest calculator, conservative marketing copy review (anti-CBEX posture: no fixed-return promises).</li>
+<li><strong>Spot order book:</strong> market and limit orders, basic matching engine, cancel/replace, real-time charts, order history, maker/taker fees.</li>
+<li><strong>Proof-of-reserves:</strong> Merkle-tree attestation pipeline and public PoR page (third-party attestor procured by Client).</li>
+</ul>
+<p><strong>Out of scope:</strong> margin/derivatives (never in this SOW), auto-invest/DCA (change request).</p>
+<p><strong>Exit / acceptance criteria:</strong> SEC product approval evidenced before savings goes live (Client-side gate); matching engine passes deterministic replay and load tests (target 1,000 orders/sec sustained); first PoR attestation published.</p>
+<h3>Phase 4 — E-Fund (10–12 weeks; gated on license)</h3>
+<p><strong>Regulatory gate:</strong> DAOP/crowdfunding-intermediary license or a partnership with an already-licensed platform (e.g., a GetEquity-style entity), plus per-offer SEC clearance. <strong>This phase does not start until the Client confirms the licensing or partnership route.</strong></p>
+<p><strong>Scope:</strong></p>
+<ul>
+<li>E-Fund listings catalogue (admin-managed), offer pages with disclosures and risk warnings, invest-with-USDT flow, portfolio/ROI tracking, ledger-based holdings register, per-offer subscription caps and windows per SEC crowdfunding rules.</li>
+<li>Integration with the licensed partner&#39;s registrar/custody stack if the partnership route is chosen.</li>
+</ul>
+<p><strong>Out of scope:</strong> secondary-market trading of E-Fund units (separate regulatory analysis required); origination/deal sourcing (Client-side).</p>
+<p><strong>Exit / acceptance criteria:</strong> One pilot offer fully subscribed and settled end-to-end in production under SEC clearance; disclosures reviewed by Client&#39;s counsel; complete audit trail from investment to holdings register.</p>
+<hr>
+<h2>4. Technical Approach Summary</h2>
+<p><strong>Stack at a glance:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mobile</td>
+<td>React Native (single codebase, iOS + Android)</td>
+<td>One team ships both stores; native modules where needed (biometrics, camera KYC)</td>
+</tr>
+<tr>
+<td>API</td>
+<td>NestJS (TypeScript) + PostgreSQL + Redis</td>
+<td>Typed end-to-end with the app; battle-tested for fintech workloads</td>
+</tr>
+<tr>
+<td>Ledger</td>
+<td>Custom double-entry ledger, append-only journal</td>
+<td>Auditability, FIRS reporting and PoR become queries, not projects</td>
+</tr>
+<tr>
+<td>Custody</td>
+<td>MPC provider: Fireblocks or Blockradar</td>
+<td>Keys never on our servers; policy-enforced withdrawals; cold-storage sweeps</td>
+</tr>
+<tr>
+<td>Fiat rails</td>
+<td>Virtual accounts: Providus / 9PSB / Monnify</td>
+<td>Bank transfer is Nigeria&#39;s #1 channel; PSP card acquirers exclude crypto</td>
+</tr>
+<tr>
+<td>Bills</td>
+<td>VTpass (Quickteller fallback)</td>
+<td>Aggregator holds the CBN license; live validation + auto-refund</td>
+</tr>
+<tr>
+<td>KYC</td>
+<td>Smile ID (BVN/NIN/document/selfie liveness)</td>
+<td>Direct government-database checks mapped to CBN tiers</td>
+</tr>
+<tr>
+<td>Market data</td>
+<td>CoinGecko/exchange APIs + own executable book</td>
+<td>Never display the politically sensitive informal P2P rate</td>
+</tr>
+</tbody></table>
+<p><strong>Architecture.</strong> A React Native mobile app (single codebase, iOS + Android) against a NestJS (TypeScript) API on PostgreSQL with Redis for caching, queues and rate-limiting. The web admin console is a React SPA on the same API. Services are modular monolith first, split only where load demands (quote engine, webhook ingestion) — right-sized for a lean team, not a microservices sprawl.</p>
+<p><strong>Ledger.</strong> All balances live in a double-entry ledger with an immutable, append-only journal. Every fiat and crypto movement is a balanced transaction; custody and bank balances are reconciled against the ledger continuously. This is what makes FIRS monthly reporting, PoR and audits queries rather than projects.</p>
+<p><strong>Custody.</strong> Private keys never touch our servers. Crypto custody via an MPC wallet provider — Fireblocks (industry default) or Blockradar (Nigeria-focused, strong stablecoin rails) — with a treasury policy of hot-wallet minimums, cold-storage sweep thresholds, and dual-approval withdrawal policies enforced at the custody layer.</p>
+<p><strong>Fiat rails.</strong> Naira collection via dedicated virtual accounts (Providus, 9PSB or Monnify — final selection in Phase 0), with real-time webhooks and name-match verification on payouts. We deliberately avoid card acquiring at launch: mainstream PSPs contractually exclude crypto businesses, and bank transfer is Nigeria&#39;s #1 payment channel anyway.</p>
+<p><strong>Bills.</strong> VTpass as primary aggregator (Quickteller as fallback design) — airtime, data, electricity, TV with live validation and automatic refund on timeout. No CBN PSSP license needed because the aggregator holds it.</p>
+<p><strong>KYC/AML.</strong> Smile ID for BVN/NIN lookups, document verification and selfie liveness, mapped to CBN tier norms. KYT wallet screening on crypto flows, rules-based transaction monitoring, CTR (24h) / STR (7-day) workflows, and a FIRS reporting pipeline generated from the ledger.</p>
+<p><strong>Quality, monitoring and SLOs.</strong> Automated test suites in CI, staging environment mirroring production, structured logging, metrics and alerting (uptime, withdrawal latency, webhook lag). Launch SLOs: 99.9% API availability, naira withdrawals &lt; 5 minutes at p95, KYC Tier 1 decision &lt; 10 minutes at p95 — measured and reported monthly.</p>
+<p><strong>Security practices.</strong> Third-party penetration test before public launch and annually thereafter; 2FA and transaction PIN on all sensitive operations; device binding and session management; withdrawal allow-lists and cool-downs; encrypted PII at rest; secrets in a managed vault; cold-storage policy with dual control; 72-hour breach-notification runbook per NDPA; incident-response and disaster-recovery drills before launch.</p>
+<p><strong>Who provides what.</strong></p>
+<table>
+<thead>
+<tr>
+<th>The Developer builds</th>
+<th>The Client procures</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Mobile app, admin console, API, ledger, integrations</td>
+<td>SEC ARIP/VASP licensing (counsel-led) and ₦2B capital plan</td>
+</tr>
+<tr>
+<td>AML/monitoring tooling and FIRS reporting pipeline</td>
+<td>Custody contract (Fireblocks/Blockradar) in Client&#39;s name</td>
+</tr>
+<tr>
+<td>Design system implementation and all UX</td>
+<td>Bank/virtual-account agreements; liquidity/OTC agreement</td>
+</tr>
+<tr>
+<td>CI/CD, infrastructure-as-code, observability</td>
+<td>KYC vendor contract; bill-aggregator contract; PoR attestor</td>
+</tr>
+<tr>
+<td>Security engineering and pen-test remediation</td>
+<td>Insurance, legal review, compliance officer and NFIU/SCUML registrations</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>5. Timeline</h2>
+<p>Assuming Phase 1 build starts [Month] (Phase 0 starting ~6 weeks prior), and using the midpoint of each range:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>Calendar estimate</th>
+<th>Key milestones</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0 — Foundation &amp; Compliance Setup</td>
+<td>6 weeks</td>
+<td>[Month −1.5] → [Month]</td>
+<td>Architecture sign-off; vendor sandboxes live; design system ready; ARIP application submitted</td>
+</tr>
+<tr>
+<td>Phase 1 — MVP</td>
+<td>16–20 weeks</td>
+<td>[Month] → [Month +4–5]</td>
+<td>Design freeze (wk 4); testnet demo (wk 8); code freeze + security audit (wk 13–15); closed beta (wk 15–17); <strong>public launch (wk 16–20, gated on AIP + bank account)</strong></td>
+</tr>
+<tr>
+<td>Phase 2 — Gift cards, alerts, assets</td>
+<td>8–10 weeks</td>
+<td>[Month +5] → [Month +7]</td>
+<td>Gift card pilot (wk 4); full rollout + cashback loop (wk 8–10)</td>
+</tr>
+<tr>
+<td>Phase 3 — Savings + order book</td>
+<td>10–12 weeks</td>
+<td>[Month +7] → [Month +10]</td>
+<td>Order book live (wk 6); first PoR attestation (wk 8); <strong>savings live on SEC product approval</strong></td>
+</tr>
+<tr>
+<td>Phase 4 — E-Fund</td>
+<td>10–12 weeks</td>
+<td>Gated — starts on license/partnership confirmation</td>
+<td>Pilot offer cleared, subscribed and settled</td>
+</tr>
+</tbody></table>
+<p><strong>Key milestone definitions</strong> (each is also a payment trigger — see §7):</p>
+<table>
+<thead>
+<tr>
+<th>Milestone</th>
+<th>Definition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Design freeze</td>
+<td>All Phase 1 screens signed off against the design system; only defect-driven changes after this point</td>
+</tr>
+<tr>
+<td>Testnet demo</td>
+<td>End-to-end flow demonstrated on test networks: deposit → KYC → buy → transfer → sell → withdraw, through the real ledger and custody sandbox</td>
+</tr>
+<tr>
+<td>Security audit</td>
+<td>Third-party penetration test executed on the release candidate; all critical and high findings remediated and retested</td>
+</tr>
+<tr>
+<td>Closed beta</td>
+<td>500–1,000 real users on production infrastructure with real (limited) funds; withdrawal SLA and support process measured</td>
+</tr>
+<tr>
+<td>Public launch</td>
+<td>Apps live in both stores, regulatory gate satisfied (AIP + bank account), joint go-live sign-off executed</td>
+</tr>
+</tbody></table>
+<p><strong>Realistic total to MVP launch: approximately 22–26 weeks from Phase 0 kick-off (Phase 1 itself 16–20 weeks).</strong> Phases 2–4 add roughly 28–34 further build weeks, with Phases 3 and 4 go-lives dependent on Client-side regulatory milestones. We flag now, honestly: the SEC&#39;s observed pace is 9–18 months to AIP — engineering will likely be ready before the license is. The phasing above turns that wait into Phase 2 build time rather than idle burn.</p>
+<hr>
+<h2>6. Team &amp; Responsibilities</h2>
+<p><strong>Developer-side team (core delivery):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Allocation</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Project Manager / Delivery Lead</td>
+<td>Full-time</td>
+<td>Plan, ceremonies, reporting, risk log, Client liaison</td>
+</tr>
+<tr>
+<td>Mobile Engineer × 2 (React Native)</td>
+<td>Full-time</td>
+<td>iOS + Android app, offline states, store releases</td>
+</tr>
+<tr>
+<td>Backend Engineer × 2 (NestJS/Postgres)</td>
+<td>Full-time</td>
+<td>API, ledger, integrations, admin API, reporting pipeline</td>
+</tr>
+<tr>
+<td>Product Designer</td>
+<td>Part-time (~50%)</td>
+<td>Design system upkeep, new-flow UX, usability testing</td>
+</tr>
+<tr>
+<td>QA Engineer</td>
+<td>Full-time from Phase 1</td>
+<td>Test plans, automation, regression, release certification</td>
+</tr>
+<tr>
+<td>DevOps / SRE</td>
+<td>Part-time (~50%)</td>
+<td>Infrastructure, CI/CD, monitoring, incident response</td>
+</tr>
+</tbody></table>
+<p><strong>Client-side (required for delivery):</strong> a decision-maker/product owner (48-hour decision SLA), a compliance officer (SEC fit-and-proper principal, owns regulator relations, reviews AML rules and marketing copy), licensed partners and vendor contracts (§4), and legal counsel for filings and content review.</p>
+<p><strong>RACI-lite:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Workstream</th>
+<th>Developer</th>
+<th>Client</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Product build (app, admin, API, ledger)</td>
+<td>Responsible + Accountable</td>
+<td>Consulted</td>
+</tr>
+<tr>
+<td>Architecture &amp; vendor selection</td>
+<td>Responsible</td>
+<td>Accountable (approves)</td>
+</tr>
+<tr>
+<td>SEC licensing &amp; regulator relations</td>
+<td>Consulted (technical inputs)</td>
+<td>Responsible + Accountable</td>
+</tr>
+<tr>
+<td>Vendor/bank contracts &amp; capital</td>
+<td>Consulted</td>
+<td>Responsible + Accountable</td>
+</tr>
+<tr>
+<td>AML policy &amp; compliance operations</td>
+<td>Consulted (builds tooling)</td>
+<td>Responsible + Accountable</td>
+</tr>
+<tr>
+<td>Security engineering &amp; pen-test remediation</td>
+<td>Responsible + Accountable</td>
+<td>Informed</td>
+</tr>
+<tr>
+<td>Marketing content &amp; legal review</td>
+<td>Informed</td>
+<td>Responsible + Accountable</td>
+</tr>
+<tr>
+<td>Launch go/no-go</td>
+<td>Consulted</td>
+<td>Accountable (jointly signed)</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>7. Commercial Terms</h2>
+<p>Pricing is fixed-fee per phase, payable against milestones. Amounts to be confirmed at contract signature:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Fixed fee</th>
+<th>Payment structure</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Phase 0 — Foundation &amp; Compliance Setup</td>
+<td>[₦/$ amount]</td>
+<td>50% on start, 50% on exit criteria</td>
+</tr>
+<tr>
+<td>Phase 1 — MVP</td>
+<td>[₦/$ amount]</td>
+<td>30% on start; 25% at design freeze; 25% at code freeze/security audit; 20% at launch acceptance</td>
+</tr>
+<tr>
+<td>Phase 2 — Gift cards &amp; engagement</td>
+<td>[₦/$ amount]</td>
+<td>30% on start; 40% at pilot; 30% at acceptance</td>
+</tr>
+<tr>
+<td>Phase 3 — Savings + order book</td>
+<td>[₦/$ amount]</td>
+<td>30% on start; 40% at order-book acceptance; 30% at savings go-live</td>
+</tr>
+<tr>
+<td>Phase 4 — E-Fund</td>
+<td>[₦/$ amount]</td>
+<td>30% on start; 70% across pilot-offer milestones</td>
+</tr>
+</tbody></table>
+<p><strong>Suggested structure:</strong> 30% of each phase upfront, remainder milestone-based as above. Each phase is separately commissioned — the Client may pause after any phase with no penalty beyond work in progress.</p>
+<p><strong>Billed monthly at cost (pass-through, in Client&#39;s name where possible):</strong> cloud infrastructure and monitoring; custody provider fees (typically platform fee + per-transaction); KYC checks (market rate roughly $0.10–0.50 per check depending on type and volume); SMS/email delivery; app-store fees; market-data feeds. We will provide a monthly infrastructure cost forecast at Phase 0 exit.</p>
+<p><strong>Change requests:</strong> scope changes are proposed in writing with impact on cost/schedule, priced at an agreed blended day rate of [₦/$ amount], and executed only on written approval. Small clarifications within existing acceptance criteria are absorbed.</p>
+<p><strong>Warranty:</strong> 8 weeks post-launch warranty per phase, covering defects against agreed acceptance criteria at no charge (severity-1 response within 4 business hours).</p>
+<p><strong>Support retainer (optional, post-warranty):</strong> monthly retainer of [₦/$ amount] covering monitoring, incident response, dependency patching, store re-submissions and a bank of enhancement hours; 24/7 on-call available as an uplift.</p>
+<hr>
+<h2>8. Assumptions &amp; Dependencies</h2>
+<p>The fees and dates in this SOW rest on the following assumptions. If any proves untrue, we will flag it in the weekly report and agree an adjustment through change control before it affects the plan.</p>
+<ol>
+<li>The Client provides (or contracts) the licensed operating entity: Nigerian incorporation, physical office, resident CEO/MD, four fit-and-proper principal officers — or a partnership/acquisition arrangement with an existing AIP holder.</li>
+<li>The ₦2 billion minimum-capital plan (SEC Circular 26-1) and all regulatory fees are the Client&#39;s responsibility and are not part of the development fees.</li>
+<li>All third-party contracts (custody, KYC, banking, liquidity, bills aggregator, PoR attestor, insurance) are executed in the Client&#39;s name; the Developer integrates against them.</li>
+<li>Public launch dates for Phases 1, 3 and 4 depend on Client-side regulatory milestones (AIP + bank account; SEC product approval; DAOP/partner license). Engineering readiness dates are the Developer&#39;s commitment; go-live dates are joint.</li>
+<li>Marketing content, terms of service, risk disclosures and all user-facing legal copy are reviewed and approved by the Client&#39;s counsel before release — particularly savings and E-Fund language under ISA 2025&#39;s anti-Ponzi provisions.</li>
+<li>The Client designates a product owner empowered to make decisions within 48 hours, and a compliance officer available for weekly review.</li>
+<li>Discovery artifacts (PRD v2.0, strategy report, Brand Guide v2.0, prototypes) are the agreed baseline; material deviations are handled as change requests.</li>
+<li>Third-party sandbox availability is assumed; where a vendor&#39;s sandbox is materially unavailable, affected milestones shift day-for-day.</li>
+<li>NDPC registration, NFIU onboarding, SCUML analysis (for gift cards) and FIRS enrolment are Client-side compliance actions; the Developer supplies the technical evidence and pipelines.</li>
+<li>Fees exclude VAT and any withholding taxes, which are handled per the services agreement.</li>
+</ol>
+<hr>
+<h2>9. Risks &amp; How We Manage Them</h2>
+<p>A crypto exchange in Nigeria fails for predictable reasons — Patricia, FTX and CBEX are the case studies. We manage each risk explicitly, and the risk log is a standing item in the weekly Client report.</p>
+<table>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Likelihood</th>
+<th>Our mitigation</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Regulatory shift</strong> (new SEC circulars, CBN policy changes, tax-rule changes)</td>
+<td>High</td>
+<td>Phase gates isolate exposure — no feature is built ahead of its legal basis; compliance rules (limits, tiers, reporting) are configuration, not code; quarterly regulatory-watch review with Client&#39;s counsel baked into the plan</td>
+</tr>
+<tr>
+<td><strong>Licensing slower than build</strong> (9–18 months to AIP observed)</td>
+<td>Medium–High</td>
+<td>Sequenced so Phase 2 build fills the waiting period; closed beta permitted scope agreed with counsel; option to launch via partnership with an existing AIP holder</td>
+</tr>
+<tr>
+<td><strong>Third-party API changes/outages</strong> (bank rails, KYC, custody, bills)</td>
+<td>Medium</td>
+<td>Adapter pattern around every vendor with a designed fallback (second bank rail, second aggregator); webhook replay and reconciliation jobs; vendor SLAs in Client contracts; Providus-style de-platforming risk mitigated by dual-rail design</td>
+</tr>
+<tr>
+<td><strong>Security breach / key compromise</strong></td>
+<td>Low likelihood, severe impact</td>
+<td>MPC custody (no keys on our servers), cold-storage policy with dual control, pre-launch and annual pen-tests, withdrawal cool-downs and allow-lists, 72h NDPA breach runbook, hot-wallet balance caps</td>
+</tr>
+<tr>
+<td><strong>Fraud losses</strong> (social engineering #1 in Nigeria; gift cards a known vector)</td>
+<td>High</td>
+<td>Tiered limits, device intelligence, delayed settlement on gift cards, admin review queues, receiving-institution liability checks; fraud rules tuned during a deliberately small pilot</td>
+</tr>
+<tr>
+<td><strong>Liquidity/counterparty failure</strong></td>
+<td>Medium</td>
+<td>Dual liquidity sources designed in; ledger-level reconciliation catches settlement gaps daily; no rehypothecation of customer assets, ever</td>
+</tr>
+<tr>
+<td><strong>Scope drift</strong></td>
+<td>Medium</td>
+<td>Fixed per-phase scope with written change control; PRD v2.0 as contractual baseline</td>
+</tr>
+<tr>
+<td><strong>App-store policy risk</strong> (Apple/Google crypto rules)</td>
+<td>Medium</td>
+<td>Store-compliant custody/trading disclosures prepared early; phased rollout via TestFlight/closed track; direct developer-relations escalation path; web fallback for critical account actions</td>
+</tr>
+<tr>
+<td><strong>Key-person dependency</strong></td>
+<td>Low</td>
+<td>Documented architecture, paired ownership of each subsystem, Client-accessible repos and runbooks from day one</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>10. Acceptance &amp; Sign-Off</h2>
+<p>This proposal and statement of work is valid for <strong>30 days</strong> from the date on the cover. Signature below commissions Phase 0 and establishes the phase-gate framework for Phases 1–4; each subsequent phase is commissioned by a one-page phase order referencing this SOW.</p>
+<p><strong>For the Client — [Client Name]</strong></p>
+<p>Name: ______________________________</p>
+<p>Title: ______________________________</p>
+<p>Signature: ______________________________  Date: ____________</p>
+<p><strong>For the Developer — [Developer Name/Studio]</strong></p>
+<p>Name: ______________________________</p>
+<p>Title: ______________________________</p>
+<p>Signature: ______________________________  Date: ____________</p>
+<hr>
+<p><em>Confidential. Prepared by [Developer Name/Studio] for [Client Name]. © 2026. All figures in this document referencing regulation and market data derive from the accompanying Market &amp; Regulatory Strategy Report and should be re-verified with counsel before filings.</em></p>
+</article><nav class="pn" aria-label="Section navigation"><a href="strategy.html"><div class="lbl">&larr; Previous</div><div class="ttl">02 · Market & Strategy Report</div></a><a class="next" href="one-pager.html"><div class="lbl">Next &rarr;</div><div class="ttl">04 · Executive One-Pager</div></a></nav></main>
+<footer class="site">Lentopay Exchange — Project Hub · July 2026 · Confidential, prepared for the Lentopay project</footer></body></html>

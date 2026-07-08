@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lentopay Brand Guidelines — Version 2.0 · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lp-royal:#2333D6; --lp-cobalt:#4353FF; --lp-night:#0A0E28; --lp-gold:#F2A61A;
+  --lp-fog:#E9EDF8; --lp-offwhite:#FAFBFD; --lp-success:#17B26A; --lp-alert:#E5484D; --lp-amber:#D97706;
+  --dk-surface:#121735; --dk-surface2:#1A2044; --dk-border:#252C55; --dk-text:#F2F4FF; --dk-text2:#9AA3C7;
+  --sora:'Sora','Segoe UI',system-ui,-apple-system,sans-serif;
+  --dm:'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  --shadow:0 4px 16px rgba(10,14,40,.08);
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{background:var(--lp-offwhite);color:var(--lp-night);font-family:var(--dm);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--sora);letter-spacing:-0.02em}
+svg{display:block}
+a{color:var(--lp-cobalt);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(250,251,253,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--lp-fog);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100}
+.topbar .lockup{display:flex;align-items:center;gap:10px}
+.topbar .lockup .wm{font-family:var(--sora);font-weight:700;font-size:18px;letter-spacing:-0.02em;color:var(--lp-night)}
+.topbar .meta{font-size:13px;font-weight:500;color:#5A628A;display:flex;align-items:center;gap:20px}
+.topbar .meta .tag{background:var(--lp-fog);color:var(--lp-royal);padding:4px 12px;border-radius:99px;font-weight:700;font-size:12px;letter-spacing:.02em}
+.topbar .meta a{font-weight:700;font-size:13px}
+
+/* ---------- layout ---------- */
+.shell{display:flex;max-width:1280px;margin:0 auto;padding-top:64px}
+.toc{position:sticky;top:64px;align-self:flex-start;width:232px;flex:none;height:calc(100vh - 64px);overflow-y:auto;padding:48px 8px 48px 32px}
+.toc .toc-label{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8A91B4;margin-bottom:16px;font-family:var(--dm)}
+.toc a{display:block;padding:7px 12px;font-size:13.5px;font-weight:500;color:#5A628A;border-radius:8px;border-left:2px solid transparent;margin-bottom:2px;line-height:1.35;text-decoration:none}
+.toc a .n{font-family:var(--sora);font-weight:700;font-size:11px;color:#A6ACC9;margin-right:8px}
+.toc a:hover{color:var(--lp-night);background:var(--lp-fog);text-decoration:none}
+.toc a.active{color:var(--lp-royal);background:#EDEFFC;border-left-color:var(--lp-royal);font-weight:700}
+.toc a.active .n{color:var(--lp-royal)}
+main{flex:1;min-width:0;padding:0 56px 96px 56px}
+@media(max-width:960px){.toc{display:none}main{padding:0 24px 64px 24px}}
+
+/* ---------- hero ---------- */
+.hero{padding:96px 0 72px;border-bottom:1px solid var(--lp-fog)}
+.hero .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lp-royal);margin-bottom:24px}
+.hero h1{font-size:52px;font-weight:800;line-height:1.08;max-width:640px}
+.hero .sub{margin-top:24px;font-size:18px;color:#454D78;max-width:560px;line-height:1.65}
+.hero .verline{margin-top:36px;display:flex;gap:12px;align-items:center;font-size:13.5px;font-weight:500;color:#5A628A}
+.hero .verline .dot{width:4px;height:4px;border-radius:50%;background:#A6ACC9}
+.hero .verline b{color:var(--lp-night);font-weight:700}
+
+/* ---------- sections ---------- */
+section{padding:80px 0 8px}
+.sec-head{display:flex;align-items:baseline;gap:20px;margin-bottom:12px}
+.sec-num{font-family:var(--sora);font-weight:800;font-size:15px;color:var(--lp-royal);background:#EDEFFC;border-radius:8px;padding:6px 12px;letter-spacing:.04em}
+.sec-head h2{font-size:32px;font-weight:700}
+.sec-lede{font-size:16.5px;color:#454D78;max-width:640px;margin:8px 0 40px;line-height:1.65}
+h3.sub{font-size:19px;font-weight:600;margin:48px 0 8px}
+p.note{font-size:14.5px;color:#5A628A;max-width:640px;margin-bottom:24px}
+.rule-eyebrow{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8A91B4;margin:40px 0 12px}
+
+/* ---------- cards & grids ---------- */
+.card{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.g4,.g3,.g2{grid-template-columns:1fr}}
+
+/* taglines */
+.tagline-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:24px 0 8px}
+@media(max-width:900px){.tagline-row{grid-template-columns:1fr}}
+.tagline{padding:24px;border-radius:var(--radius)}
+.tagline .lbl{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;opacity:.75}
+.tagline .tx{font-family:var(--sora);font-weight:700;font-size:19px;line-height:1.3;letter-spacing:-0.01em}
+.tagline.primary{background:var(--lp-night);color:#fff}
+.tagline.primary .lbl{color:var(--lp-gold);opacity:1}
+.tagline.dev{background:#fff;border:1px solid var(--lp-fog);box-shadow:var(--shadow);color:var(--lp-night)}
+.tagline.dev .lbl{color:var(--lp-royal)}
+.tagline.merch{background:#EDEFFC;color:var(--lp-night)}
+.tagline.merch .lbl{color:var(--lp-royal)}
+
+/* traits */
+.trait{padding:20px;background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow)}
+.trait .t-ic{width:34px;height:34px;border-radius:9px;background:#EDEFFC;color:var(--lp-royal);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.trait h4{font-size:14.5px;font-weight:700;margin-bottom:4px}
+.trait p{font-size:13px;color:#5A628A;line-height:1.5}
+
+/* story */
+.story{margin-top:48px;padding:36px 40px;background:linear-gradient(135deg,var(--lp-royal),var(--lp-night));border-radius:18px;color:#fff}
+.story .lbl{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lp-gold);margin-bottom:14px}
+.story p{font-size:16.5px;line-height:1.75;color:#E6E9FF;max-width:680px}
+.story b{color:#fff}
+
+/* ---------- logo section ---------- */
+.logo-stage{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:800px){.logo-stage{grid-template-columns:1fr}}
+.stage-panel{border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 32px 48px;position:relative;min-height:240px}
+.stage-panel.light{background:#fff;border:1px solid var(--lp-fog);box-shadow:var(--shadow)}
+.stage-panel.dark{background:var(--lp-night)}
+.stage-panel .cap{position:absolute;bottom:16px;left:0;right:0;text-align:center;font-size:12px;font-weight:500;color:#8A91B4;letter-spacing:.04em}
+.stage-panel.dark .cap{color:var(--dk-text2)}
+.lockup-lg{display:flex;align-items:center;gap:18px}
+.lockup-lg .wm{font-family:var(--sora);font-weight:700;font-size:40px;letter-spacing:-0.02em;line-height:1}
+.lockup-lg .wm.on-light{color:var(--lp-night)}
+.lockup-lg .wm.on-dark{color:#fff}
+.mono-row{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+.mono-chip{background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.mono-chip span{font-size:11.5px;font-weight:500;color:#8A91B4}
+.construct-card{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);padding:36px;display:flex;justify-content:center}
+.minsize-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:16px}
+.minsize{flex:1;min-width:240px;background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:24px;display:flex;align-items:center;gap:18px}
+.minsize .num{font-family:var(--sora);font-weight:700;font-size:22px}
+.minsize .lbl{font-size:13px;color:#5A628A;line-height:1.45}
+
+/* misuse */
+.misuse{position:relative;background:#fff;border:1.5px solid #F3C2C4;border-radius:12px;padding:36px 16px 44px;display:flex;align-items:center;justify-content:center;min-height:150px;overflow:hidden}
+.misuse .xbadge{position:absolute;top:10px;right:10px;width:22px;height:22px;border-radius:50%;background:var(--lp-alert);color:#fff;display:flex;align-items:center;justify-content:center}
+.misuse .cap{position:absolute;bottom:12px;left:0;right:0;text-align:center;font-size:12px;font-weight:700;color:var(--lp-alert)}
+.misuse .m-lock{display:flex;align-items:center;gap:9px}
+.misuse .m-wm{font-family:var(--sora);font-weight:700;font-size:19px;letter-spacing:-0.02em;color:var(--lp-night)}
+.misuse.gold-bg{background:var(--lp-gold);border-color:#E0991A}
+.misuse.gold-bg .cap{color:#7A2E30}
+
+/* ---------- color ---------- */
+.swatches{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.swatches{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.swatches{grid-template-columns:1fr}}
+.swatch{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:transform .15s ease-out,box-shadow .15s ease-out}
+.swatch:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(10,14,40,.12)}
+.swatch .chip{height:96px;position:relative}
+.swatch .chip .tok{position:absolute;left:14px;bottom:10px;font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:11px;opacity:.85}
+.swatch .body{padding:16px}
+.swatch .nm{font-family:var(--sora);font-weight:700;font-size:15px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.swatch .hex{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:13px;font-weight:500;color:var(--lp-royal);display:inline-flex;align-items:center;gap:6px}
+.swatch .rgb{font-size:12px;color:#8A91B4;margin-top:2px;font-family:'SF Mono',ui-monospace,Menlo,monospace}
+.swatch .use{font-size:13px;color:#5A628A;margin-top:10px;line-height:1.5}
+.grad-card{border-radius:var(--radius);overflow:hidden;background:#fff;border:1px solid var(--lp-fog);box-shadow:var(--shadow);margin-top:16px}
+.grad-card .g{height:120px;background:linear-gradient(135deg,#2333D6 0%,#4353FF 45%,#0A0E28 100%)}
+.grad-card .g2s{height:64px;background:linear-gradient(135deg,#2333D6,#0A0E28)}
+.grad-card .body{padding:18px 20px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+.grad-card .body .nm{font-family:var(--sora);font-weight:700;font-size:15px}
+.grad-card .body code{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:#5A628A;background:var(--lp-fog);padding:4px 10px;border-radius:6px}
+.darkramp{display:grid;grid-template-columns:repeat(6,1fr);border-radius:var(--radius);overflow:hidden;border:1px solid var(--dk-border);margin-top:16px}
+@media(max-width:800px){.darkramp{grid-template-columns:repeat(3,1fr)}}
+.darkramp .step{padding:26px 14px 14px}
+.darkramp .step .nm{font-size:11.5px;font-weight:700;letter-spacing:.03em;margin-bottom:3px}
+.darkramp .step .hx{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:11px;opacity:.75}
+
+/* tables */
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);font-size:14px}
+.tblwrap{border-radius:var(--radius);overflow-x:auto;border:1px solid var(--lp-fog);box-shadow:var(--shadow)}
+.tblwrap table{box-shadow:none;border-radius:0;min-width:560px}
+th{font-family:var(--dm);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5A628A;text-align:left;padding:14px 18px;background:#F4F6FB;border-bottom:1px solid var(--lp-fog)}
+td{padding:14px 18px;border-bottom:1px solid var(--lp-fog);vertical-align:top;color:#2B3157}
+tr:last-child td{border-bottom:none}
+.pass,.fail,.large{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:12px;padding:3px 10px;border-radius:99px}
+.pass{background:#E4F7EE;color:#0D7A49}
+.fail{background:#FCE9EA;color:#B4383C}
+.large{background:#FBEFDD;color:#9A5606}
+.pairchip{display:inline-flex;align-items:center;gap:10px}
+.pairchip .demo{width:64px;height:30px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--sora);font-weight:700;font-size:12.5px;flex:none;border:1px solid rgba(10,14,40,.08)}
+.ratio{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-weight:500}
+
+/* a11y rules */
+.rules3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+@media(max-width:900px){.rules3{grid-template-columns:1fr}}
+.rulecard{background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:22px}
+.rulecard .r-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:14px;background:#EDEFFC;color:var(--lp-royal)}
+.rulecard h4{font-size:14.5px;margin-bottom:6px}
+.rulecard p{font-size:13.5px;color:#5A628A;line-height:1.55}
+
+/* ---------- typography ---------- */
+.specimen{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px 36px;margin-bottom:16px}
+.specimen .fam{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.specimen .fam .nm{font-family:var(--sora);font-weight:700;font-size:20px}
+.specimen .fam .role{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--lp-royal);background:#EDEFFC;padding:4px 12px;border-radius:99px}
+.specimen .big{font-size:44px;line-height:1.15;letter-spacing:-0.02em;margin-bottom:20px;word-wrap:break-word}
+.specimen .chars{font-size:17px;line-height:1.9;color:#454D78;word-wrap:break-word;border-top:1px solid var(--lp-fog);padding-top:18px}
+.specimen .weights{display:flex;gap:28px;flex-wrap:wrap;margin-top:18px}
+.specimen .weights .w .demo{font-size:26px;line-height:1.2}
+.specimen .weights .w .lbl{font-size:11.5px;color:#8A91B4;font-weight:500;margin-top:4px}
+.sora-f{font-family:var(--sora)}
+.dm-f{font-family:var(--dm)}
+.money-card{background:var(--lp-night);border-radius:var(--radius);padding:32px 36px;color:#fff;margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.money-card .amt{font-family:var(--sora);font-weight:700;font-size:42px;letter-spacing:-0.01em;font-variant-numeric:tabular-nums lining-nums}
+.money-card .amt .sym{color:var(--lp-gold)}
+.money-card .why{font-size:13.5px;color:var(--dk-text2);max-width:300px;line-height:1.6}
+.money-card .why code{color:#C9CFF2;background:var(--dk-surface2);padding:2px 7px;border-radius:5px;font-size:12px}
+
+/* ---------- icons ---------- */
+.iconrow{display:grid;grid-template-columns:repeat(8,1fr);gap:12px;margin-top:24px}
+@media(max-width:900px){.iconrow{grid-template-columns:repeat(4,1fr)}}
+.icon-tile{background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:20px 8px 14px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.icon-tile svg{color:var(--lp-royal)}
+.icon-tile span{font-size:11.5px;font-weight:500;color:#5A628A}
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+@media(max-width:800px){.dodont{grid-template-columns:1fr}}
+.dd{border-radius:12px;padding:22px;background:#fff;box-shadow:var(--shadow)}
+.dd.do{border:1px solid #BFE8D4}
+.dd.dont{border:1px solid #F3C2C4}
+.dd .hd{display:flex;align-items:center;gap:8px;font-family:var(--sora);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+.dd.do .hd{color:#0D7A49}
+.dd.dont .hd{color:#B4383C}
+.dd ul{list-style:none}
+.dd li{font-size:14px;color:#2B3157;padding:6px 0;line-height:1.55;display:flex;gap:10px;align-items:flex-start}
+.dd li svg{flex:none;margin-top:3px}
+.dd.do li svg{color:var(--lp-success)}
+.dd.dont li svg{color:var(--lp-alert)}
+
+/* ---------- voice ---------- */
+.dials{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.dials{grid-template-columns:1fr}}
+.dial{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px}
+.dial h4{font-size:18px;margin-bottom:2px}
+.dial .never{font-size:13px;font-weight:700;color:var(--lp-alert);margin-bottom:12px}
+.dial p{font-size:13.5px;color:#5A628A;line-height:1.6}
+.dial .track{height:6px;border-radius:99px;background:var(--lp-fog);margin:18px 0 6px;position:relative}
+.dial .track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:linear-gradient(90deg,var(--lp-royal),var(--lp-cobalt))}
+.dial .track .stop{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--lp-royal);box-shadow:0 1px 4px rgba(10,14,40,.2)}
+.dial .ends{display:flex;justify-content:space-between;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#A6ACC9}
+.vtable td:first-child{width:46%}
+.vx,.vok{display:flex;gap:10px;align-items:flex-start}
+.vx svg{color:var(--lp-alert);flex:none;margin-top:3px}
+.vok svg{color:var(--lp-success);flex:none;margin-top:3px}
+.vx span{color:#8A6062}
+.vok span{color:var(--lp-night);font-weight:500}
+.micro-rules li{margin:10px 0;display:flex;gap:12px;align-items:flex-start;font-size:15px;color:#2B3157;line-height:1.6;list-style:none}
+.micro-rules li svg{flex:none;color:var(--lp-royal);margin-top:4px}
+
+/* ---------- motion ---------- */
+.motioncards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.motioncards{grid-template-columns:1fr}}
+.mcard{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+.mcard .big{font-family:var(--sora);font-weight:700;font-size:26px;color:var(--lp-royal)}
+.mcard h4{font-size:14px;margin:4px 0 8px}
+.mcard p{font-size:13.5px;color:#5A628A;line-height:1.55}
+.dir-rule{margin-top:16px;background:var(--lp-night);border-radius:var(--radius);padding:30px 34px;color:#fff;display:flex;align-items:center;gap:28px;flex-wrap:wrap}
+.dir-rule .anim-strip{flex:none;width:180px;height:56px;background:var(--dk-surface);border:1px solid var(--dk-border);border-radius:12px;position:relative;overflow:hidden}
+.dir-rule .anim-strip .coin{position:absolute;top:50%;left:0;width:22px;height:22px;margin-top:-11px;border-radius:50%;background:var(--lp-gold);animation:moneymove 2.2s cubic-bezier(0,0,0.2,1) infinite}
+@keyframes moneymove{0%{transform:translateX(-26px);opacity:0}18%{opacity:1}80%{opacity:1}100%{transform:translateX(190px);opacity:0}}
+.dir-rule .tx b{display:block;font-family:var(--sora);font-size:16px;margin-bottom:6px}
+.dir-rule .tx p{font-size:13.5px;color:var(--dk-text2);max-width:420px;line-height:1.6}
+.linkcard{margin-top:24px;display:flex;align-items:center;justify-content:space-between;gap:20px;background:linear-gradient(135deg,var(--lp-royal),#0A0E28);border-radius:var(--radius);padding:26px 30px;color:#fff;text-decoration:none;transition:transform .2s cubic-bezier(0,0,0.2,1)}
+.linkcard:hover{transform:translateY(-2px);text-decoration:none}
+.linkcard .t b{display:block;font-family:var(--sora);font-size:17px;margin-bottom:4px}
+.linkcard .t span{font-size:13.5px;color:#C9CFF2}
+.linkcard svg{flex:none;color:var(--lp-gold)}
+@media (prefers-reduced-motion:reduce){.dir-rule .anim-strip .coin{animation:none;left:79px;opacity:1}}
+
+/* ---------- application ---------- */
+.appgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:900px){.appgrid{grid-template-columns:1fr}}
+.appcard{background:#fff;border:1px solid var(--lp-fog);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px}
+.appcard h4{font-size:14px;margin-bottom:18px;color:#5A628A;font-family:var(--dm);font-weight:700;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.btn{font-family:var(--dm);font-weight:700;font-size:15px;border-radius:10px;padding:12px 22px;border:none;cursor:pointer;min-height:44px;transition:background .15s cubic-bezier(0,0,0.2,1),transform .15s cubic-bezier(0,0,0.2,1)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--lp-royal);color:#fff}
+.btn.primary:hover{background:var(--lp-cobalt)}
+.btn.secondary{background:#fff;color:var(--lp-night);border:1.5px solid #D5DAF0}
+.btn.secondary:hover{border-color:var(--lp-cobalt);color:var(--lp-royal)}
+.btnrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;padding:5px 12px;border-radius:99px}
+.chip .d{width:7px;height:7px;border-radius:50%}
+.chip.ok{background:#E4F7EE;color:#0D7A49}.chip.ok .d{background:var(--lp-success)}
+.chip.pend{background:#FBEFDD;color:#9A5606}.chip.pend .d{background:var(--lp-amber)}
+.chip.fail{background:#FCE9EA;color:#B4383C}.chip.fail .d{background:var(--lp-alert)}
+.txcard{border:1px solid var(--lp-fog);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow)}
+.txcard .ic{width:42px;height:42px;border-radius:11px;background:#EDEFFC;color:var(--lp-royal);display:flex;align-items:center;justify-content:center;flex:none}
+.txcard .info{flex:1;min-width:0}
+.txcard .info .t1{font-weight:700;font-size:14.5px}
+.txcard .info .t2{font-size:12.5px;color:#8A91B4;margin-top:1px}
+.txcard .amt{text-align:right}
+.txcard .amt .a1{font-family:var(--sora);font-weight:700;font-size:15.5px;font-variant-numeric:tabular-nums}
+.appicon-stage{display:flex;gap:22px;align-items:center;flex-wrap:wrap}
+.appicon{width:96px;height:96px;border-radius:24px;background:linear-gradient(135deg,#2333D6,#4353FF 55%,#0A0E28);display:flex;align-items:center;justify-content:center;box-shadow:0 10px 28px rgba(35,51,214,.35)}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--lp-royal);display:flex;align-items:center;justify-content:center}
+.appicon-lbls{font-size:12.5px;color:#5A628A;line-height:1.7}
+.sig{border:1px solid var(--lp-fog);border-radius:12px;padding:20px 22px;display:flex;gap:16px;align-items:flex-start}
+.sig .txt .n1{font-family:var(--sora);font-weight:700;font-size:15px}
+.sig .txt .n2{font-size:13px;color:var(--lp-royal);font-weight:500;margin:1px 0 8px}
+.sig .txt .n3{font-size:12.5px;color:#8A91B4;line-height:1.6}
+.paybtn{display:inline-flex;align-items:center;gap:9px;background:var(--lp-night);color:#fff;border-radius:10px;padding:12px 20px;font-family:var(--dm);font-weight:700;font-size:15px;border:none;cursor:pointer;min-height:44px}
+.paybtn .wm{font-family:var(--sora);font-weight:700}
+.specnote{font-size:12.5px;color:#8A91B4;margin-top:14px;line-height:1.7}
+.specnote code{background:var(--lp-fog);padding:1px 6px;border-radius:5px;font-size:11.5px;font-family:'SF Mono',ui-monospace,Menlo,monospace;color:#454D78}
+
+/* ---------- nigeria ---------- */
+.hier{counter-reset:h;list-style:none;margin-top:8px}
+.hier li{counter-increment:h;display:flex;align-items:center;gap:16px;background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:16px 20px;margin-bottom:10px;font-size:15px;font-weight:500}
+.hier li::before{content:counter(h,decimal-leading-zero);font-family:var(--sora);font-weight:800;font-size:13px;color:var(--lp-royal);background:#EDEFFC;border-radius:8px;padding:5px 10px;flex:none}
+.hier li .why{margin-left:auto;font-size:12.5px;color:#8A91B4;font-weight:400;text-align:right}
+.checklist{list-style:none;margin-top:8px}
+.checklist li{display:flex;gap:12px;align-items:flex-start;padding:10px 0;font-size:15px;color:#2B3157;line-height:1.55;border-bottom:1px solid var(--lp-fog)}
+.checklist li:last-child{border-bottom:none}
+.checklist li svg{flex:none;color:var(--lp-success);margin-top:4px}
+.naira-rules{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+@media(max-width:800px){.naira-rules{grid-template-columns:1fr}}
+.nr{background:#fff;border:1px solid var(--lp-fog);border-radius:12px;box-shadow:var(--shadow);padding:20px 22px}
+.nr .ex{font-family:var(--sora);font-weight:700;font-size:21px;font-variant-numeric:tabular-nums;margin-bottom:6px}
+.nr .ex .dim{color:#A6ACC9;font-weight:600}
+.nr p{font-size:13.5px;color:#5A628A;line-height:1.55}
+
+/* footer */
+footer{border-top:1px solid var(--lp-fog);margin-top:64px;padding:40px 0 8px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .l{display:flex;align-items:center;gap:12px}
+footer .fx{font-size:13px;color:#8A91B4;line-height:1.7}
+footer .fx b{color:var(--lp-night)}
+
+/* toast */
+#toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,16px);background:var(--lp-night);color:#fff;font-family:var(--dm);font-size:13.5px;font-weight:500;padding:11px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(10,14,40,.35);opacity:0;pointer-events:none;transition:opacity .2s cubic-bezier(0,0,0.2,1),transform .2s cubic-bezier(0,0,0.2,1);z-index:200;display:flex;gap:9px;align-items:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast svg{color:var(--lp-success)}
+#toast code{font-family:'SF Mono',ui-monospace,Menlo,monospace;color:var(--lp-gold);font-size:12.5px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="lockup">
+    <svg viewBox="0 0 48 48" width="30" height="30" aria-label="Lentopay logo"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+    <span class="wm">lentopay</span>
+  </div>
+  <div class="meta">
+    <span class="tag">Brand Guidelines v2.0</span>
+    <a href="logo-animation.html">Logo Motion Spec &rarr;</a>
+  </div>
+</header>
+
+<div class="shell">
+<!-- ============ TOC ============ -->
+<nav class="toc" id="toc" aria-label="Contents">
+  <div class="toc-label">Contents</div>
+  <a href="#s01"><span class="n">01</span>Brand Foundation</a>
+  <a href="#s02"><span class="n">02</span>Logo System</a>
+  <a href="#s03"><span class="n">03</span>Color System</a>
+  <a href="#s04"><span class="n">04</span>Typography</a>
+  <a href="#s05"><span class="n">05</span>Iconography</a>
+  <a href="#s06"><span class="n">06</span>Voice &amp; Tone</a>
+  <a href="#s07"><span class="n">07</span>Motion Principles</a>
+  <a href="#s08"><span class="n">08</span>Application</a>
+  <a href="#s09"><span class="n">09</span>Nigerian Market</a>
+</nav>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<div class="hero">
+  <div class="kicker">Lentopay Brand Guidelines</div>
+  <h1>One brand. Every payment method in Nigeria.</h1>
+  <p class="sub">This document is the single source of truth for how Lentopay looks, speaks and moves — across the exchange app, merchant tools, developer surfaces and marketing.</p>
+  <div class="verline">
+    <b>Version 2.0</b><span class="dot"></span><span>July 2026</span><span class="dot"></span><span>Supersedes v1.0</span><span class="dot"></span><span>Brand &amp; Design Team</span>
+  </div>
+</div>
+
+<!-- ============ 01 FOUNDATION ============ -->
+<section id="s01">
+  <div class="sec-head"><span class="sec-num">01</span><h2>Brand Foundation</h2></div>
+  <p class="sec-lede">Lentopay is a Nigeria-first crypto exchange and everyday-money app: buy, sell and swap crypto, pay bills with crypto, trade gift cards, save, and invest with E-Fund. Everything we make should feel like money moving — quickly, safely, without friction.</p>
+
+  <div class="rule-eyebrow">Mission</div>
+  <p style="font-family:var(--sora);font-weight:600;font-size:22px;line-height:1.45;max-width:640px;letter-spacing:-0.01em">Make moving money in Nigeria — naira, crypto, or anything in between — feel effortless, transparent and trustworthy.</p>
+
+  <div class="rule-eyebrow">Taglines</div>
+  <div class="tagline-row">
+    <div class="tagline primary"><div class="lbl">Primary</div><div class="tx">Payments that actually work.</div></div>
+    <div class="tagline dev"><div class="lbl">Developer</div><div class="tx">Build once. Route everywhere.</div></div>
+    <div class="tagline merch"><div class="lbl">Merchant</div><div class="tx">Accept money your way. Any way.</div></div>
+  </div>
+
+  <div class="rule-eyebrow">Personality</div>
+  <div class="grid g4">
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"/></svg></div><h4>Trustworthy</h4><p>We handle people's money. Every promise we make is one we can keep.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/><path d="M13.5 5l-3 14"/></svg></div><h4>Technically credible</h4><p>We speak precisely about rails, settlement and uptime — no hand-waving.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.3-7-9.5A4 4 0 0 1 12 7a4 4 0 0 1 7 3.5C19 15.7 12 20 12 20z"/></svg></div><h4>Warm &amp; accessible</h4><p>Human, plain-spoken and patient. Finance without the intimidation.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg></div><h4>Straightforward</h4><p>Short sentences. Plain verbs. Say what happens next, and when.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h5.5L11 21l8-10.5h-5.5L13 3z"/></svg></div><h4>Energetic</h4><p>Fast product, fast brand. Motion, color and copy all carry momentum.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17l6-6 4 4 6-7"/><path d="M15 8h5v5"/></svg></div><h4>Forward-moving</h4><p>Always oriented toward progress — the next transaction, the next release.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17"/><path d="M12 3.5c2.5 2.3 3.8 5.2 3.8 8.5s-1.3 6.2-3.8 8.5c-2.5-2.3-3.8-5.2-3.8-8.5s1.3-6.2 3.8-8.5z"/></svg></div><h4>Africa-rooted</h4><p>Built for Nigerian realities first: bank transfer, USSD, data-light, ₦ native.</p></div>
+    <div class="trait"><div class="t-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5 9.5-10"/></svg></div><h4>No-nonsense</h4><p>No jargon, no fake urgency, no officialese. Respect the user's time.</p></div>
+  </div>
+
+  <div class="story">
+    <div class="lbl">The Brand Story</div>
+    <p>Our monogram is an <b>L and a P drawn with one continuous stroke</b>. The L doesn't end — it flows, turns, and becomes the P. That single unbroken line is the whole idea of Lentopay: <b>connection, integration, and the seamless movement of money between two parties</b>. A sender and a receiver. A buyer and a merchant. Naira and USDT. One flow, no seams — payments that actually work.</p>
+  </div>
+</section>
+
+<!-- ============ 02 LOGO ============ -->
+<section id="s02">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Logo System</h2></div>
+  <p class="sec-lede">The identity is a Royal Blue badge carrying the LP monogram, paired with a lowercase Sora Bold wordmark. Use the assets exactly as constructed here — never redraw, restyle or retype any part.</p>
+
+  <h3 class="sub">Primary lockup</h3>
+  <p class="note">Badge + wordmark, baseline-aligned, with a gap of 0.375&times; badge width. Descriptors ("exchange", "gateway") are set in DM Sans 400 at reduced weight beside the wordmark.</p>
+  <div class="logo-stage">
+    <div class="stage-panel light">
+      <div class="lockup-lg">
+        <svg viewBox="0 0 48 48" width="64" height="64"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="wm on-light">lentopay</span>
+      </div>
+      <div class="cap">Full color on light — default</div>
+    </div>
+    <div class="stage-panel dark">
+      <div class="lockup-lg">
+        <svg viewBox="0 0 48 48" width="64" height="64"><rect width="48" height="48" rx="12" fill="#FFFFFF"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#2333D6" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#2333D6"/></svg>
+        <span class="wm on-dark">lentopay</span>
+      </div>
+      <div class="cap">Inverted on Night — white badge, Royal glyphs</div>
+    </div>
+  </div>
+  <div class="logo-stage">
+    <div class="stage-panel light" style="min-height:200px">
+      <div class="lockup-lg">
+        <svg viewBox="0 0 48 48" width="56" height="56"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="wm on-light" style="font-size:34px">lentopay <span style="font-family:var(--dm);font-weight:400;font-size:22px;color:#8A91B4">exchange</span></span>
+      </div>
+      <div class="cap">Product descriptor lockup — DM Sans 400, Fog-toned</div>
+    </div>
+    <div class="stage-panel light" style="min-height:200px">
+      <div class="mono-row">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <svg viewBox="0 0 48 48" width="72" height="72"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <svg viewBox="0 0 48 48" width="44" height="44"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px">
+          <svg viewBox="0 0 48 48" width="24" height="24"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        </div>
+      </div>
+      <div class="cap">Monogram only — app icons, avatars, favicons, tight spaces</div>
+    </div>
+  </div>
+  <p class="note">Use the <b>monogram alone</b> wherever the wordmark would render below legible size, or where the brand is already established in context (app icon, in-app header, social avatar, watermarks). Everywhere else, prefer the full lockup.</p>
+
+  <h3 class="sub">Construction &amp; clear space</h3>
+  <p class="note">The unit <b>x</b> equals one quarter of the badge height (the monogram's stroke zone). Keep a minimum clear space of <b>1x on all sides</b> of the lockup — no text, graphics or competing marks inside it. Badge corner radius is fixed at 25% of badge height.</p>
+  <div class="construct-card">
+    <svg viewBox="0 0 560 260" width="100%" style="max-width:560px" font-family="'DM Sans',sans-serif">
+      <!-- clear space boundary -->
+      <rect x="60" y="40" width="440" height="180" fill="none" stroke="#4353FF" stroke-width="1.25" stroke-dasharray="5 5"/>
+      <!-- inner content zone -->
+      <rect x="90" y="70" width="380" height="120" fill="none" stroke="#C6CDE9" stroke-width="1" stroke-dasharray="3 4"/>
+      <!-- badge -->
+      <g transform="translate(90,70) scale(2.5)">
+        <rect width="48" height="48" rx="12" fill="#2333D6"/>
+        <path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+        <path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/>
+      </g>
+      <!-- wordmark -->
+      <text x="255" y="146" font-family="'Sora',sans-serif" font-weight="700" font-size="42" letter-spacing="-0.8" fill="#0A0E28">lentopay</text>
+      <!-- x unit measure: badge quarter -->
+      <g stroke="#E5484D" stroke-width="1.25">
+        <line x1="76" y1="70" x2="76" y2="100"/><line x1="72" y1="70" x2="80" y2="70"/><line x1="72" y1="100" x2="80" y2="100"/>
+      </g>
+      <text x="66" y="90" font-size="12" font-weight="700" fill="#E5484D" text-anchor="end">x</text>
+      <!-- clear space measures -->
+      <g stroke="#4353FF" stroke-width="1.25">
+        <line x1="90" y1="54" x2="90" y2="40" transform="translate(-15,16) rotate(0)" opacity="0"/>
+        <line x1="75" y1="47.5" x2="75" y2="62.5" opacity="0"/>
+        <line x1="90" y1="55" x2="60" y2="55"/><line x1="60" y1="51" x2="60" y2="59"/><line x1="90" y1="51" x2="90" y2="59"/>
+      </g>
+      <text x="75" y="49" font-size="12" font-weight="700" fill="#4353FF" text-anchor="middle">1x</text>
+      <g stroke="#4353FF" stroke-width="1.25">
+        <line x1="470" y1="205" x2="500" y2="205"/><line x1="470" y1="201" x2="470" y2="209"/><line x1="500" y1="201" x2="500" y2="209"/>
+      </g>
+      <text x="485" y="199" font-size="12" font-weight="700" fill="#4353FF" text-anchor="middle">1x</text>
+      <!-- gap measure -->
+      <g stroke="#8A91B4" stroke-width="1">
+        <line x1="210" y1="196" x2="255" y2="196"/><line x1="210" y1="192" x2="210" y2="200"/><line x1="255" y1="192" x2="255" y2="200"/>
+      </g>
+      <text x="232" y="212" font-size="11" font-weight="500" fill="#8A91B4" text-anchor="middle">0.375&#215; badge</text>
+      <!-- legend -->
+      <text x="60" y="245" font-size="11.5" fill="#5A628A">x = &#188; badge height &#183; dashed blue = minimum clear space (1x all sides)</text>
+    </svg>
+  </div>
+
+  <h3 class="sub">Minimum sizes</h3>
+  <div class="minsize-row">
+    <div class="minsize">
+      <svg viewBox="0 0 48 48" width="24" height="24" style="flex:none"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      <div><div class="num">24 px</div><div class="lbl">Minimum badge size, digital. Below this, glyph strokes lose definition.</div></div>
+    </div>
+    <div class="minsize">
+      <svg viewBox="0 0 48 48" width="30" height="30" style="flex:none"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      <div><div class="num">8 mm</div><div class="lbl">Minimum badge size, print. Verify strokes hold on uncoated stock.</div></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Logo misuse</h3>
+  <p class="note">Never alter the mark. The six most common violations, for the record:</p>
+  <div class="grid g3">
+    <div class="misuse">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock" style="transform:scaleX(1.45)">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      </div>
+      <div class="cap">Don't stretch or squash</div>
+    </div>
+    <div class="misuse">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect width="48" height="48" rx="12" fill="#17B26A"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="m-wm" style="color:#17B26A">lentopay</span>
+      </div>
+      <div class="cap">Don't recolor</div>
+    </div>
+    <div class="misuse">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock" style="filter:drop-shadow(4px 6px 5px rgba(10,14,40,.45))">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="m-wm">lentopay</span>
+      </div>
+      <div class="cap">Don't add drop shadows or effects</div>
+    </div>
+    <div class="misuse">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="m-wm">LentoPay</span>
+      </div>
+      <div class="cap">Don't change case — always "lentopay"</div>
+    </div>
+    <div class="misuse gold-bg">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="m-wm" style="color:#fff">lentopay</span>
+      </div>
+      <div class="cap">Don't place on low-contrast fields (Gold)</div>
+    </div>
+    <div class="misuse">
+      <div class="xbadge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div>
+      <div class="m-lock">
+        <svg viewBox="0 0 48 48" width="40" height="40"><rect x="1.5" y="1.5" width="45" height="45" rx="11" fill="none" stroke="#2333D6" stroke-width="2"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#2333D6" stroke-width="2" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="none" stroke="#2333D6" stroke-width="2"/></svg>
+        <span class="m-wm" style="-webkit-text-stroke:1px #2333D6;color:transparent">lentopay</span>
+      </div>
+      <div class="cap">Don't outline the mark</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 COLOR ============ -->
+<section id="s03">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Color System</h2></div>
+  <p class="sec-lede">Nine canonical tokens. Royal Blue leads; Night grounds; Saffron Gold punctuates. Semantic colors are reserved strictly for transaction states. Click any hex to copy it.</p>
+
+  <div class="swatches">
+    <div class="swatch" data-hex="#2333D6"><div class="chip" style="background:#2333D6"><span class="tok" style="color:#C9CFF2">--lp-royal</span></div><div class="body"><div class="nm">Royal Blue<span class="hex">#2333D6 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(35, 51, 214)</div><div class="use">Primary brand. Logo badge, primary buttons, heading accents.</div></div></div>
+    <div class="swatch" data-hex="#4353FF"><div class="chip" style="background:#4353FF"><span class="tok" style="color:#D6DBFF">--lp-cobalt</span></div><div class="body"><div class="nm">Electric Cobalt<span class="hex">#4353FF <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(67, 83, 255)</div><div class="use">Interactive states, links, gradients, focus rings, charts.</div></div></div>
+    <div class="swatch" data-hex="#0A0E28"><div class="chip" style="background:#0A0E28"><span class="tok" style="color:#9AA3C7">--lp-night</span></div><div class="body"><div class="nm">Night<span class="hex">#0A0E28 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(10, 14, 40)</div><div class="use">Dark backgrounds; primary text on light surfaces.</div></div></div>
+    <div class="swatch" data-hex="#F2A61A"><div class="chip" style="background:#F2A61A"><span class="tok" style="color:#5C3D06">--lp-gold</span></div><div class="body"><div class="nm">Saffron Gold<span class="hex">#F2A61A <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(242, 166, 26)</div><div class="use">Accent and highlights only. Never body text on white.</div></div></div>
+    <div class="swatch" data-hex="#E9EDF8"><div class="chip" style="background:#E9EDF8;border-bottom:1px solid #DDE2F1"><span class="tok" style="color:#5A628A">--lp-fog</span></div><div class="body"><div class="nm">Fog Blue<span class="hex">#E9EDF8 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(233, 237, 248)</div><div class="use">Cards, dividers, subtle fills on light surfaces.</div></div></div>
+    <div class="swatch" data-hex="#FAFBFD"><div class="chip" style="background:#FAFBFD;border-bottom:1px solid #E9EDF8"><span class="tok" style="color:#8A91B4">--lp-offwhite</span></div><div class="body"><div class="nm">Off White<span class="hex">#FAFBFD <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(250, 251, 253)</div><div class="use">Light page backgrounds. Softer than pure white.</div></div></div>
+    <div class="swatch" data-hex="#17B26A"><div class="chip" style="background:#17B26A"><span class="tok" style="color:#0A3D25">--lp-success</span></div><div class="body"><div class="nm">Success Green<span class="hex">#17B26A <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(23, 178, 106)</div><div class="use">Payment success, verified, positive deltas.</div></div></div>
+    <div class="swatch" data-hex="#E5484D"><div class="chip" style="background:#E5484D"><span class="tok" style="color:#FBDDDE">--lp-alert</span></div><div class="body"><div class="nm">Alert Red<span class="hex">#E5484D <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(229, 72, 77)</div><div class="use">Failed, errors, destructive actions, negative deltas.</div></div></div>
+    <div class="swatch" data-hex="#D97706"><div class="chip" style="background:#D97706"><span class="tok" style="color:#4A2A02">--lp-amber</span></div><div class="body"><div class="nm">Warning Amber<span class="hex">#D97706 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></span></div><div class="rgb">rgb(217, 119, 6)</div><div class="use">Pending, under-review, held states.</div></div></div>
+  </div>
+
+  <h3 class="sub">Brand gradient</h3>
+  <div class="grad-card">
+    <div class="g"></div>
+    <div class="body"><div class="nm">Hero / brand gradient</div><code>linear-gradient(135deg, #2333D6 0%, #4353FF 45%, #0A0E28 100%)</code></div>
+  </div>
+  <div class="grad-card">
+    <div class="g2s"></div>
+    <div class="body"><div class="nm">Two-stop variant (surfaces, small components)</div><code>linear-gradient(135deg, #2333D6, #0A0E28)</code></div>
+  </div>
+
+  <h3 class="sub">Dark-mode surface ramp</h3>
+  <p class="note">The app's dark theme uses a four-step Night-derived ramp plus two text tones. Elevation is expressed by stepping up the ramp, not by shadows.</p>
+  <div class="darkramp">
+    <div class="step" style="background:#0A0E28;color:#F2F4FF"><div class="nm">bg</div><div class="hx">#0A0E28</div></div>
+    <div class="step" style="background:#121735;color:#F2F4FF"><div class="nm">surface</div><div class="hx">#121735</div></div>
+    <div class="step" style="background:#1A2044;color:#F2F4FF"><div class="nm">surface-2</div><div class="hx">#1A2044</div></div>
+    <div class="step" style="background:#252C55;color:#F2F4FF"><div class="nm">border</div><div class="hx">#252C55</div></div>
+    <div class="step" style="background:#0A0E28;color:#F2F4FF;border-left:1px solid #252C55"><div class="nm" style="color:#F2F4FF">text-primary</div><div class="hx">#F2F4FF</div></div>
+    <div class="step" style="background:#0A0E28;color:#9AA3C7"><div class="nm">text-secondary</div><div class="hx">#9AA3C7</div></div>
+  </div>
+
+  <h3 class="sub">Accessibility — contrast, measured</h3>
+  <p class="note">WCAG 2.1 ratios for the pairs designers actually reach for. Normal text needs 4.5:1 (AA) / 7:1 (AAA); large text (&ge;24px, or &ge;19px bold) needs 3:1 (AA) / 4.5:1 (AAA).</p>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Pair</th><th>Ratio</th><th>Normal text</th><th>Large text</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#FAFBFD;color:#0A0E28">Aa</span>Night on Off White</span></td><td class="ratio">18.33</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>Default body pairing.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#0A0E28;color:#F2F4FF">Aa</span>Text-primary on Night</span></td><td class="ratio">17.32</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>Default dark-mode body.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#F2A61A;color:#0A0E28">Aa</span>Night on Saffron Gold</span></td><td class="ratio">9.26</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>The only text color allowed on Gold.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#2333D6;color:#fff">Aa</span>White on Royal</span></td><td class="ratio">8.35</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>Primary buttons, badge glyphs.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#FAFBFD;color:#2333D6">Aa</span>Royal on Off White</span></td><td class="ratio">8.06</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>Headings, emphasis text.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#0A0E28;color:#9AA3C7">Aa</span>Text-secondary on Night</span></td><td class="ratio">7.63</td><td><span class="pass">AAA</span></td><td><span class="pass">AAA</span></td><td>Dark-mode secondary copy.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#17B26A;color:#0A0E28">Aa</span>Night on Success Green</span></td><td class="ratio">6.88</td><td><span class="pass">AA</span></td><td><span class="pass">AAA</span></td><td>Use Night — not white — on Success fills.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#4353FF;color:#fff">Aa</span>White on Cobalt</span></td><td class="ratio">5.36</td><td><span class="pass">AA</span></td><td><span class="pass">AAA</span></td><td>Interactive fills, hover states.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#FAFBFD;color:#4353FF">Aa</span>Cobalt on Off White</span></td><td class="ratio">5.17</td><td><span class="pass">AA</span></td><td><span class="pass">AAA</span></td><td>Links on light surfaces.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#E5484D;color:#fff">Aa</span>White on Alert Red</span></td><td class="ratio">3.91</td><td><span class="fail">Fail</span></td><td><span class="large">AA large</span></td><td>Large/bold labels only; else tinted chip + dark text.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#0A0E28;color:#4353FF">Aa</span>Cobalt on Night</span></td><td class="ratio">3.54</td><td><span class="fail">Fail</span></td><td><span class="large">AA large</span></td><td>Large text/graphics only on dark; else use lighter tint.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#D97706;color:#fff">Aa</span>White on Warning Amber</span></td><td class="ratio">3.19</td><td><span class="fail">Fail</span></td><td><span class="large">AA large</span></td><td>Prefer tinted chip with dark amber text.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#17B26A;color:#fff">Aa</span>White on Success Green</span></td><td class="ratio">2.76</td><td><span class="fail">Fail</span></td><td><span class="fail">Fail</span></td><td>Never set white text on Success Green.</td></tr>
+      <tr><td><span class="pairchip"><span class="demo" style="background:#FAFBFD;color:#F2A61A">Aa</span>Gold on Off White</span></td><td class="ratio">1.98</td><td><span class="fail">Fail</span></td><td><span class="fail">Fail</span></td><td>Prohibited. Gold is never text on white.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="rules3">
+    <div class="rulecard"><div class="r-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5"/><path d="M12 16h.01"/></svg></div><h4>Contrast minimums</h4><p>4.5:1 for body text, 3:1 for large text. Never rely on color alone — pair every state color with an icon or a text label.</p></div>
+    <div class="rulecard"><div class="r-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></div><h4>Gold is not for body text</h4><p>Saffron Gold must never be used for body text on white or Off White backgrounds. It is an accent: highlights, markers, small graphic moments.</p></div>
+    <div class="rulecard"><div class="r-ic"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 12h6"/></svg></div><h4>Interactive contrast</h4><p>Buttons, links, inputs and focus indicators must maintain at least 4.5:1 contrast against their surroundings in every state.</p></div>
+  </div>
+</section>
+
+<!-- ============ 04 TYPOGRAPHY ============ -->
+<section id="s04">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Typography</h2></div>
+  <p class="sec-lede">Two Google families, clearly divided: Sora carries display and money; DM Sans carries everything you read. Load both with <code style="background:var(--lp-fog);padding:2px 7px;border-radius:5px;font-size:13px">display=swap</code>.</p>
+
+  <div class="specimen">
+    <div class="fam"><span class="nm sora-f">Sora</span><span class="role">Display &amp; Headings &amp; Money</span></div>
+    <div class="big sora-f" style="font-weight:700">Payments that actually work.</div>
+    <div class="chars sora-f" style="font-weight:600">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 ₦$€£% &amp;@#?!()[]{}*+−=/</div>
+    <div class="weights">
+      <div class="w"><div class="demo sora-f" style="font-weight:600">Aa 600</div><div class="lbl">SemiBold — H2, H3</div></div>
+      <div class="w"><div class="demo sora-f" style="font-weight:700">Aa 700</div><div class="lbl">Bold — H1, wordmark, amounts</div></div>
+      <div class="w"><div class="demo sora-f" style="font-weight:800">Aa 800</div><div class="lbl">ExtraBold — rare, hero only</div></div>
+    </div>
+  </div>
+
+  <div class="specimen">
+    <div class="fam"><span class="nm dm-f">DM Sans</span><span class="role">Body &amp; UI</span></div>
+    <div class="big dm-f" style="font-weight:500;font-size:36px">Your transfer arrived. GTBank confirmed it at 2:41 PM.</div>
+    <div class="chars dm-f">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789 ₦$€£% &amp;@#?!()[]{}*+−=/</div>
+    <div class="weights">
+      <div class="w"><div class="demo dm-f" style="font-weight:400">Aa 400</div><div class="lbl">Regular — body, captions</div></div>
+      <div class="w"><div class="demo dm-f" style="font-weight:500">Aa 500</div><div class="lbl">Medium — labels, nav</div></div>
+      <div class="w"><div class="demo dm-f" style="font-weight:700">Aa 700</div><div class="lbl">Bold — buttons, emphasis</div></div>
+    </div>
+  </div>
+
+  <h3 class="sub">Type scale</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Style</th><th>Family / Weight</th><th>Size</th><th>Sample</th></tr></thead>
+    <tbody>
+      <tr><td><b>H1</b></td><td>Sora 700</td><td class="ratio">36–40px</td><td><span class="sora-f" style="font-weight:700;font-size:32px;letter-spacing:-0.02em">Send money anywhere</span></td></tr>
+      <tr><td><b>H2</b></td><td>Sora 600</td><td class="ratio">24–28px</td><td><span class="sora-f" style="font-weight:600;font-size:25px;letter-spacing:-0.02em">Recent transactions</span></td></tr>
+      <tr><td><b>H3</b></td><td>Sora 600</td><td class="ratio">18–20px</td><td><span class="sora-f" style="font-weight:600;font-size:19px;letter-spacing:-0.01em">Payment methods</span></td></tr>
+      <tr><td><b>Body</b></td><td>DM Sans 400</td><td class="ratio">15–16px</td><td><span class="dm-f" style="font-size:15.5px">Your transaction is pending. We'll update you in 5 minutes.</span></td></tr>
+      <tr><td><b>Label</b></td><td>DM Sans 500</td><td class="ratio">12–13px</td><td><span class="dm-f" style="font-weight:500;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:#5A628A">Account number</span></td></tr>
+      <tr><td><b>Caption</b></td><td>DM Sans 400</td><td class="ratio">11–12px</td><td><span class="dm-f" style="font-size:11.5px;color:#8A91B4">Rates refresh every 30 seconds</span></td></tr>
+      <tr><td><b>Big balance</b> <span style="font-size:11px;color:#8A91B4">(mobile)</span></td><td>Sora 700, tabular</td><td class="ratio">32–36px</td><td><span class="sora-f" style="font-weight:700;font-size:30px;font-variant-numeric:tabular-nums">₦482,910.35</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note" style="margin-top:14px">Mobile app scale: screen title 22–24 · section 16–18 · body 15 · caption 12 · big balance 32–36 Sora 700.</p>
+
+  <h3 class="sub">Numerals &amp; money</h3>
+  <div class="money-card">
+    <div>
+      <div style="font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--dk-text2);margin-bottom:8px">Amount, always tabular</div>
+      <div class="amt"><span class="sym">₦</span>1,254,300.50</div>
+      <div style="font-size:13px;color:var(--dk-text2);margin-top:6px;font-variant-numeric:tabular-nums">≈ 762.14 USDT</div>
+    </div>
+    <div class="why">All amounts — ₦ and USDT — are set in <b style="color:#fff">Sora 700</b> with <code>font-variant-numeric: tabular-nums</code>, so digits align in columns and balances don't jitter as they update.</div>
+  </div>
+
+  <h3 class="sub">Line height, spacing &amp; fallbacks</h3>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Context</th><th>Line height</th><th>Letter spacing</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Display / H1</td><td class="ratio">1.1–1.2</td><td class="ratio">−0.02em</td><td>Tight but never touching; Sora is generous by default.</td></tr>
+      <tr><td>H2 / H3</td><td class="ratio">1.2–1.3</td><td class="ratio">−0.01em</td><td>Optical tightening only at 24px and above.</td></tr>
+      <tr><td>Body</td><td class="ratio">1.5–1.6</td><td class="ratio">0</td><td>Never justify. Max measure ~68 characters.</td></tr>
+      <tr><td>Labels (uppercase)</td><td class="ratio">1.2</td><td class="ratio">+0.06em</td><td>Uppercase always gets positive tracking.</td></tr>
+      <tr><td>Amounts</td><td class="ratio">1.1</td><td class="ratio">0</td><td>Tabular numerals; symbol and digits never wrap apart.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="note" style="margin-top:16px">Fallback stacks — <code style="background:var(--lp-fog);padding:2px 7px;border-radius:5px;font-size:12.5px;font-family:'SF Mono',ui-monospace,Menlo,monospace">'Sora','Segoe UI',system-ui,-apple-system,sans-serif</code> and <code style="background:var(--lp-fog);padding:2px 7px;border-radius:5px;font-size:12.5px;font-family:'SF Mono',ui-monospace,Menlo,monospace">'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif</code>.</p>
+</section>
+
+<!-- ============ 05 ICONOGRAPHY ============ -->
+<section id="s05">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Iconography &amp; Illustration</h2></div>
+  <p class="sec-lede">One icon family, drawn in-house on a 24px grid: 1.75px strokes, rounded caps and joins, geometry that echoes the monogram's continuous flow. Icons are always inline SVG.</p>
+
+  <div class="iconrow">
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M19 7V5.5A1.5 1.5 0 0 0 17.5 4H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H3.5"/><path d="M16 13h1.5"/></svg><span>Wallet</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17V5"/><path d="M3.5 8.5 7 5l3.5 3.5"/><path d="M17 7v12"/><path d="M13.5 15.5 17 19l3.5-3.5"/></svg><span>Swap</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 4l9 5.5"/><path d="M5.5 12v6"/><path d="M10 12v6"/><path d="M14 12v6"/><path d="M18.5 12v6"/><path d="M3.5 20.5h17"/></svg><span>Bank</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"/><path d="M9.2 11.8l2 2 3.6-3.9"/></svg><span>Shield</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4v15a1 1 0 0 0 1 1h15"/><path d="M8 15l3.5-4 3 2.5L19 8"/></svg><span>Chart</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7.5" width="18" height="12" rx="2.5"/><path d="M12 7.5V19.5"/><path d="M12 7.5c-1.6-3.2-5.8-2.6-5.2.1"/><path d="M12 7.5c1.6-3.2 5.8-2.6 5.2.1"/></svg><span>Gift card</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h5.5L11 21l8-10.5h-5.5L13 3z"/></svg><span>Bills</span></div>
+    <div class="icon-tile"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.25"/><path d="M3.5 19.5c.5-3 2.8-4.75 5.5-4.75s5 1.75 5.5 4.75"/><path d="M15.5 5.6a3.25 3.25 0 0 1 0 5.8"/><path d="M17.6 14.9c1.7.75 2.7 2.3 2.9 4.1"/></svg><span>Users</span></div>
+  </div>
+
+  <div class="dodont">
+    <div class="dd do">
+      <div class="hd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg>Do</div>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Draw on the 24px grid, 1.75px stroke, rounded caps and joins.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Use <code style="background:var(--lp-fog);padding:1px 5px;border-radius:4px;font-size:12px">currentColor</code> so icons inherit text color and states.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Keep 2px optical padding inside the viewBox; align strokes to the half-pixel.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Illustrations: flat Fog/Royal shapes, one Gold accent, generous negative space.</span></li>
+      </ul>
+    </div>
+    <div class="dd dont">
+      <div class="hd"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Don't</div>
+      <ul>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>No emoji as icons — anywhere, ever. Product, marketing or support.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>No mixed icon families (filled + outlined, or different stroke weights) in one surface.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>No raster icons or icon fonts — inline SVG only.</span></li>
+        <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>No 3D, gradients or shadows inside icons.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 06 VOICE ============ -->
+<section id="s06">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Voice &amp; Tone</h2></div>
+  <p class="sec-lede">The Lentopay voice is one formula, held in tension: confident but never boastful, warm but never chummy, direct but never rude.</p>
+
+  <div class="dials">
+    <div class="dial">
+      <h4>Confident</h4><div class="never">never boastful</div>
+      <div class="track"><div class="fill" style="width:72%"></div><div class="stop" style="left:72%"></div></div>
+      <div class="ends"><span>Timid</span><span>Boastful</span></div>
+      <p style="margin-top:14px">We state facts about rails, settlement and uptime plainly. We don't call ourselves revolutionary — we show numbers.</p>
+    </div>
+    <div class="dial">
+      <h4>Warm</h4><div class="never">never chummy</div>
+      <div class="track"><div class="fill" style="width:62%"></div><div class="stop" style="left:62%"></div></div>
+      <div class="ends"><span>Cold</span><span>Chummy</span></div>
+      <p style="margin-top:14px">Human and patient, especially when money is stuck. No slang overload, no fake familiarity, no "hey bestie".</p>
+    </div>
+    <div class="dial">
+      <h4>Direct</h4><div class="never">never rude</div>
+      <div class="track"><div class="fill" style="width:80%"></div><div class="stop" style="left:80%"></div></div>
+      <div class="ends"><span>Vague</span><span>Blunt</span></div>
+      <p style="margin-top:14px">Plain verbs, short sentences. Lead with what happened, then what happens next, then when.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Rewrites — officialese out, Lentopay in</h3>
+  <div class="tblwrap"><table class="vtable">
+    <thead><tr><th>Not this</th><th>This</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"Kindly endeavour to ensure your KYC documentation is duly submitted prior to transacting."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"Add your ID to start trading. It takes about 2 minutes."</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"Our cutting-edge, synergistic payment infrastructure leverages best-in-class rails."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"One API. Every payment method in Nigeria."</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"Your transaction could not be processed at this time. Please try again later."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"This transfer failed — your ₦25,000 was not debited. Try again now, or pay by USSD instead."</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"The platform will be undergoing scheduled maintenance activities during the aforementioned window."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"We're down for maintenance Sunday, 2:00–2:30 AM WAT. Queued transfers complete automatically after."</span></div></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">Microcopy rules</h3>
+  <ul class="micro-rules">
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg><span><b>Say what happens next — and when.</b> "Your transaction is pending. We'll update you in 5 minutes." Every waiting state gets a time expectation we can actually meet.</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 7.8-7 9-4-1.2-7-4.5-7-9V6l7-3z"/></svg><span><b>Honest error states.</b> Say what failed, whether money moved, and the user's best next step. Never hide a failure behind "something went wrong".</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg><span><b>Verbs first, plain and short.</b> "Send", "Swap", "Withdraw" — not "Initiate disbursement". One idea per sentence.</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5 9.5-10"/></svg><span><b>Numbers over adjectives.</b> "Settles in under 10 seconds" beats "lightning-fast". If we can't guarantee the number, we don't print it.</span></li>
+  </ul>
+</section>
+
+<!-- ============ 07 MOTION ============ -->
+<section id="s07">
+  <div class="sec-head"><span class="sec-num">07</span><h2>Motion Principles</h2></div>
+  <p class="sec-lede">Motion at Lentopay is functional: it confirms, orients and reassures. Fast enough to feel instant, slow enough to be read.</p>
+
+  <div class="motioncards">
+    <div class="mcard"><div class="big">150–300ms</div><h4>Micro-interactions</h4><p>Button presses, toggles, chips, hovers. Anything the finger touches responds inside 300ms.</p></div>
+    <div class="mcard"><div class="big">≤400ms</div><h4>Transitions</h4><p>Screen changes, sheets, modals. Never make the user wait for choreography.</p></div>
+    <div class="mcard"><div class="big">ease-out / ease-in</div><h4>Enter fast, exit faster</h4><p>Entrances decelerate (<span class="ratio" style="font-size:12px">cubic-bezier(0, 0, 0.2, 1)</span>); exits accelerate (<span class="ratio" style="font-size:12px">cubic-bezier(0.4, 0, 1, 1)</span>).</p></div>
+  </div>
+
+  <div class="dir-rule">
+    <div class="anim-strip"><div class="coin"></div></div>
+    <div class="tx">
+      <b>Movement always means money moving.</b>
+      <p>Motion travels <b style="color:#fff">left → right</b> or <b style="color:#fff">bottom → top</b> — like a transaction completing, a balance rising. Nothing drifts aimlessly; nothing bounces for decoration.</p>
+    </div>
+  </div>
+
+  <div class="motioncards" style="margin-top:16px">
+    <div class="mcard" style="grid-column:span 3">
+      <h4 style="font-size:15px;margin-bottom:6px">Respect prefers-reduced-motion</h4>
+      <p>When the OS requests reduced motion, all movement collapses to simple opacity fades of 200ms or less — including the logo animations. This is implemented in code, not just recommended.</p>
+    </div>
+  </div>
+
+  <a class="linkcard" href="logo-animation.html">
+    <div class="t"><b>Lentopay Logo Motion — Animation Specification v1.0</b><span>The Flow, The Pulse, The Handshake, The Spin-up and all micro-interactions — live demos, timings and easing curves.</span></div>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+  </a>
+</section>
+
+<!-- ============ 08 APPLICATION ============ -->
+<section id="s08">
+  <div class="sec-head"><span class="sec-num">08</span><h2>Application</h2></div>
+  <p class="sec-lede">The brand in working parts — rendered live in brand styles, not mocked in pictures.</p>
+
+  <div class="appgrid">
+    <div class="appcard">
+      <h4>Buttons</h4>
+      <div class="btnrow">
+        <button class="btn primary">Send money</button>
+        <button class="btn secondary">View rates</button>
+      </div>
+      <div class="specnote">Primary: Royal fill, white DM Sans 700, radius <code>10px</code>, hover shifts to Cobalt, press scales to <code>0.97</code>. Secondary: white fill, 1.5px Fog-tone border. Both min-height <code>44px</code>.</div>
+    </div>
+    <div class="appcard">
+      <h4>Status chips</h4>
+      <div class="btnrow">
+        <span class="chip ok"><span class="d"></span>Successful</span>
+        <span class="chip pend"><span class="d"></span>Pending</span>
+        <span class="chip fail"><span class="d"></span>Failed</span>
+      </div>
+      <div class="specnote">Tinted fills with dark state-color text (AA-safe) — never white text on raw Success/Amber. Dot + label: state is never conveyed by color alone.</div>
+    </div>
+    <div class="appcard" style="grid-column:span 2">
+      <h4>Transaction card</h4>
+      <div class="txcard">
+        <div class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 4l9 5.5"/><path d="M5.5 12v6"/><path d="M10 12v6"/><path d="M14 12v6"/><path d="M18.5 12v6"/><path d="M3.5 20.5h17"/></svg></div>
+        <div class="info"><div class="t1">Transfer to GTBank · Adaeze O.</div><div class="t2">Today, 2:41 PM · Ref LP-8834-2210</div></div>
+        <div class="amt"><div class="a1">−₦45,000.00</div><div style="margin-top:5px"><span class="chip ok" style="font-size:11px;padding:3px 9px"><span class="d"></span>Successful</span></div></div>
+      </div>
+      <div class="specnote">White card, Fog border, radius <code>12px</code>, shadow <code>0 4px 16px rgba(10,14,40,.08)</code>. Amount in Sora 700 tabular; negative amounts keep Night color — red is reserved for failures, not debits.</div>
+    </div>
+    <div class="appcard">
+      <h4>App icon &amp; avatar</h4>
+      <div class="appicon-stage">
+        <div class="appicon"><svg viewBox="0 0 48 48" width="56" height="56"><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg></div>
+        <div class="avatar"><svg viewBox="0 0 48 48" width="38" height="38"><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg></div>
+        <div class="appicon-lbls">App icon: monogram on the brand gradient, no wordmark.<br>Social avatar: monogram on flat Royal, circle-safe.</div>
+      </div>
+    </div>
+    <div class="appcard">
+      <h4>Email signature</h4>
+      <div class="sig">
+        <svg viewBox="0 0 48 48" width="40" height="40" style="flex:none"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <div class="txt">
+          <div class="n1">Chiamaka Nwosu</div>
+          <div class="n2">Merchant Success Lead · Lentopay</div>
+          <div class="n3">+234 801 234 5678 · chiamaka@lentopay.com<br>lentopay.com · Payments that actually work.</div>
+        </div>
+      </div>
+      <div class="specnote">Badge 40px, name Sora 700 15px, role Royal DM Sans 500, details DM Sans 400 Fog-tone. No banners, no inspirational quotes.</div>
+    </div>
+    <div class="appcard" style="grid-column:span 2">
+      <h4>Merchant payment button</h4>
+      <div class="btnrow">
+        <button class="paybtn">
+          <svg viewBox="0 0 48 48" width="22" height="22"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+          Pay with <span class="wm">lentopay</span>
+        </button>
+        <button class="paybtn" style="background:#fff;color:var(--lp-night);border:1.5px solid #D5DAF0">
+          <svg viewBox="0 0 48 48" width="22" height="22"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+          Pay with <span class="wm">lentopay</span>
+        </button>
+      </div>
+      <div class="specnote">Night (default) and light variants. Badge 22px, label DM Sans 700 with wordmark in Sora 700 lowercase, radius <code>10px</code>, min-height <code>44px</code>, min padding <code>12px 20px</code>. Merchants may not recolor, restyle or abbreviate the button.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 09 NIGERIA ============ -->
+<section id="s09">
+  <div class="sec-head"><span class="sec-num">09</span><h2>Nigerian Market Guidelines</h2></div>
+  <p class="sec-lede">Nigeria-first is a design constraint, not a marketing line. Rails, trust signals and language register are specified — not left to taste.</p>
+
+  <h3 class="sub">Payment channel hierarchy</h3>
+  <p class="note">Order every payment-method list, checkout and onboarding flow this way:</p>
+  <ol class="hier">
+    <li>Bank transfer<span class="why">Default rail — cheapest, most trusted</span></li>
+    <li>Cards<span class="why">Familiar, but higher failure rates</span></li>
+    <li>USSD<span class="why">Works on any phone, no data needed</span></li>
+    <li>Mobile money<span class="why">Growing fast; regional strongholds</span></li>
+    <li>Crypto rails<span class="why">Power users; always show ₦ equivalent</span></li>
+  </ol>
+
+  <h3 class="sub">Trust signals checklist</h3>
+  <ul class="checklist">
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>CBN and SEC licensing references present in every footer and app "About" screen.</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>PCI-DSS and ISO 27001 badges rendered in brand style (stroke icons, not third-party bitmaps).</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Publish uptime and median settlement-time stats — real numbers, updated, dated.</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Never promise settlement times we cannot guarantee. "Usually under 10 seconds" only if measured.</span></li>
+    <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>SMS-friendly, not-intimidating tone; data-light patterns for low-bandwidth users.</span></li>
+  </ul>
+
+  <h3 class="sub">Language register</h3>
+  <div class="tblwrap"><table class="vtable">
+    <thead><tr><th>Not this</th><th>This</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"Kindly be informed that your request is receiving due attention."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"We're on it. You'll hear from us within 24 hours."</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>"Revert back to us with the aforementioned documentation at your earliest convenience."</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"Send us your ID when you're ready — reply to this message."</span></div></td>
+      </tr>
+      <tr>
+        <td><div class="vx"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg><span>Over-familiar slang in transactional messages ("Omo! Your cash don land!")</span></div></td>
+        <td><div class="vok"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>"₦50,000 received from Tunde A. Your new balance is ₦132,500." Warm belongs in marketing; precise belongs in money messages.</span></div></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="sub">₦ formatting rules</h3>
+  <div class="naira-rules">
+    <div class="nr"><div class="ex">₦1,254,300.50</div><p>Symbol before the amount, no space. Thousands separators always. Kobo shown as two decimals when present.</p></div>
+    <div class="nr"><div class="ex">₦82,500 <span class="dim">≈ 50.00 USDT</span></div><p>Dual display where crypto is involved: ₦ leads, USDT equivalent follows in a dimmed tone.</p></div>
+    <div class="nr"><div class="ex" style="font-variant-numeric:tabular-nums">₦&thinsp;9,999.00<br>₦&thinsp;10,001.50</div><p>Tabular numerals in every list and table so amounts align. Sora 700 for amounts, always.</p></div>
+    <div class="nr"><div class="ex">−₦45,000.00</div><p>Debits use a true minus sign and keep Night color. Alert Red means failure — never merely "money out".</p></div>
+  </div>
+
+  <footer>
+    <div class="l">
+      <svg viewBox="0 0 48 48" width="34" height="34"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      <div class="fx"><b>Lentopay Brand Guidelines v2.0</b> — Prepared July 2026 · Supersedes v1.0<br>Companion: <a href="logo-animation.html">Logo Motion — Animation Specification v1.0</a></div>
+    </div>
+    <div class="fx" style="text-align:right">Brand questions &amp; asset requests<br><b>brand@lentopay.com</b> · [contact placeholder]</div>
+  </footer>
+</main>
+</div>
+
+<div id="toast" role="status" aria-live="polite">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg>
+  <span>Copied <code id="toastHex"></code></span>
+</div>
+
+<script>
+// ---------- click-to-copy swatches ----------
+(function(){
+  var toast=document.getElementById('toast'),hexEl=document.getElementById('toastHex'),t;
+  document.querySelectorAll('.swatch').forEach(function(sw){
+    sw.addEventListener('click',function(){
+      var hex=sw.getAttribute('data-hex');
+      function done(){
+        hexEl.textContent=hex;
+        toast.classList.add('show');
+        clearTimeout(t);
+        t=setTimeout(function(){toast.classList.remove('show');},1600);
+      }
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(hex).then(done,function(){fallback(hex);done();});
+      }else{fallback(hex);done();}
+    });
+  });
+  function fallback(text){
+    var ta=document.createElement('textarea');
+    ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.body.removeChild(ta);
+  }
+})();
+
+// ---------- scroll-spy TOC ----------
+(function(){
+  var links=[].slice.call(document.querySelectorAll('.toc a'));
+  var map={};
+  links.forEach(function(a){map[a.getAttribute('href').slice(1)]=a;});
+  var sections=[].slice.call(document.querySelectorAll('main section'));
+  function setActive(id){
+    links.forEach(function(a){a.classList.remove('active');});
+    if(map[id])map[id].classList.add('active');
+  }
+  function onScroll(){
+    var y=window.scrollY+150,cur=sections[0]&&sections[0].id;
+    sections.forEach(function(s){if(s.offsetTop<=y)cur=s.id;});
+    // bottom of page: force last section active
+    if(window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4)cur=sections[sections.length-1].id;
+    if(cur)setActive(cur);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  // clicking a TOC link marks it active immediately
+  links.forEach(function(a){a.addEventListener('click',function(){setActive(a.getAttribute('href').slice(1));});});
+  onScroll();
+})();
+</script>
+
+<div id="lp-hub-nav" style="position:fixed;bottom:18px;right:18px;z-index:2147483647;display:flex;gap:8px;font-family:'DM Sans',system-ui,sans-serif">
+<a href="index.html" style="display:inline-flex;align-items:center;gap:7px;background:#0A0E28;color:#fff;border:1px solid rgba(255,255,255,.22);text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(10,14,40,.35)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>All sections</a>
+<a href="logo-animation.html" style="display:inline-flex;align-items:center;gap:7px;background:#2333D6;color:#fff;text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(35,51,214,.4)">Next: 08<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+</body>
+</html>

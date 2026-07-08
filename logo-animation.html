@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lentopay Logo Motion — Animation Specification v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --lp-royal:#2333D6; --lp-cobalt:#4353FF; --lp-night:#0A0E28; --lp-gold:#F2A61A;
+  --lp-fog:#E9EDF8; --lp-offwhite:#FAFBFD; --lp-success:#17B26A; --lp-alert:#E5484D; --lp-amber:#D97706;
+  --surface:#121735; --surface2:#1A2044; --border:#252C55; --text:#F2F4FF; --text2:#9AA3C7;
+  --sora:'Sora','Segoe UI',system-ui,-apple-system,sans-serif;
+  --dm:'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif;
+  /* motion tokens */
+  --motion-fast:150ms; --motion-base:250ms; --motion-slow:400ms; --motion-draw:600ms; --motion-loop:1200ms;
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ease-out:cubic-bezier(0,0,0.2,1);
+  --ease-in:cubic-bezier(0.4,0,1,1);
+  --ease-inout:cubic-bezier(0.45,0,0.25,1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{background:var(--lp-night);color:var(--text);font-family:var(--dm);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--sora);letter-spacing:-0.02em}
+svg{display:block}
+a{color:#8D99FF;text-decoration:none}
+a:hover{text-decoration:underline}
+code{font-family:'SF Mono',ui-monospace,Menlo,monospace}
+
+/* topbar */
+.topbar{position:fixed;top:0;left:0;right:0;height:64px;background:rgba(10,14,40,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 32px;z-index:100}
+.topbar .lockup{display:flex;align-items:center;gap:10px}
+.topbar .lockup .wm{font-family:var(--sora);font-weight:700;font-size:18px;letter-spacing:-0.02em;color:#fff}
+.topbar .meta{font-size:13px;font-weight:500;color:var(--text2);display:flex;align-items:center;gap:20px}
+.topbar .meta .tag{background:var(--surface2);color:#AEB7FF;padding:4px 12px;border-radius:99px;font-weight:700;font-size:12px}
+.topbar .meta a{font-weight:700;font-size:13px}
+
+.wrap{max-width:920px;margin:0 auto;padding:64px 28px 96px}
+
+/* hero */
+.hero{padding:88px 0 56px;border-bottom:1px solid var(--border)}
+.hero .kicker{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lp-gold);margin-bottom:22px}
+.hero h1{font-size:46px;font-weight:800;line-height:1.1;color:#fff;max-width:620px}
+.hero .sub{margin-top:22px;font-size:17px;color:var(--text2);max-width:580px;line-height:1.7}
+.hero .verline{margin-top:32px;display:flex;gap:12px;align-items:center;font-size:13.5px;color:var(--text2)}
+.hero .verline b{color:#fff}
+.hero .verline .dot{width:4px;height:4px;border-radius:50%;background:#3A4276}
+
+/* sections */
+section{padding:72px 0 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:10px}
+.sec-tag{font-family:var(--sora);font-weight:800;font-size:14px;color:var(--lp-gold);background:rgba(242,166,26,.12);border-radius:8px;padding:5px 12px}
+.sec-head h2{font-size:28px;font-weight:700;color:#fff}
+.sec-lede{font-size:15.5px;color:var(--text2);max-width:620px;margin:6px 0 32px;line-height:1.7}
+
+/* stage */
+.stagecard{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:20px}
+.stage{position:relative;min-height:300px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse 70% 80% at 50% 45%,#141A3E 0%,var(--lp-night) 100%);border-bottom:1px solid var(--border)}
+.stage .statelbl{position:absolute;top:16px;left:20px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#5A6499}
+.replaybar{position:absolute;bottom:14px;right:14px;display:flex;gap:8px}
+.replay{display:inline-flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-family:var(--dm);font-weight:700;font-size:12.5px;padding:8px 14px;border-radius:9px;cursor:pointer;transition:border-color .15s var(--ease-out),background .15s var(--ease-out)}
+.replay:hover{border-color:var(--lp-cobalt);background:#20275A}
+.replay svg{color:var(--lp-gold)}
+.spec{padding:6px 0 2px}
+.spec table{width:100%;border-collapse:collapse;font-size:13px}
+.spec th{text-align:left;font-weight:700;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#7B84B8;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(26,32,68,.5)}
+.spec td{padding:11px 18px;border-bottom:1px solid #1C2350;color:#C6CCEE;vertical-align:top}
+.spec tr:last-child td{border-bottom:none}
+.spec td:first-child{color:#fff;font-weight:500;white-space:nowrap}
+.spec .mono{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:#9FB0FF;white-space:nowrap}
+.spec .num{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:var(--lp-gold);white-space:nowrap}
+.specwrap{overflow-x:auto}
+.totalline{padding:12px 18px 16px;font-size:12.5px;color:var(--text2);border-top:1px solid var(--border)}
+.totalline b{color:var(--lp-gold)}
+
+/* shared lockup pieces */
+.wm-letters{font-family:var(--sora);font-weight:700;letter-spacing:-0.02em;color:#fff;display:inline-flex}
+.wm-letters span{display:inline-block}
+
+/* ============ A. THE FLOW ============ */
+#stA .lock{display:flex;align-items:center;gap:20px}
+#stA .fl-badge{transform-origin:center;will-change:transform,opacity}
+#stA .fl-l{stroke-dasharray:40;stroke-dashoffset:0}
+#stA .fl-wm{font-size:44px}
+@keyframes aBadge{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes aDraw{from{stroke-dashoffset:40}to{stroke-dashoffset:0}}
+@keyframes aP{from{opacity:0;transform:translateX(-5px)}to{opacity:1;transform:translateX(0)}}
+@keyframes aLetter{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+#stA.play .fl-badge{animation:aBadge 500ms var(--ease-spring) both}
+#stA.play .fl-l{animation:aDraw 600ms var(--ease-out) 150ms both}
+#stA.play .fl-p{animation:aP 300ms var(--ease-out) 400ms both}
+#stA.play .fl-wm span{animation:aLetter 300ms var(--ease-out) both;animation-delay:calc(500ms + var(--i)*30ms)}
+
+/* ============ B. THE PULSE ============ */
+#stB .pulsewrap{position:relative;width:96px;height:96px}
+#stB .ring{position:absolute;inset:0;border-radius:24px;border:2.5px solid var(--lp-cobalt);opacity:0;transform:scale(1)}
+#stB .pb{position:relative;transform-origin:center}
+#stB .capline{position:absolute;bottom:48px;left:0;right:0;text-align:center;font-size:12.5px;color:var(--text2)}
+@keyframes bScale{0%{transform:scale(1)}45%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes bRing{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
+#stB.play .pb{animation:bScale var(--motion-loop) var(--ease-inout) infinite}
+#stB.play .ring{animation:bRing var(--motion-loop) var(--ease-out) infinite}
+#stB.play .ring.r2{animation-delay:300ms}
+
+/* ============ C. THE HANDSHAKE ============ */
+#stC .hs-rect{fill:var(--lp-royal)}
+#stC .hs-l{stroke-dasharray:40;stroke-dashoffset:0}
+#stC .hs-p{opacity:1}
+#stC .hs-check{stroke-dasharray:30;stroke-dashoffset:30}
+@keyframes cRect{0%,4%{fill:#2333D6}19%,54%{fill:#17B26A}69%,100%{fill:#2333D6}}
+@keyframes cL{0%,4%{stroke-dashoffset:0}19%,54%{stroke-dashoffset:40}69%,100%{stroke-dashoffset:0}}
+@keyframes cP{0%,4%{opacity:1}15%,58%{opacity:0}69%,100%{opacity:1}}
+@keyframes cCheck{0%,8%{stroke-dashoffset:30}22%,50%{stroke-dashoffset:0}64%,100%{stroke-dashoffset:30}}
+#stC.play .hs-rect{animation:cRect 2600ms var(--ease-inout) both}
+#stC.play .hs-l{animation:cL 2600ms var(--ease-inout) both}
+#stC.play .hs-p{animation:cP 2600ms var(--ease-inout) both}
+#stC.play .hs-check{animation:cCheck 2600ms var(--ease-inout) both}
+
+/* ============ D. THE SPIN-UP ============ */
+#stD{min-height:600px}
+.phone{width:264px;height:540px;border-radius:36px;background:var(--lp-night);border:1.5px solid var(--border);box-shadow:0 24px 64px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.phone .notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:84px;height:8px;border-radius:99px;background:#1A2044;z-index:5}
+.phone .sweep{position:absolute;inset:-40%;background:linear-gradient(135deg,transparent 30%,rgba(35,51,214,.75) 45%,rgba(67,83,255,.85) 50%,rgba(35,51,214,.75) 55%,transparent 70%);transform:translate(-105%,105%);pointer-events:none;z-index:1}
+.phone .sp-lock{position:absolute;left:20px;top:24px;display:flex;align-items:center;gap:9px;transform-origin:top left;transform:translate(78px,206px) scale(2.5);z-index:2}
+.phone .sp-lock .sp-badge{transform-origin:center}
+.phone .sp-lock .sp-l{stroke-dasharray:40;stroke-dashoffset:0}
+.phone .sp-wm{font-size:17px;opacity:0}
+.phone .skel{position:absolute;left:20px;right:20px;opacity:0;z-index:2}
+.phone .skel .bar{height:12px;border-radius:6px;background:var(--surface2);margin-bottom:10px}
+.phone .skel .card{height:88px;border-radius:14px;background:var(--surface);border:1px solid var(--border);margin-bottom:12px}
+/* timeline: 2400ms total */
+@keyframes dBadgeIn{0%{transform:scale(.9);opacity:0}21%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes dDraw{0%{stroke-dashoffset:40}6%{stroke-dashoffset:40}33%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+@keyframes dPFill{0%,17%{opacity:0}33%{opacity:1}100%{opacity:1}}
+@keyframes dSweep{0%,33%{transform:translate(-105%,105%)}63%{transform:translate(105%,-105%)}100%{transform:translate(105%,-105%)}}
+@keyframes dSettle{0%,62%{transform:translate(78px,206px) scale(2.5)}87%,100%{transform:translate(0,0) scale(1)}}
+@keyframes dWm{0%,72%{opacity:0}92%,100%{opacity:1}}
+@keyframes dSkel{0%,80%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:translateY(0)}}
+#stD.play .sp-badge{animation:dBadgeIn 2400ms var(--ease-spring) both}
+#stD.play .sp-l{animation:dDraw 2400ms var(--ease-out) both}
+#stD.play .sp-p{animation:dPFill 2400ms var(--ease-out) both}
+#stD.play .sweep{animation:dSweep 2400ms var(--ease-inout) both}
+#stD.play .sp-lock{animation:dSettle 2400ms var(--ease-inout) both}
+#stD.play .sp-wm{animation:dWm 2400ms var(--ease-out) both}
+#stD.play .skel{animation:dSkel 2400ms var(--ease-out) both}
+#stD:not(.play) .sp-lock{transform:translate(0,0) scale(1)}
+#stD:not(.play) .sp-wm{opacity:1}
+#stD:not(.play) .skel{opacity:1}
+#stD:not(.play) .sweep{opacity:0}
+
+/* ============ E. MICRO ============ */
+.microgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
+@media(max-width:820px){.microgrid{grid-template-columns:1fr}}
+.micro{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.micro .mstage{min-height:170px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--border);position:relative;background:radial-gradient(ellipse 80% 90% at 50% 40%,#141A3E 0%,var(--lp-night) 100%)}
+.micro .mfoot{display:flex;align-items:center;justify-content:space-between;padding:12px 16px}
+.micro .mfoot .t{font-size:13px;font-weight:700;color:#fff}
+.micro .mfoot .s{font-size:11.5px;color:var(--text2)}
+.mbtn{display:inline-flex;align-items:center;gap:8px;background:var(--lp-royal);color:#fff;font-family:var(--dm);font-weight:700;font-size:14px;border:none;border-radius:10px;padding:11px 18px;cursor:pointer;transform-origin:center}
+.mbtn .wm{font-family:var(--sora);font-weight:700}
+@keyframes eSquish{0%{transform:scale(1)}35%{transform:scale(.96)}100%{transform:scale(1)}}
+#stE1.play .mbtn{animation:eSquish 200ms var(--ease-out) both}
+.mbtn:active{transform:scale(.96)}
+#stE2 .badgewrap{position:relative}
+#stE2 .ndot{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:var(--lp-gold);border:2.5px solid var(--lp-night);transform:scale(1)}
+@keyframes ePop{0%{transform:scale(0)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+#stE2.play .ndot{animation:ePop 300ms var(--ease-spring) both}
+#stE3 .nav{display:flex;gap:26px;background:var(--surface2);border:1px solid var(--border);border-radius:16px;padding:13px 24px}
+#stE3 .nav .ni{color:#5A6499}
+#stE3 .nav .ni.mid{color:#fff}
+@keyframes eSpring{0%{transform:translateY(0) scale(1)}40%{transform:translateY(-7px) scale(1.12)}70%{transform:translateY(1px) scale(.98)}100%{transform:translateY(0) scale(1)}}
+#stE3.play .nav .ni.mid{animation:eSpring 350ms var(--ease-spring) both}
+
+/* content tables & cards */
+.dtable{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--surface);border-radius:14px;overflow:hidden}
+.dtwrap{border:1px solid var(--border);border-radius:14px;overflow-x:auto;margin-bottom:16px}
+.dtwrap .dtable{border-radius:0;min-width:560px}
+.dtable th{text-align:left;font-weight:700;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#7B84B8;padding:13px 18px;border-bottom:1px solid var(--border);background:rgba(26,32,68,.5)}
+.dtable td{padding:13px 18px;border-bottom:1px solid #1C2350;color:#C6CCEE;vertical-align:top}
+.dtable tr:last-child td{border-bottom:none}
+.dtable td:first-child{color:#fff;font-weight:500}
+.dtable .mono{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:#9FB0FF}
+.dtable .num{font-family:'SF Mono',ui-monospace,Menlo,monospace;font-size:12px;color:var(--lp-gold)}
+.yes,.no{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11.5px;padding:2px 10px;border-radius:99px}
+.yes{background:rgba(23,178,106,.16);color:#4ADE96}
+.no{background:rgba(229,72,77,.16);color:#F2868A}
+.cardrow{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px}
+@media(max-width:760px){.cardrow{grid-template-columns:1fr}}
+.icard{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px}
+.icard h4{font-size:15px;color:#fff;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.icard h4 svg{color:var(--lp-gold);flex:none}
+.icard p,.icard li{font-size:13.5px;color:#AEB4D9;line-height:1.7}
+.icard ul{list-style:none;margin-top:4px}
+.icard li{display:flex;gap:10px;align-items:flex-start;padding:4px 0}
+.icard li svg{flex:none;color:var(--lp-cobalt);margin-top:5px}
+.icard code{background:var(--surface2);padding:1px 7px;border-radius:5px;font-size:12px;color:#C7D0FF}
+.never{border-color:rgba(229,72,77,.4)}
+.never h4 svg{color:var(--lp-alert)}
+
+footer{border-top:1px solid var(--border);margin-top:80px;padding-top:36px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+footer .l{display:flex;align-items:center;gap:12px}
+footer .fx{font-size:13px;color:var(--text2);line-height:1.7}
+footer .fx b{color:#fff}
+
+/* ============ REDUCED MOTION — real fallback ============ */
+@keyframes rmFade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .stage *,.mstage *,.phone *{animation:none!important;transition:none!important}
+  /* static end-states */
+  #stD .sp-lock{transform:translate(0,0) scale(1)!important}
+  #stD .sp-wm,#stD .skel{opacity:1!important}
+  #stD .sweep{opacity:0!important}
+  #stB .ring{opacity:0!important}
+  /* the sanctioned fallback: a single 200ms fade of the static logo */
+  .stage.play .rm-fade,.mstage .rm-fade{animation:rmFade 200ms var(--ease-out) both!important}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="lockup">
+    <svg viewBox="0 0 48 48" width="30" height="30" aria-label="Lentopay logo"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+    <span class="wm">lentopay</span>
+  </div>
+  <div class="meta">
+    <span class="tag">Logo Motion v1.0</span>
+    <a href="brand-guidelines.html">&larr; Brand Guidelines v2.0</a>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="hero">
+  <div class="kicker">Lentopay Logo Motion — Animation Specification v1.0</div>
+  <h1>The logo doesn't just sit there. It settles, like money arriving.</h1>
+  <p class="sub">Five sanctioned behaviours for the Lentopay mark — each demonstrated live below, each specified to the millisecond and the curve. Movement always means money moving: motion travels left&nbsp;&rarr;&nbsp;right or bottom&nbsp;&rarr;&nbsp;top, like a transaction completing.</p>
+  <div class="verline"><b>Version 1.0</b><span class="dot"></span><span>July 2026</span><span class="dot"></span><span>Companion to Brand Guidelines v2.0</span></div>
+</div>
+
+<!-- ============ A ============ -->
+<section id="a">
+  <div class="sec-head"><span class="sec-tag">A</span><h2>The Flow — primary reveal</h2></div>
+  <p class="sec-lede"><b style="color:#fff">Recommended default.</b> The badge lands with a soft spring, the L draws itself as one continuous stroke, the P clicks into place, and the wordmark follows letter by letter. Total run: under 1.4 seconds.</p>
+  <div class="stagecard">
+    <div class="stage" id="stA">
+      <span class="statelbl">Reveal · plays once</span>
+      <div class="lock rm-fade">
+        <svg class="fl-badge" viewBox="0 0 48 48" width="88" height="88"><rect width="48" height="48" rx="12" fill="#2333D6"/><path class="fl-l" d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path class="fl-p" d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <span class="wm-letters fl-wm"><span style="--i:0">l</span><span style="--i:1">e</span><span style="--i:2">n</span><span style="--i:3">t</span><span style="--i:4">o</span><span style="--i:5">p</span><span style="--i:6">a</span><span style="--i:7">y</span></span>
+      </div>
+      <div class="replaybar"><button class="replay" data-target="stA"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Replay</button></div>
+    </div>
+    <div class="spec"><div class="specwrap"><table>
+      <thead><tr><th>Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Badge</td><td class="mono">scale 0.9 &rarr; 1 · opacity 0 &rarr; 1</td><td class="num">500ms</td><td class="num">0ms</td><td class="mono">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Spring overshoot ~4%. Transform-origin center.</td></tr>
+        <tr><td>L stroke</td><td class="mono">stroke-dashoffset 40 &rarr; 0</td><td class="num">600ms</td><td class="num">150ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Draws top &rarr; bottom &rarr; right: the continuous flow. Path length 33.4; dasharray 40.</td></tr>
+        <tr><td>P bowl</td><td class="mono">opacity 0 &rarr; 1 · translateX −5px &rarr; 0</td><td class="num">300ms</td><td class="num">400ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Slides in along the flow direction (left &rarr; right).</td></tr>
+        <tr><td>Wordmark letters</td><td class="mono">opacity 0 &rarr; 1 · translateY 9px &rarr; 0</td><td class="num">300ms each</td><td class="num">500ms + 30ms/letter</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>8 letters; last starts at 710ms, ends 1010ms.</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="totalline">Total choreography: <b>1.01s</b> (budget &le; 1.4s). Use for: app cold start after splash, web hero, video bumper in/out.</div>
+  </div>
+</section>
+
+<!-- ============ B ============ -->
+<section id="b">
+  <div class="sec-head"><span class="sec-tag">B</span><h2>The Pulse — loading &amp; processing</h2></div>
+  <p class="sec-lede">The "transaction in flight" state. The badge breathes at +4% while a Cobalt ring expands and dissolves — calm, alive, never anxious. Loops until the transaction resolves, then hands off to The Handshake.</p>
+  <div class="stagecard">
+    <div class="stage" id="stB" style="min-height:320px">
+      <span class="statelbl">Loop · 1.2s cycle</span>
+      <div class="pulsewrap rm-fade">
+        <div class="ring"></div>
+        <div class="ring r2"></div>
+        <svg class="pb" viewBox="0 0 48 48" width="96" height="96"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      </div>
+      <div class="capline">Processing your transfer&hellip;</div>
+      <div class="replaybar"><button class="replay" data-target="stB"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Restart</button></div>
+    </div>
+    <div class="spec"><div class="specwrap"><table>
+      <thead><tr><th>Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Badge</td><td class="mono">scale 1 &rarr; 1.04 &rarr; 1</td><td class="num">1200ms loop</td><td class="num">0ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Peak at 45% of cycle. Subtle — a breath, not a bounce.</td></tr>
+        <tr><td>Glow ring 1</td><td class="mono">scale 1 &rarr; 1.5 · opacity 0.55 &rarr; 0</td><td class="num">1200ms loop</td><td class="num">0ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>2.5px Electric Cobalt stroke, badge-radius rounded square.</td></tr>
+        <tr><td>Glow ring 2</td><td class="mono">scale 1 &rarr; 1.5 · opacity 0.55 &rarr; 0</td><td class="num">1200ms loop</td><td class="num">300ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Offset copy adds depth without extra elements moving.</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="totalline">Loop budget: <b>1.2s</b> per cycle, infinite. Use for: payment processing, swap execution, network wait states &gt; 600ms.</div>
+  </div>
+</section>
+
+<!-- ============ C ============ -->
+<section id="c">
+  <div class="sec-head"><span class="sec-tag">C</span><h2>The Handshake — success morph</h2></div>
+  <p class="sec-lede">The payment-success moment. The L-stroke flows out as a check draws in along the same visual path, while the badge tints Royal &rarr; Success Green — then everything returns home. The deal is done; the logo shook on it.</p>
+  <div class="stagecard">
+    <div class="stage" id="stC">
+      <span class="statelbl">Success morph · plays once, auto-reverses</span>
+      <div class="rm-fade">
+        <svg viewBox="0 0 48 48" width="96" height="96"><rect class="hs-rect" width="48" height="48" rx="12"/><path class="hs-l" d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path class="hs-p" d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/><path class="hs-check" d="M14.5 25l6.5 6.5L34 18" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+      </div>
+      <div class="replaybar"><button class="replay" data-target="stC"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Replay</button></div>
+    </div>
+    <div class="spec"><div class="specwrap"><table>
+      <thead><tr><th>Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Badge fill</td><td class="mono">fill #2333D6 &rarr; #17B26A</td><td class="num">400ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Royal &rarr; Success Green. Reverses at t+1.4s over 400ms.</td></tr>
+        <tr><td>L stroke (out)</td><td class="mono">stroke-dashoffset 0 &rarr; 40</td><td class="num">400ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.4, 0, 1, 1)</td><td>Flows out in its draw direction — the stroke "completes".</td></tr>
+        <tr><td>P bowl</td><td class="mono">opacity 1 &rarr; 0</td><td class="num">300ms</td><td class="num">100ms</td><td class="mono">cubic-bezier(0.4, 0, 1, 1)</td><td>Clears the field for the check.</td></tr>
+        <tr><td>Check (in)</td><td class="mono">stroke-dashoffset 30 &rarr; 0</td><td class="num">400ms</td><td class="num">200ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Same 4.5px rounded stroke as the L — reads as one line reshaping. In Lottie, ship as a true path morph.</td></tr>
+        <tr><td>Hold, then reverse</td><td class="mono">all of the above, mirrored</td><td class="num">400ms</td><td class="num">1400ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Success is a moment, not a new logo. Always return to the mark.</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="totalline">Total: <b>2.6s</b> including 1s success hold. Use for: payment confirmed, KYC verified, swap settled. Trigger only on a genuinely completed transaction.</div>
+  </div>
+</section>
+
+<!-- ============ D ============ -->
+<section id="d">
+  <div class="sec-head"><span class="sec-tag">D</span><h2>The Spin-up — app launch splash</h2></div>
+  <p class="sec-lede">Screen choreography for cold start. Full-screen Night; the badge draws on centered at 2.5&times; scale; the brand gradient sweeps diagonally (bottom-left &rarr; top-right, money direction); then badge and wordmark settle into the top-left corner as the interface arrives beneath them.</p>
+  <div class="stagecard">
+    <div class="stage" id="stD">
+      <span class="statelbl">Splash choreography · mini device demo</span>
+      <div class="phone rm-fade">
+        <div class="notch"></div>
+        <div class="sweep"></div>
+        <div class="sp-lock">
+          <svg class="sp-badge" viewBox="0 0 48 48" width="30" height="30"><rect width="48" height="48" rx="12" fill="#2333D6"/><path class="sp-l" d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path class="sp-p" d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+          <span class="wm-letters sp-wm">lentopay</span>
+        </div>
+        <div class="skel" style="top:88px">
+          <div class="bar" style="width:44%"></div>
+          <div class="bar" style="width:68%;height:26px;border-radius:9px;background:#1A2044"></div>
+        </div>
+        <div class="skel" style="top:172px">
+          <div class="card"></div>
+          <div class="card" style="height:64px"></div>
+          <div class="bar" style="width:56%"></div>
+          <div class="bar" style="width:80%"></div>
+        </div>
+      </div>
+      <div class="replaybar"><button class="replay" data-target="stD"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Replay</button></div>
+    </div>
+    <div class="spec"><div class="specwrap"><table>
+      <thead><tr><th>Phase / Element</th><th>Property</th><th>Duration</th><th>Delay</th><th>Easing</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>1 · Badge in</td><td class="mono">scale 0.9 &rarr; 1 · opacity 0 &rarr; 1</td><td class="num">500ms</td><td class="num">0ms</td><td class="mono">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Centered, 2.5&times; final size, on full-screen Night.</td></tr>
+        <tr><td>1 · L stroke</td><td class="mono">stroke-dashoffset 40 &rarr; 0</td><td class="num">650ms</td><td class="num">150ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Same draw-on as The Flow; P bowl fades in behind it.</td></tr>
+        <tr><td>2 · Gradient sweep</td><td class="mono">translate(−105%, 105%) &rarr; (105%, −105%)</td><td class="num">720ms</td><td class="num">800ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>135&deg; Royal&rarr;Cobalt band crosses bottom-left &rarr; top-right. One pass only.</td></tr>
+        <tr><td>3 · Lockup settles</td><td class="mono">translate + scale 2.5 &rarr; 1, to top-left</td><td class="num">600ms</td><td class="num">1500ms</td><td class="mono">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Badge lands at nav position (20px inset); wordmark fades in beside it during the move.</td></tr>
+        <tr><td>3 · UI arrives</td><td class="mono">opacity 0 &rarr; 1 · translateY 10px &rarr; 0</td><td class="num">480ms</td><td class="num">1920ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Content rises bottom &rarr; top under the settled lockup.</td></tr>
+      </tbody>
+    </table></div></div>
+    <div class="totalline">Total: <b>2.4s</b> hard cap — never gate the app longer than this. If the app is ready sooner, cut to phase 3 early; never loop the splash.</div>
+  </div>
+</section>
+
+<!-- ============ E ============ -->
+<section id="e">
+  <div class="sec-head"><span class="sec-tag">E</span><h2>Micro-interactions</h2></div>
+  <p class="sec-lede">The mark at interface scale: press feedback, arrival, and navigation. All transform-only, all under 350ms.</p>
+  <div class="microgrid">
+    <div class="micro">
+      <div class="mstage" id="stE1">
+        <button class="mbtn rm-fade">
+          <svg viewBox="0 0 48 48" width="19" height="19"><rect width="48" height="48" rx="12" fill="#fff"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#2333D6" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#2333D6"/></svg>
+          Pay with <span class="wm">lentopay</span>
+        </button>
+      </div>
+      <div class="mfoot">
+        <div><div class="t">Button-press squish</div><div class="s">scale 1 &rarr; 0.96 &rarr; 1 · 200ms · ease-out</div></div>
+        <button class="replay" data-target="stE1"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Play</button>
+      </div>
+    </div>
+    <div class="micro">
+      <div class="mstage" id="stE2">
+        <div class="badgewrap rm-fade">
+          <svg viewBox="0 0 48 48" width="52" height="52"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+          <span class="ndot"></span>
+        </div>
+      </div>
+      <div class="mfoot">
+        <div><div class="t">Notification-dot pop</div><div class="s">scale 0 &rarr; 1.25 &rarr; 1 · 300ms · spring</div></div>
+        <button class="replay" data-target="stE2"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Play</button>
+      </div>
+    </div>
+    <div class="micro">
+      <div class="mstage" id="stE3">
+        <div class="nav rm-fade">
+          <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg>
+          <svg class="ni mid" width="22" height="22" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+          <svg class="ni" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.6-3.3 3.2-5.25 7-5.25S18.4 16.7 19 20"/></svg>
+        </div>
+      </div>
+      <div class="mfoot">
+        <div><div class="t">Bottom-nav icon spring</div><div class="s">translateY −7px + scale 1.12 · 350ms · spring</div></div>
+        <button class="replay" data-target="stE3"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 2.6-6.3"/><path d="M5 3v5h5"/></svg>Play</button>
+      </div>
+    </div>
+  </div>
+  <div class="dtwrap"><table class="dtable">
+    <thead><tr><th>Micro-interaction</th><th>Property</th><th>Duration</th><th>Easing</th><th>Trigger</th></tr></thead>
+    <tbody>
+      <tr><td>Button-press squish</td><td class="mono">scale 1 &rarr; 0.96 &rarr; 1</td><td class="num">200ms</td><td class="mono">cubic-bezier(0, 0, 0.2, 1)</td><td>Pointer down on any branded button</td></tr>
+      <tr><td>Notification-dot pop</td><td class="mono">scale 0 &rarr; 1.25 &rarr; 1</td><td class="num">300ms</td><td class="mono">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>New activity arrives (money in, rate alert)</td></tr>
+      <tr><td>Bottom-nav icon spring</td><td class="mono">translateY 0 &rarr; −7px &rarr; 0 · scale 1 &rarr; 1.12 &rarr; 1</td><td class="num">350ms</td><td class="mono">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Tab becomes active</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ USAGE MATRIX ============ -->
+<section id="usage">
+  <div class="sec-head"><span class="sec-tag">&para;</span><h2>Usage matrix</h2></div>
+  <p class="sec-lede">One animation per moment. If two of these ever play at once, one of them is wrong.</p>
+  <div class="dtwrap"><table class="dtable">
+    <thead><tr><th>Context</th><th>Flow</th><th>Pulse</th><th>Handshake</th><th>Spin-up</th><th>Micro</th></tr></thead>
+    <tbody>
+      <tr><td>App cold start / splash</td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td></tr>
+      <tr><td>Web hero / marketing pages</td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td></tr>
+      <tr><td>Transaction processing / loaders</td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td></tr>
+      <tr><td>Payment success / verified</td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td></tr>
+      <tr><td>Video bumpers / social</td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td></tr>
+      <tr><td>Buttons, tabs, notifications</td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="no">No</span></td><td><span class="yes">Yes</span></td></tr>
+    </tbody>
+  </table></div>
+  <div class="cardrow">
+    <div class="icard never">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>Never-combine rules</h4>
+      <ul>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never run two logo animations simultaneously or back-to-back on one surface.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never loop The Flow, The Handshake or The Spin-up. Only The Pulse loops.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never play The Handshake for anything other than a genuinely completed action.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12h14"/></svg><span>Never animate the logo during error states — the mark stays still when things go wrong.</span></li>
+      </ul>
+    </div>
+    <div class="icard">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M14 6l6 6-6 6"/></svg>Handoffs between states</h4>
+      <ul>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Pulse &rarr; Handshake: finish the current pulse cycle, then morph. Never cut mid-breath.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Pulse &rarr; failure: stop the pulse at scale 1, fade the ring out in 150ms, show the error UI. No logo theatrics.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg><span>Spin-up &rarr; app: if load finishes early, jump to the settle phase — never stretch the splash.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PERFORMANCE ============ -->
+<section id="perf">
+  <div class="sec-head"><span class="sec-tag">&para;</span><h2>Performance &amp; accessibility</h2></div>
+  <p class="sec-lede">Every sanctioned animation is built from compositor-friendly properties and degrades to stillness gracefully.</p>
+  <div class="cardrow">
+    <div class="icard">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h5.5L11 21l8-10.5h-5.5L13 3z"/></svg>60fps, by construction</h4>
+      <ul>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Animate <code>transform</code> and <code>opacity</code> only (plus <code>stroke-dashoffset</code> and <code>fill</code> on the SVG mark, which are cheap at logo scale).</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>No layout properties, no filters, no box-shadow animation. The Pulse glow is a scaled border, not a blur.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Apply <code>will-change: transform</code> only for the animation's lifetime; remove it after.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Test on mid-range Android over 3G-class connections — Lentopay's real-world floor.</span></li>
+      </ul>
+    </div>
+    <div class="icard">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M8.5 12h7"/></svg>prefers-reduced-motion</h4>
+      <p style="margin-bottom:10px">When the OS requests reduced motion, every animation on this very page collapses to the sanctioned fallback — a <b style="color:#fff">static logo fading in over 200ms, ease-out</b>. Nothing draws, springs, sweeps or loops.</p>
+      <p><code style="display:block;background:var(--surface2);padding:12px 14px;border-radius:9px;font-size:12px;line-height:1.7;color:#C7D0FF">@media (prefers-reduced-motion: reduce) {<br>&nbsp;&nbsp;.logo-anim * { animation: none; }<br>&nbsp;&nbsp;.logo-anim { animation: fade 200ms<br>&nbsp;&nbsp;&nbsp;&nbsp;cubic-bezier(0,0,0.2,1) both; }<br>}</code></p>
+      <p style="margin-top:10px">Loading states still need feedback: keep a static badge plus a text label ("Processing&hellip;") — information never depends on motion.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXPORT ============ -->
+<section id="export">
+  <div class="sec-head"><span class="sec-tag">&para;</span><h2>Export &amp; handoff</h2></div>
+  <p class="sec-lede">One source of truth per animation, exported per platform. Timings and curves in this document are normative — a Lottie that disagrees with this page is a bug.</p>
+  <div class="cardrow">
+    <div class="icard">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>Lottie / After Effects</h4>
+      <ul>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Author in AE on a 480&times;480 comp (10&times; the 48-unit grid), 60fps, shape layers only — no rasters, no effects that Bodymovin can't serialize.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Draw-on via Trim Paths; The Handshake as a true path morph between the L and the check.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Export with Bodymovin; verify in the Lottie web player and on-device (iOS + Android) before release.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Colors must reference the canonical hexes exactly — no AE color drift.</span></li>
+      </ul>
+    </div>
+    <div class="icard">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5 8l7-5 7 5"/><path d="M5 16l7 5 7-5"/></svg>Rive alternative</h4>
+      <p style="margin-bottom:8px">For product surfaces, a single Rive file with a state machine beats four separate Lotties:</p>
+      <ul>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>States: <code>idle</code> &rarr; <code>pulse</code> &rarr; <code>success</code> / <code>idle</code>, driven by one <code>txState</code> input.</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Handles the Pulse &rarr; Handshake handoff natively (finish-cycle-then-morph).</span></li>
+        <li><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10-11"/></svg><span>Smaller runtime than Lottie on mobile; keep the Lottie set as the marketing/web fallback.</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="dtwrap"><table class="dtable">
+    <thead><tr><th>Animation</th><th>File name</th><th>Formats</th><th>Primary consumer</th></tr></thead>
+    <tbody>
+      <tr><td>The Flow</td><td class="mono">lentopay-flow.json</td><td class="mono">Lottie · SVG+CSS · MP4/WebM</td><td>Web hero, video bumpers</td></tr>
+      <tr><td>The Pulse</td><td class="mono">lentopay-pulse.json</td><td class="mono">Lottie · Rive · SVG+CSS</td><td>App &amp; checkout loaders</td></tr>
+      <tr><td>The Handshake</td><td class="mono">lentopay-handshake.json</td><td class="mono">Lottie · Rive</td><td>Success screens</td></tr>
+      <tr><td>The Spin-up</td><td class="mono">lentopay-spinup.json</td><td class="mono">Lottie (native splash)</td><td>iOS / Android launch</td></tr>
+      <tr><td>Micro set</td><td class="mono">lentopay-micro-press.json · lentopay-micro-pop.json · lentopay-micro-navspring.json</td><td class="mono">CSS/native code preferred</td><td>Product UI</td></tr>
+      <tr><td>Combined state machine</td><td class="mono">lentopay-logo.riv</td><td class="mono">Rive</td><td>App transaction lifecycle</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ TOKENS ============ -->
+<section id="tokens">
+  <div class="sec-head"><span class="sec-tag">&para;</span><h2>Timing tokens</h2></div>
+  <p class="sec-lede">Ship these as design tokens; every duration and curve above resolves to one of them.</p>
+  <div class="dtwrap"><table class="dtable">
+    <thead><tr><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">--motion-fast</td><td class="num">150ms</td><td>Hovers, focus rings, ring fade-outs, state color shifts</td></tr>
+      <tr><td class="mono">--motion-base</td><td class="num">250ms</td><td>Micro-interactions, letter fades, chip transitions</td></tr>
+      <tr><td class="mono">--motion-slow</td><td class="num">400ms</td><td>Screen transitions, Handshake morph, badge tint</td></tr>
+      <tr><td class="mono">--motion-draw</td><td class="num">600ms</td><td>Stroke draw-on (The Flow, The Spin-up)</td></tr>
+      <tr><td class="mono">--motion-loop</td><td class="num">1200ms</td><td>The Pulse cycle length</td></tr>
+      <tr><td class="mono">--ease-spring</td><td class="num">cubic-bezier(0.34, 1.56, 0.64, 1)</td><td>Badge landings, pops, nav springs — arrival with life</td></tr>
+      <tr><td class="mono">--ease-out</td><td class="num">cubic-bezier(0, 0, 0.2, 1)</td><td>All entrances — fast start, gentle stop</td></tr>
+      <tr><td class="mono">--ease-in</td><td class="num">cubic-bezier(0.4, 0, 1, 1)</td><td>All exits — gentle start, fast leave</td></tr>
+      <tr><td class="mono">--ease-inout</td><td class="num">cubic-bezier(0.45, 0, 0.25, 1)</td><td>Loops, sweeps, settles — continuous movement</td></tr>
+    </tbody>
+  </table></div>
+
+  <footer>
+    <div class="l">
+      <svg viewBox="0 0 48 48" width="34" height="34"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+      <div class="fx"><b>Lentopay Logo Motion — Animation Specification v1.0</b> — Prepared July 2026<br>Companion to <a href="brand-guidelines.html">Brand Guidelines v2.0</a></div>
+    </div>
+    <div class="fx" style="text-align:right">Motion questions &amp; source files<br><b>brand@lentopay.com</b> · [contact placeholder]</div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // ---------- replay: remove class, force reflow, re-add ----------
+  function replay(id){
+    var el=document.getElementById(id);
+    if(!el)return;
+    el.classList.remove('play');
+    void el.offsetWidth; // reflow — restarts CSS animations
+    el.classList.add('play');
+  }
+  document.querySelectorAll('.replay').forEach(function(btn){
+    btn.addEventListener('click',function(){replay(btn.getAttribute('data-target'));});
+  });
+
+  // real button also squishes on press (native feel)
+  var payBtn=document.querySelector('#stE1 .mbtn');
+  if(payBtn)payBtn.addEventListener('click',function(){replay('stE1');});
+
+  // ---------- auto-play stages as they scroll into view ----------
+  var stages=['stA','stB','stC','stD','stE1','stE2','stE3'];
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting&&!e.target.classList.contains('play')){
+          e.target.classList.add('play');
+          io.unobserve(e.target);
+        }
+      });
+    },{threshold:0.45});
+    stages.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)io.observe(el);
+    });
+  }else{
+    stages.forEach(function(id){
+      var el=document.getElementById(id);
+      if(el)el.classList.add('play');
+    });
+  }
+})();
+</script>
+
+<div id="lp-hub-nav" style="position:fixed;bottom:18px;right:18px;z-index:2147483647;display:flex;gap:8px;font-family:'DM Sans',system-ui,sans-serif">
+<a href="index.html" style="display:inline-flex;align-items:center;gap:7px;background:#0A0E28;color:#fff;border:1px solid rgba(255,255,255,.22);text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(10,14,40,.35)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>All sections</a>
+<a href="prototype-mobile.html" style="display:inline-flex;align-items:center;gap:7px;background:#2333D6;color:#fff;text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(35,51,214,.4)">Next: 09<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+</body>
+</html>

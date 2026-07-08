@@ -1,0 +1,125 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Lentopay Exchange — Project Hub</title><meta name="description" content="All Lentopay Exchange project deliverables: PRD, strategy, proposal, research, brand and interactive prototypes."><meta name="robots" content="noindex"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet"><style>
+:root{--royal:#2333D6;--cobalt:#4353FF;--night:#0A0E28;--gold:#F2A61A;--fog:#E9EDF8;--off:#FAFBFD;
+--success:#17B26A;--alert:#E5484D;--ink:#0A0E28;--muted:#5A6285;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--ink);line-height:1.65;font-size:16px}
+h1,h2,h3,h4{font-family:'Sora',system-ui,sans-serif;line-height:1.25}
+a{color:var(--royal)}
+.lp-badge{width:34px;height:34px;border-radius:9px;flex:none}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(250,251,253,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--fog)}
+.topbar-in{max-width:1080px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;gap:14px}
+.wordmark{font-family:'Sora',sans-serif;font-weight:700;font-size:19px;color:var(--night);text-decoration:none;display:flex;align-items:center;gap:10px}
+.wordmark span.hub{font-family:'DM Sans';font-weight:500;font-size:12px;color:var(--muted);border:1px solid var(--fog);border-radius:99px;padding:2px 10px;margin-left:2px}
+.secnav{display:flex;gap:6px;overflow-x:auto;margin-left:auto;scrollbar-width:none}
+.secnav::-webkit-scrollbar{display:none}
+.secnav a{flex:none;font-size:13px;font-weight:500;text-decoration:none;color:var(--muted);padding:6px 12px;border-radius:99px;min-height:32px;display:inline-flex;align-items:center}
+.secnav a:hover{background:var(--fog);color:var(--night)}
+.secnav a.active{background:var(--royal);color:#fff}
+.wrap{max-width:860px;margin:0 auto;padding:48px 24px 80px}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:10px}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--royal)}
+.doc h1{font-size:34px;margin:18px 0 14px;color:var(--night)}
+.doc h2{font-size:24px;margin:44px 0 12px;padding-top:18px;border-top:1px solid var(--fog);color:var(--night)}
+.doc h3{font-size:18px;margin:28px 0 10px}
+.doc h4{font-size:15.5px;margin:22px 0 8px}
+.doc p{margin:12px 0}
+.doc ul,.doc ol{margin:12px 0 12px 26px}
+.doc li{margin:5px 0}
+.doc blockquote{border-left:3px solid var(--gold);background:#FDF6E9;padding:12px 16px;border-radius:0 10px 10px 0;margin:16px 0;color:#5c4a1e}
+.doc code{background:var(--fog);border-radius:5px;padding:1px 6px;font-size:.88em}
+.doc pre{background:var(--night);color:#E7EAFF;border-radius:12px;padding:18px;overflow-x:auto;margin:16px 0;font-size:13.5px;line-height:1.55}
+.doc pre code{background:none;padding:0;color:inherit}
+.doc table{width:100%;border-collapse:collapse;margin:18px 0;font-size:14px;display:block;overflow-x:auto}
+.doc table th{background:var(--fog);font-family:'Sora';font-weight:600;font-size:13px;text-align:left}
+.doc table th,.doc table td{border:1px solid #D7DDF0;padding:9px 12px;vertical-align:top;min-width:90px}
+.doc table tr:nth-child(even) td{background:#F4F6FC}
+.doc hr{border:0;border-top:1px solid var(--fog);margin:32px 0}
+.doc img{max-width:100%}
+.doc strong{color:var(--night)}
+.dl{display:inline-flex;align-items:center;gap:8px;background:var(--royal);color:#fff;text-decoration:none;font-weight:500;font-size:14px;border-radius:10px;padding:11px 18px;margin:8px 0 6px}
+.dl:hover{background:var(--cobalt)}
+.dl svg{width:16px;height:16px}
+.pn{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:56px}
+.pn a{border:1px solid var(--fog);background:#fff;border-radius:14px;padding:16px 18px;text-decoration:none;color:var(--night);transition:box-shadow .18s ease,border-color .18s ease}
+.pn a:hover{border-color:var(--cobalt);box-shadow:0 4px 16px rgba(10,14,40,.08)}
+.pn .lbl{font-size:12px;color:var(--muted);font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.pn .ttl{font-family:'Sora';font-weight:600;font-size:15.5px;margin-top:4px}
+.pn a.next{text-align:right}
+.pn a.disabled{visibility:hidden}
+footer.site{border-top:1px solid var(--fog);padding:26px 24px;text-align:center;font-size:13px;color:var(--muted)}
+@media(max-width:720px){.doc h1{font-size:27px}.pn{grid-template-columns:1fr}.topbar-in{padding:10px 16px}.wrap{padding:36px 16px 64px}}
+
+.hero{background:linear-gradient(135deg,#2333D6 0%,#141b66 55%,#0A0E28 100%);color:#fff;padding:76px 24px 64px;text-align:center}
+.hero .lp-badge{width:64px;height:64px;border-radius:16px;margin:0 auto 20px;display:block;box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.hero h1{font-size:clamp(30px,5vw,46px);font-weight:800}
+.hero p.sub{max-width:620px;margin:16px auto 0;color:#C6CDF5;font-size:17px}
+.hero .meta{margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.hero .meta span{font-size:12.5px;font-weight:500;border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 13px;color:#E7EAFF}
+.hub{max-width:1080px;margin:0 auto;padding:56px 24px 40px}
+.group{margin-bottom:44px}
+.group h2{font-size:20px;display:flex;align-items:center;gap:10px;color:var(--night);margin-bottom:16px}
+.group h2 svg{color:var(--royal)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{display:flex;gap:14px;background:#fff;border:1px solid var(--fog);border-radius:16px;padding:20px;text-decoration:none;color:var(--ink);transition:box-shadow .18s ease,border-color .18s ease,transform .18s ease}
+.card:hover{border-color:var(--cobalt);box-shadow:0 8px 28px rgba(10,14,40,.1);transform:translateY(-2px)}
+.card .num{font-family:'Sora';font-weight:700;font-size:14px;color:#fff;background:var(--royal);border-radius:10px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;flex:none}
+.card .ct{font-family:'Sora';font-weight:600;font-size:16px;color:var(--night)}
+.card .cd{font-size:13.5px;color:var(--muted);margin-top:5px}
+.card .go{font-size:13px;font-weight:500;color:var(--royal);margin-top:10px;display:inline-flex;align-items:center;gap:6px}
+@media (prefers-reduced-motion: reduce){.card{transition:none}}
+</style></head><body>
+<div class="hero"><svg viewBox="0 0 48 48" class="lp-badge" aria-hidden="true"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg><h1>Lentopay Exchange<br>Project Hub</h1><p class="sub">Everything for the Lentopay Exchange project in one place — strategy, product docs, brand and clickable prototypes. Pick a section below; every page links back here and on to the next section.</p>
+<div class="meta"><span>10 sections</span><span>4 Word downloads</span><span>2 interactive prototypes</span><span>July 2026</span></div></div>
+<main class="hub"><section class="group"><h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> Documents</h2><div class="grid">
+    <a class="card" href="prd.html">
+      <div class="num">01</div>
+      <div><div class="ct">PRD v2.0</div><div class="cd">The upgraded Product Requirements Document — features, phasing, compliance gates, KYC tiers, architecture.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="strategy.html">
+      <div class="num">02</div>
+      <div><div class="ct">Market & Strategy Report</div><div class="cd">Nigeria market sizing, licensing path, competitor matrix, fees, monetization and go-to-market plan.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="proposal.html">
+      <div class="num">03</div>
+      <div><div class="ct">Development Proposal & SOW</div><div class="cd">Phased delivery plan, timeline to MVP, team, commercial terms and sign-off.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="one-pager.html">
+      <div class="num">04</div>
+      <div><div class="ct">Executive One-Pager</div><div class="cd">One-page summary of Lentopay Exchange for partners and investors.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a></div></section><section class="group"><h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Research</h2><div class="grid">
+    <a class="card" href="research-market.html">
+      <div class="num">05</div>
+      <div><div class="ct">Research — Market & Regulation</div><div class="cd">Sourced research: adoption numbers, SEC/CBN rules, licensing, per-feature legal gates.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="research-competitors.html">
+      <div class="num">06</div>
+      <div><div class="ct">Research — Competitors & Monetization</div><div class="cd">Competitor teardown, fee benchmarks, growth playbooks that worked in Nigeria.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a></div></section><section class="group"><h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r=".5"/><circle cx="17.5" cy="10.5" r=".5"/><circle cx="8.5" cy="7.5" r=".5"/><circle cx="6.5" cy="12.5" r=".5"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z"/></svg> Brand</h2><div class="grid">
+    <a class="card" href="brand-guidelines.html">
+      <div class="num">07</div>
+      <div><div class="ct">Brand Guidelines v2.0</div><div class="cd">The professional brand book — logo system, color, typography, voice, Nigerian market rules.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="logo-animation.html">
+      <div class="num">08</div>
+      <div><div class="ct">Logo Motion Spec</div><div class="cd">Five live-animated logo behaviors, each specified to the millisecond for handoff.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a></div></section><section class="group"><h2><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Prototypes</h2><div class="grid">
+    <a class="card" href="prototype-mobile.html">
+      <div class="num">09</div>
+      <div><div class="ct">Mobile App Prototype</div><div class="cd">Interactive prototype — 20 screens: buy, swap, bills, gift cards, savings, E-Fund, KYC.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a>
+    <a class="card" href="prototype-admin.html">
+      <div class="num">10</div>
+      <div><div class="ct">Admin Console Prototype</div><div class="cd">Interactive back-office — KYC queue, transaction approvals, gift card review, treasury, AML.</div>
+      <div class="go">Open section <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div></div>
+    </a></div></section></main>
+<footer class="site">Lentopay Exchange — Project Hub · July 2026 · Confidential, prepared for the Lentopay project</footer></body></html>

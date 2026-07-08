@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lentopay Exchange — Interactive Prototype v1.0</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --royal:#2333D6; --cobalt:#4353FF; --night:#0A0E28; --gold:#F2A61A;
+  --fog:#E9EDF8; --offwhite:#FAFBFD;
+  --ok:#17B26A; --bad:#E5484D; --amber:#D97706;
+  --bg:#0A0E28; --s1:#121735; --s2:#1A2044; --bd:#252C55;
+  --t1:#F2F4FF; --t2:#9AA3C7;
+  --grad:linear-gradient(135deg,#4353FF 0%,#2333D6 100%);
+  --sora:'Sora',system-ui,sans-serif; --dm:'DM Sans',system-ui,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--dm); color:var(--t1);
+  background:radial-gradient(1200px 800px at 85% -10%,rgba(67,83,255,.28),transparent 60%),
+             radial-gradient(900px 700px at -10% 110%,rgba(35,51,214,.35),transparent 55%),
+             linear-gradient(135deg,#0A0E28 0%,#0d1340 60%,#16207a 130%);
+  display:flex; align-items:center; justify-content:center; gap:48px; padding:32px;
+  min-height:100vh; overflow-x:hidden;
+}
+::-webkit-scrollbar{width:0;height:0}
+
+/* ================= DESKTOP BACKDROP / PICKER ================= */
+.picker{width:250px; flex:0 0 auto; max-height:844px; overflow-y:auto; padding:8px 4px}
+.picker .brandrow{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+.picker .brandrow svg{width:34px;height:34px;flex:0 0 auto}
+.picker .wordmark{font-family:var(--sora);font-weight:700;font-size:21px;letter-spacing:-.02em;color:#fff}
+.picker .cap{font-size:12px;color:#8f98c4;margin:0 0 18px 2px;line-height:1.5}
+.picker .grouplab{font-family:var(--sora);font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#6a74a8;margin:16px 0 8px 2px}
+.pchip{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:1px solid rgba(37,44,85,.9);
+  background:rgba(18,23,53,.72); color:#c9d0ef; font-family:var(--dm); font-size:13px; font-weight:500;
+  padding:9px 12px; border-radius:10px; margin-bottom:6px; cursor:pointer; transition:all .15s ease-out}
+.pchip .dot{width:6px;height:6px;border-radius:50%;background:#3d4780;flex:0 0 auto;transition:background .15s}
+.pchip:hover{border-color:#38428a;color:#fff}
+.pchip.on{background:linear-gradient(135deg,rgba(67,83,255,.28),rgba(35,51,214,.22));border-color:#4353FF;color:#fff}
+.pchip.on .dot{background:var(--gold)}
+.pchip:active{transform:scale(.97)}
+
+/* ================= PHONE FRAME ================= */
+.stage{flex:0 0 auto}
+.phone{
+  position:relative; width:390px; height:844px; border-radius:48px; overflow:hidden;
+  background:var(--bg);
+  box-shadow:0 0 0 11px #10142b, 0 0 0 13px #2b3260, 0 50px 100px -20px rgba(0,0,0,.75), 0 30px 60px -30px rgba(35,51,214,.5);
+}
+.notch{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:120px;height:30px;border-radius:20px;background:#04060f;z-index:80}
+.statusbar{position:absolute;top:0;left:0;right:0;height:52px;display:flex;align-items:center;justify-content:space-between;
+  padding:14px 28px 0;z-index:70;pointer-events:none}
+.statusbar .time{font-family:var(--sora);font-weight:600;font-size:15px;letter-spacing:.01em}
+.statusbar .sicons{display:flex;align-items:center;gap:6px}
+.homeind{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:rgba(242,244,255,.4);z-index:70;pointer-events:none}
+
+/* ================= SCREENS ================= */
+.screens{position:absolute;inset:0}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);
+  opacity:0;pointer-events:none;transform:translateX(26px);
+  transition:opacity .2s ease-out,transform .2s ease-out}
+.screen.active{opacity:1;pointer-events:auto;transform:none}
+.screen.enter-l{transform:translateX(-26px)}
+.screen.exit-l{transform:translateX(-26px)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+.scr-body{flex:1;overflow-y:auto;overflow-x:hidden;padding:64px 20px 32px;-webkit-overflow-scrolling:touch}
+.screen[data-nav] .scr-body{padding-bottom:112px}
+.scr-head{position:relative;z-index:5;display:flex;align-items:center;gap:12px;padding:64px 20px 12px;flex:0 0 auto}
+.scr-head+.scr-body{padding-top:4px}
+.scr-title{font-family:var(--sora);font-weight:600;font-size:19px;flex:1}
+.iconbtn{width:44px;height:44px;min-width:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  background:var(--s1);border:1px solid var(--bd);color:var(--t1);cursor:pointer}
+.iconbtn.ghost{background:transparent;border-color:transparent}
+
+/* ================= CORE COMPONENTS ================= */
+.tap{cursor:pointer;transition:transform .12s ease-out,opacity .12s ease-out}
+.tap:active{transform:scale(.97);opacity:.8}
+.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.ic.sm{width:16px;height:16px}.ic.xs{width:13px;height:13px}.ic.lg{width:26px;height:26px}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:54px;border-radius:15px;border:none;
+  font-family:var(--sora);font-weight:600;font-size:15.5px;cursor:pointer;color:var(--t1);
+  transition:transform .12s ease-out,opacity .12s ease-out}
+.btn:active{transform:scale(.97);opacity:.85}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 8px 24px -6px rgba(67,83,255,.5)}
+.btn-ghost{background:var(--s1);border:1px solid var(--bd)}
+.btn-outline{background:transparent;border:1.5px solid var(--bd)}
+.btn-danger{background:rgba(229,72,77,.12);border:1px solid rgba(229,72,77,.4);color:#ff8a8e}
+.btn:disabled{opacity:.4;pointer-events:none}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:16px}
+.money{font-family:var(--sora);font-weight:700;font-variant-numeric:tabular-nums}
+.tnum{font-variant-numeric:tabular-nums}
+.seclab{font-family:var(--sora);font-weight:600;font-size:15px;margin:24px 0 12px}
+.seclab.first{margin-top:8px}
+.muted{color:var(--t2)}
+.up{color:var(--ok)}.down{color:var(--bad)}
+.chip{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:99px;font-size:12px;font-weight:500;line-height:1}
+.chip-ok{background:rgba(23,178,106,.14);color:#3ecf8e;border:1px solid rgba(23,178,106,.35)}
+.chip-bad{background:rgba(229,72,77,.14);color:#ff8a8e;border:1px solid rgba(229,72,77,.35)}
+.chip-amber{background:rgba(242,166,26,.13);color:#f5b544;border:1px solid rgba(217,119,6,.45)}
+.chip-cobalt{background:rgba(67,83,255,.16);color:#9daaff;border:1px solid rgba(67,83,255,.4)}
+.chip-gold{background:rgba(242,166,26,.13);color:#f5b544;border:1px solid rgba(242,166,26,.4)}
+
+/* inputs */
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12.5px;font-weight:500;color:var(--t2);margin-bottom:7px}
+.input{display:flex;align-items:center;gap:10px;background:var(--s1);border:1px solid var(--bd);border-radius:14px;
+  min-height:52px;padding:0 14px;color:var(--t1)}
+.input input{flex:1;background:none;border:none;outline:none;color:var(--t1);font-family:var(--dm);font-size:15px;min-width:0;height:50px}
+.input input::placeholder{color:#5c6694}
+.input:focus-within{border-color:var(--cobalt);box-shadow:0 0 0 3px rgba(67,83,255,.18)}
+
+/* segmented tabs */
+.seg{display:flex;background:var(--s1);border:1px solid var(--bd);border-radius:13px;padding:4px;gap:4px}
+.seg button{flex:1;height:40px;border:none;border-radius:10px;background:transparent;color:var(--t2);
+  font-family:var(--dm);font-weight:500;font-size:13.5px;cursor:pointer;transition:all .15s ease-out}
+.seg button.on{background:var(--grad);color:#fff;font-weight:700}
+.seg button:active{transform:scale(.97)}
+
+/* pill tab row (markets) */
+.pills{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px}
+.pill{height:38px;padding:0 16px;border-radius:99px;border:1px solid var(--bd);background:var(--s1);color:var(--t2);
+  font-family:var(--dm);font-size:13.5px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.pill.on{background:var(--grad);border-color:transparent;color:#fff;font-weight:700}
+.pill:active{transform:scale(.96)}
+
+/* list rows */
+.lrow{display:flex;align-items:center;gap:12px;padding:13px 4px;min-height:56px;border:none;background:none;width:100%;text-align:left;color:var(--t1);font-family:var(--dm)}
+.lrow+.lrow{border-top:1px solid rgba(37,44,85,.55)}
+.lrow .grow{flex:1;min-width:0}
+.lrow .l1{font-size:14.5px;font-weight:500}
+.lrow .l2{font-size:12px;color:var(--t2);margin-top:2px}
+.lrow .r1{font-size:14px;text-align:right}
+.lrow .r2{font-size:12px;text-align:right;margin-top:2px}
+
+/* coin badge */
+.coin{width:38px;height:38px;min-width:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--sora);font-weight:700;font-size:14px;color:#fff}
+.c-btc{background:#F7931A}.c-eth{background:#627EEA}.c-usdt{background:#26A17B}
+.c-sol{background:linear-gradient(135deg,#9945FF,#14F195);color:#0c0c1d}.c-bnb{background:#F3BA2F;color:#3d2c00}
+.c-xrp{background:#3b4557}.c-ada{background:#0D5AA7}.c-doge{background:#BA9F33}
+.tico{width:40px;height:40px;min-width:40px;border-radius:13px;display:flex;align-items:center;justify-content:center}
+
+/* quick actions */
+.qagrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qa{display:flex;flex-direction:column;align-items:center;gap:8px;padding:13px 4px 11px;border-radius:15px;
+  background:var(--s1);border:1px solid var(--bd);color:var(--t1);cursor:pointer;font-family:var(--dm)}
+.qa .qic{width:40px;height:40px;border-radius:13px;background:rgba(67,83,255,.14);color:#9daaff;display:flex;align-items:center;justify-content:center}
+.qa span{font-size:11.5px;font-weight:500;color:var(--t2)}
+
+/* bottom nav */
+.bnav{position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;justify-content:space-around;align-items:flex-start;
+  padding:10px 8px 24px;background:rgba(10,14,40,.92);backdrop-filter:blur(14px);border-top:1px solid var(--bd);
+  transition:transform .2s ease-out,opacity .2s ease-out}
+.bnav.hide{transform:translateY(110%);opacity:0;pointer-events:none}
+.bni{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:56px;min-height:44px;border:none;background:none;
+  color:#7480b3;font-family:var(--dm);font-size:10.5px;font-weight:500;cursor:pointer;padding-top:2px}
+.bni.on{color:var(--cobalt)}
+.bni.on .ic{stroke-width:2.1}
+.bni:active{transform:scale(.94)}
+
+/* number pad */
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto}
+.key{height:56px;border-radius:14px;border:none;background:var(--s1);color:var(--t1);
+  font-family:var(--sora);font-weight:600;font-size:21px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.key:active{transform:scale(.95);background:var(--s2)}
+.key.blank{background:transparent;pointer-events:none}
+
+/* sheets */
+.backdrop{position:absolute;inset:0;background:rgba(4,6,18,.66);z-index:55;opacity:0;pointer-events:none;transition:opacity .2s ease-out}
+.backdrop.open{opacity:1;pointer-events:auto}
+.sheet{position:absolute;left:0;right:0;bottom:0;z-index:60;background:var(--s2);border:1px solid var(--bd);border-bottom:none;
+  border-radius:26px 26px 0 0;padding:14px 20px 34px;transform:translateY(105%);transition:transform .24s ease-out;max-height:78%;overflow-y:auto}
+.sheet.open{transform:none}
+.grab{width:44px;height:5px;border-radius:3px;background:#3a4374;margin:0 auto 16px}
+.sheettitle{font-family:var(--sora);font-weight:600;font-size:17px;margin-bottom:14px}
+
+/* receipt rows */
+.rrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;font-size:13.5px}
+.rrow+.rrow{border-top:1px dashed rgba(37,44,85,.8)}
+.rrow .k{color:var(--t2)}
+.rrow .v{font-weight:500;text-align:right}
+
+/* misc */
+.spark{flex:0 0 auto}
+.bignum{font-family:var(--sora);font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.gradcard{border-radius:18px;padding:18px;background:linear-gradient(135deg,#2333D6 0%,#1a2589 55%,#0A0E28 130%);
+  border:1px solid rgba(67,83,255,.5);position:relative;overflow:hidden}
+.gradcard::after{content:"";position:absolute;width:220px;height:220px;border-radius:50%;right:-70px;top:-110px;
+  background:radial-gradient(circle,rgba(67,83,255,.55),transparent 70%)}
+.dropzone{border:1.5px dashed #3a4680;border-radius:16px;background:rgba(18,23,53,.6);padding:22px 16px;text-align:center;color:var(--t2);cursor:pointer}
+.dropzone:active{transform:scale(.98)}
+.radio{width:20px;height:20px;min-width:20px;border-radius:50%;border:2px solid #3d4780;position:relative}
+.selrow.on .radio{border-color:var(--cobalt)}
+.selrow.on .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--cobalt)}
+.selrow{display:flex;align-items:center;gap:12px;padding:14px;border:1px solid var(--bd);border-radius:14px;background:var(--s1);
+  cursor:pointer;width:100%;text-align:left;color:var(--t1);font-family:var(--dm);min-height:56px}
+.selrow.on{border-color:var(--cobalt);background:rgba(67,83,255,.09)}
+.selrow+.selrow{margin-top:10px}
+.pindots{display:flex;gap:16px;justify-content:center;margin:18px 0 22px}
+.pdot{width:16px;height:16px;border-radius:50%;border:2px solid #3d4780;transition:all .15s}
+.pdot.fill{background:var(--cobalt);border-color:var(--cobalt);transform:scale(1.08)}
+
+/* success check animation */
+@keyframes popin{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+@keyframes drawcheck{to{stroke-dashoffset:0}}
+.okwrap{width:96px;height:96px;border-radius:50%;background:rgba(23,178,106,.14);border:1.5px solid rgba(23,178,106,.5);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:popin .45s ease-out both}
+.okwrap svg{width:46px;height:46px;stroke:var(--ok);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.okwrap path{stroke-dasharray:36;stroke-dashoffset:36;animation:drawcheck .4s .25s ease-out forwards}
+
+/* progress ring */
+.ringwrap{position:relative;width:74px;height:74px}
+.ringwrap svg{transform:rotate(-90deg)}
+.ringwrap .pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--sora);font-weight:700;font-size:15px}
+
+/* alloc bar */
+.alloc{display:flex;height:10px;border-radius:6px;overflow:hidden;margin:10px 0 8px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 16px;font-size:11.5px;color:var(--t2)}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:5px}
+
+@media (max-width:900px){.picker{display:none}body{padding:12px;gap:0}}
+</style>
+</head>
+<body>
+
+<!-- ============ SVG SPRITE ============ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9.5 9-7 9 7V20a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22v-8h6v8"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="m7 14 4-4 3 3 5.5-6.5"/></symbol>
+    <symbol id="i-pay" viewBox="0 0 24 24"><path d="M4 2v20l2-1.2L8 22l2-1.2L12 22l2-1.2L16 22l2-1.2L20 22V2l-2 1.2L16 2l-2 1.2L12 2l-2 1.2L8 2 6 3.2 4 2z"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+    <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c6.5 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/><path d="M6.61 6.61A13.53 13.53 0 0 0 2 12s3.5 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/><path d="M2 2l20 20"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></symbol>
+    <symbol id="i-chevr" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevd" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2.5 3.09 6.26L22 9.77l-5 4.87 1.18 6.88L12 18.27l-6.18 3.25L7 14.64 2 9.77l6.91-1.01L12 2.5z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-aur" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></symbol>
+    <symbol id="i-adl" viewBox="0 0 24 24"><path d="M17 7 7 17"/><path d="M16 17H7V8"/></symbol>
+    <symbol id="i-adown" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="m17 3 4 4-4 4"/><path d="M21 7H7"/><path d="m7 21-4-4 4-4"/><path d="M3 17h14"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h8l-1 8 11-13h-8l1-7z"/></symbol>
+    <symbol id="i-tv" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="m17 2-5 5-5-5"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M2.5 12h19"/><path d="M12 2.5a15 15 0 0 1 4 9.5 15 15 0 0 1-4 9.5 15 15 0 0 1-4-9.5 15 15 0 0 1 4-9.5z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18.5h2"/></symbol>
+    <symbol id="i-signal" viewBox="0 0 24 24"><path d="M5 19v-4"/><path d="M10 19v-8"/><path d="M15 19V7"/><path d="M20 19V3.5"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><circle cx="12" cy="12" r="5.5"/><circle cx="12" cy="12" r="1.5"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="4.5" rx="1"/><path d="M12 8v13"/><path d="M19 12.5V19a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6.5"/><path d="M7.5 8a2.5 2.5 0 0 1 0-5C11 3 12 8 12 8s1-5 4.5-5a2.5 2.5 0 0 1 0 5"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="12" cy="12" r="4"/><path d="M12 10v2l1.4 1.4"/></symbol>
+    <symbol id="i-trend" viewBox="0 0 24 24"><path d="m22 7-8.5 8.5-4-4L2 19"/><path d="M16 7h6v6"/></symbol>
+    <symbol id="i-shieldcheck" viewBox="0 0 24 24"><path d="M12 22s8-3.5 8-10V5l-8-3-8 3v7c0 6.5 8 10 8 10z"/><path d="m9 11.5 2 2 4-4.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></symbol>
+    <symbol id="i-finger" viewBox="0 0 24 24"><path d="M12 11a2 2 0 0 0-2 2c0 2.5-.5 4.5-1.5 6.5"/><path d="M14 13.1c0 2.4-.3 4.6-1 6.9"/><path d="M17.7 16.4c.2-1 .3-2.2.3-3.4a6 6 0 0 0-9-5.2"/><path d="M6.4 10A6 6 0 0 0 6 13c0 1.6-.3 3-.8 4.2"/><path d="M4.3 7.2A9.9 9.9 0 0 1 12 3c2.4 0 4.6.8 6.3 2.2"/><path d="M20.7 9.3c.2.6.3 1.2.3 1.7"/></symbol>
+    <symbol id="i-del" viewBox="0 0 24 24"><path d="M21 5H9l-6 7 6 7h12a1.5 1.5 0 0 0 1.5-1.5v-11A1.5 1.5 0 0 0 21 5z"/><path d="m12 9 5 5m0-5-5 5"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-4.4-4.4a2 2 0 0 0-2.8 0L4 20"/></symbol>
+    <symbol id="i-bank" viewBox="0 0 24 24"><path d="m3 9 9-6.5L21 9"/><path d="M4 9h16v1.5H4z"/><path d="M6 10.5V18M10 10.5V18M14 10.5V18M18 10.5V18"/><path d="M3 21h18"/><path d="M3 18h18v3"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7l-5-5z"/><path d="M14 2v5h5"/><path d="M9 13h6M9 17h6"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 2.6-3 4"/><path d="M12 17.5h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 16v-5"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2.5"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 7v5l3.5 2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 8v4.5"/><path d="M12 16.5h.01"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M20 7H5a2 2 0 0 1 0-4h13v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16V7"/><path d="M16 13.5h.01"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M4 6l16 12M20 6 4 18"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 7h3l2-3h6l2 3h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"/><circle cx="12" cy="13" r="4"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></symbol>
+    <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M11 20A7 7 0 0 1 4 13c0-6 5-9 16-10-1 11-4 16-10 17z"/><path d="M4 21c2-4 6-8 11-10"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M2 12h2.5M19.5 12H22M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ SCREEN PICKER ============ -->
+<aside class="picker">
+  <div class="brandrow">
+    <svg viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+    <span class="wordmark">lentopay</span>
+  </div>
+  <p class="cap">Lentopay Exchange — Interactive Prototype v1.0<br>Tap a screen, or click through the app itself.</p>
+  <div id="pickerList"></div>
+</aside>
+</content>
+</invoke>
+
+<!-- ============ PHONE ============ -->
+<div class="stage">
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span class="time">9:41</span>
+    <span class="sicons">
+      <svg width="18" height="12" viewBox="0 0 18 12" fill="#F2F4FF"><rect x="0" y="7.5" width="3" height="4.5" rx="1"/><rect x="4.7" y="5" width="3" height="7" rx="1"/><rect x="9.4" y="2.5" width="3" height="9.5" rx="1"/><rect x="14.1" y="0" width="3" height="12" rx="1"/></svg>
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="none" stroke="#F2F4FF" stroke-width="1.6" stroke-linecap="round"><path d="M1.5 4.2a10.5 10.5 0 0 1 14 0"/><path d="M4.2 7a6.8 6.8 0 0 1 8.6 0"/><path d="M6.9 9.7a3 3 0 0 1 3.2 0"/><circle cx="8.5" cy="11" r=".9" fill="#F2F4FF" stroke="none"/></svg>
+      <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".8" y=".8" width="20" height="10.4" rx="3" stroke="#F2F4FF" stroke-opacity=".45" stroke-width="1.2"/><rect x="2.5" y="2.5" width="13" height="7" rx="1.8" fill="#F2F4FF"/><path d="M23 4v4a2.2 2.2 0 0 0 0-4z" fill="#F2F4FF" fill-opacity=".45"/></svg>
+    </span>
+  </div>
+
+  <div class="screens">
+
+  <!-- ================= 1. ONBOARDING ================= -->
+  <section class="screen" id="s-onboarding">
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:84px">
+      <div style="text-align:center;margin-bottom:34px">
+        <div style="display:inline-block;animation:popin .6s ease-out both">
+          <svg viewBox="0 0 48 48" style="width:84px;height:84px;filter:drop-shadow(0 16px 32px rgba(35,51,214,.55))"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        </div>
+        <div style="font-family:var(--sora);font-weight:700;font-size:30px;letter-spacing:-.02em;margin-top:18px">lentopay</div>
+        <div class="muted" style="font-size:15px;margin-top:6px">Payments that actually work.</div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-trend"/></svg></span>
+        <div><div style="font-weight:700;font-size:14.5px">Buy &amp; sell crypto in seconds</div>
+        <div class="muted" style="font-size:12.5px;margin-top:2px">BTC, ETH, USDT &amp; more — funded by bank transfer.</div></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center;margin-bottom:10px">
+        <span class="tico" style="background:rgba(242,166,26,.13);color:#f5b544"><svg class="ic"><use href="#i-zap"/></svg></span>
+        <div><div style="font-weight:700;font-size:14.5px">Pay bills straight from crypto</div>
+        <div class="muted" style="font-size:12.5px;margin-top:2px">Airtime, electricity, DSTV — settled in seconds.</div></div>
+      </div>
+      <div class="card" style="display:flex;gap:14px;align-items:center">
+        <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-shieldcheck"/></svg></span>
+        <div><div style="font-weight:700;font-size:14.5px">Bank-grade security</div>
+        <div class="muted" style="font-size:12.5px;margin-top:2px">Biometric login, PIN on every transfer, cold storage.</div></div>
+      </div>
+      <div style="margin-top:auto;padding-top:28px">
+        <button class="btn btn-primary" onclick="go('signin')">Create account</button>
+        <button class="btn btn-ghost" style="margin-top:10px" onclick="go('signin')">Sign in</button>
+        <p class="muted" style="text-align:center;font-size:10.5px;margin-top:16px;line-height:1.5">Licensed by the CBN · SEC-registered digital asset custodian<br>PCI-DSS Level 1 · ISO 27001 certified</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 2. SIGN IN ================= -->
+  <section class="screen" id="s-signin">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+    </div>
+    <div class="scr-body" style="display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+        <svg viewBox="0 0 48 48" style="width:38px;height:38px"><rect width="48" height="48" rx="12" fill="#2333D6"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#fff" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#fff"/></svg>
+        <div>
+          <div style="font-family:var(--sora);font-weight:700;font-size:20px">Welcome back</div>
+          <div class="muted" style="font-size:12.5px">Sign in to Lentopay Exchange</div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="loginId">Phone or email</label>
+        <div class="input"><svg class="ic sm muted"><use href="#i-user"/></svg><input id="loginId" value="adaeze.okafor@gmail.com" autocomplete="off"></div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <div class="muted" style="font-size:12.5px;font-weight:500">Enter your 4-digit passcode</div>
+        <div class="pindots" id="loginDots">
+          <span class="pdot"></span><span class="pdot"></span><span class="pdot"></span><span class="pdot"></span>
+        </div>
+      </div>
+      <div class="numpad" style="margin-top:auto">
+        <button class="key" onclick="loginKey('1')">1</button><button class="key" onclick="loginKey('2')">2</button><button class="key" onclick="loginKey('3')">3</button>
+        <button class="key" onclick="loginKey('4')">4</button><button class="key" onclick="loginKey('5')">5</button><button class="key" onclick="loginKey('6')">6</button>
+        <button class="key" onclick="loginKey('7')">7</button><button class="key" onclick="loginKey('8')">8</button><button class="key" onclick="loginKey('9')">9</button>
+        <button class="key" onclick="loginKey('bio')" aria-label="Use Face ID or fingerprint" style="color:#9daaff"><svg class="ic lg"><use href="#i-finger"/></svg></button>
+        <button class="key" onclick="loginKey('0')">0</button>
+        <button class="key" onclick="loginKey('del')" aria-label="Delete"><svg class="ic"><use href="#i-del"/></svg></button>
+      </div>
+      <p class="muted" style="text-align:center;font-size:12px;margin-top:14px">Forgot passcode? <span style="color:var(--cobalt);font-weight:500">Reset it</span></p>
+    </div>
+  </section>
+
+  <!-- ================= 3. HOME ================= -->
+  <section class="screen" id="s-home" data-nav="home">
+    <div class="scr-body">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+        <button class="tap" onclick="go('profile')" aria-label="Profile" style="width:44px;height:44px;border-radius:50%;border:none;background:var(--grad);color:#fff;font-family:var(--sora);font-weight:700;font-size:15px">AO</button>
+        <div style="flex:1;min-width:0">
+          <div style="font-family:var(--sora);font-weight:600;font-size:16px">Good morning, Adaeze</div>
+          <span class="chip chip-ok" style="margin-top:4px"><svg class="ic xs"><use href="#i-shieldcheck"/></svg>Tier 2 · Verified</span>
+        </div>
+        <button class="iconbtn tap" onclick="go('notifications')" aria-label="Notifications" style="position:relative">
+          <svg class="ic"><use href="#i-bell"/></svg>
+          <span style="position:absolute;top:10px;right:11px;width:8px;height:8px;border-radius:50%;background:var(--gold);border:2px solid var(--s1)"></span>
+        </button>
+      </div>
+
+      <div class="gradcard" style="margin-bottom:20px">
+        <div style="position:relative;z-index:1">
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="font-size:12.5px;color:rgba(242,244,255,.75);font-weight:500">Portfolio balance</span>
+            <button class="tap" id="eyeBtn" onclick="toggleEye()" aria-label="Hide balance" style="background:none;border:none;color:rgba(242,244,255,.75);width:32px;height:32px;display:flex;align-items:center;justify-content:center">
+              <svg class="ic sm" id="eyeIc"><use href="#i-eye"/></svg>
+            </button>
+            <span style="margin-left:auto;display:flex;background:rgba(10,14,40,.4);border-radius:99px;padding:3px;gap:2px">
+              <button class="curbtn on" id="curNGN" onclick="setCur('NGN')" style="border:none;border-radius:99px;padding:5px 12px;font-family:var(--dm);font-size:11.5px;font-weight:700;cursor:pointer;background:#fff;color:var(--night)">₦</button>
+              <button class="curbtn" id="curUSDT" onclick="setCur('USDT')" style="border:none;border-radius:99px;padding:5px 12px;font-family:var(--dm);font-size:11.5px;font-weight:700;cursor:pointer;background:transparent;color:rgba(242,244,255,.8)">USDT</button>
+            </span>
+          </div>
+          <div class="bignum" id="balMain" style="font-size:33px;margin-top:10px">₦12,847,203.54</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-top:6px">
+            <span class="muted tnum" id="balSub" style="font-size:13px;color:rgba(242,244,255,.7)">≈ 8,315.34 USDT</span>
+            <span class="chip chip-ok" style="background:rgba(23,178,106,.22)"><svg class="ic xs"><use href="#i-trend"/></svg>+2.4% today</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="qagrid">
+        <button class="qa tap" onclick="go('buy')"><span class="qic"><svg class="ic"><use href="#i-plus"/></svg></span><span>Buy</span></button>
+        <button class="qa tap" onclick="go('markets')"><span class="qic"><svg class="ic"><use href="#i-adl"/></svg></span><span>Sell</span></button>
+        <button class="qa tap" onclick="go('swap')"><span class="qic"><svg class="ic"><use href="#i-swap"/></svg></span><span>Swap</span></button>
+        <button class="qa tap" onclick="go('send')"><span class="qic"><svg class="ic"><use href="#i-send"/></svg></span><span>Send</span></button>
+        <button class="qa tap" onclick="go('bills')"><span class="qic"><svg class="ic"><use href="#i-zap"/></svg></span><span>Bills</span></button>
+        <button class="qa tap" onclick="go('cards')"><span class="qic"><svg class="ic"><use href="#i-card"/></svg></span><span>Cards</span></button>
+        <button class="qa tap" onclick="go('savings')"><span class="qic"><svg class="ic"><use href="#i-save"/></svg></span><span>Save</span></button>
+        <button class="qa tap" onclick="go('efund')"><span class="qic"><svg class="ic"><use href="#i-trend"/></svg></span><span>Invest</span></button>
+      </div>
+
+      <div class="seclab" style="display:flex;align-items:center">Your assets<button class="tap" onclick="go('markets')" style="margin-left:auto;background:none;border:none;color:var(--cobalt);font-family:var(--dm);font-size:12.5px;font-weight:500">See all</button></div>
+      <div class="card" style="padding:4px 14px">
+        <button class="lrow tap" onclick="go('coin-detail')">
+          <span class="coin c-btc">B</span>
+          <span class="grow"><span class="l1" style="display:block">Bitcoin</span><span class="l2" style="display:block">0.0342 BTC</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26" aria-hidden="true"><path d="M1 20 9 16 17 18 25 11 33 13 41 8 49 10 57 5 63 6" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦5,760,990</span><span class="r2 up" style="display:block">+3.2%</span></span>
+        </button>
+        <button class="lrow tap" onclick="go('coin-detail')">
+          <span class="coin c-eth">E</span>
+          <span class="grow"><span class="l1" style="display:block">Ethereum</span><span class="l2" style="display:block">0.85 ETH</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26" aria-hidden="true"><path d="M1 18 9 19 17 14 25 16 33 10 41 12 49 8 57 9 63 5" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦5,006,670</span><span class="r2 up" style="display:block">+1.8%</span></span>
+        </button>
+        <button class="lrow tap" onclick="go('coin-detail')">
+          <span class="coin c-usdt">T</span>
+          <span class="grow"><span class="l1" style="display:block">Tether</span><span class="l2" style="display:block">1,240.50 USDT</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26" aria-hidden="true"><path d="M1 13 9 12.7 17 13.2 25 12.8 33 13 41 12.7 49 13.1 57 12.8 63 13" fill="none" stroke="#9AA3C7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦1,916,573</span><span class="r2 muted" style="display:block">+0.1%</span></span>
+        </button>
+        <button class="lrow tap" onclick="go('coin-detail')">
+          <span class="coin c-sol">S</span>
+          <span class="grow"><span class="l1" style="display:block">Solana</span><span class="l2" style="display:block">0.66 SOL</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26" aria-hidden="true"><path d="M1 6 9 9 17 7 25 12 33 11 41 16 49 14 57 19 63 20" fill="none" stroke="#E5484D" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦161,898</span><span class="r2 down" style="display:block">-2.4%</span></span>
+        </button>
+      </div>
+
+      <button class="gradcard tap" onclick="go('savings')" style="width:100%;border:1px solid rgba(242,166,26,.4);margin-top:20px;display:flex;align-items:center;gap:14px;text-align:left;font-family:var(--dm);color:var(--t1)">
+        <span class="tico" style="background:rgba(242,166,26,.18);color:var(--gold);position:relative;z-index:1"><svg class="ic"><use href="#i-save"/></svg></span>
+        <span style="position:relative;z-index:1;flex:1">
+          <span style="display:block;font-family:var(--sora);font-weight:600;font-size:14.5px">Earn 12% p.a. on USDT savings</span>
+          <span style="display:block;font-size:12px;color:rgba(242,244,255,.72);margin-top:3px">Lock for 90 days. Interest paid at maturity.</span>
+        </span>
+        <svg class="ic sm" style="position:relative;z-index:1;color:rgba(242,244,255,.7)"><use href="#i-chevr"/></svg>
+      </button>
+
+      <div class="seclab" style="display:flex;align-items:center">Recent activity<button class="tap" onclick="go('notifications')" style="margin-left:auto;background:none;border:none;color:var(--cobalt);font-family:var(--dm);font-size:12.5px;font-weight:500">View all</button></div>
+      <div class="card" style="padding:4px 14px">
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-plus"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Bought Bitcoin</span><span class="l2" style="display:block">Today · 14:32</span></span>
+          <span><span class="r1 money" style="display:block">+0.00148 BTC</span><span class="r2 muted" style="display:block">₦250,000</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-send"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Sent to @emeka</span><span class="l2" style="display:block">Today · 11:07</span></span>
+          <span><span class="r1 money" style="display:block">-120 USDT</span><span class="r2 muted" style="display:block">₦185,400</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(242,166,26,.13);color:#f5b544"><svg class="ic"><use href="#i-zap"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">IBEDC electricity</span><span class="l2" style="display:block">Yesterday · 19:45</span></span>
+          <span><span class="r1 money" style="display:block">-₦18,500</span><span class="r2 up" style="display:block">Token issued</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(217,119,6,.14);color:#f5b544"><svg class="ic"><use href="#i-gift"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Amazon gift card · $100</span><span class="l2" style="display:block">6 Jul · 16:20</span></span>
+          <span><span class="r1 money" style="display:block">₦148,500</span><span class="r2" style="display:block;color:var(--amber)">Under review</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 4. MARKETS ================= -->
+  <section class="screen" id="s-markets" data-nav="markets">
+    <div class="scr-body">
+      <div style="font-family:var(--sora);font-weight:700;font-size:22px;margin-bottom:14px">Markets</div>
+      <div class="field" style="margin-bottom:12px">
+        <label for="mktSearch" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Search coins</label>
+        <div class="input"><svg class="ic sm muted"><use href="#i-search"/></svg><input id="mktSearch" placeholder="Search BTC, ETH, SOL…" oninput="mktFilter()"></div>
+      </div>
+      <div class="pills" style="margin-bottom:6px">
+        <button class="pill on" data-tab="all" onclick="mktTab(this,'all')">All</button>
+        <button class="pill" data-tab="gain" onclick="mktTab(this,'gain')">Gainers</button>
+        <button class="pill" data-tab="lose" onclick="mktTab(this,'lose')">Losers</button>
+        <button class="pill" data-tab="fav" onclick="mktTab(this,'fav')">Favorites</button>
+      </div>
+      <div class="card" style="padding:4px 14px" id="mktList">
+        <button class="lrow tap mkt" data-cat="gain" data-fav="1" data-name="bitcoin btc" onclick="go('coin-detail')">
+          <span class="coin c-btc">B</span>
+          <span class="grow"><span class="l1" style="display:block">Bitcoin <span class="muted" style="font-size:11.5px">BTC</span></span><span class="l2" style="display:block">Vol ₦8.4B</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 20 9 16 17 18 25 11 33 13 41 8 49 10 57 5 63 6" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦168,450,000</span><span class="r2 up" style="display:block">+3.2%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="gain" data-fav="0" data-name="ethereum eth" onclick="go('coin-detail')">
+          <span class="coin c-eth">E</span>
+          <span class="grow"><span class="l1" style="display:block">Ethereum <span class="muted" style="font-size:11.5px">ETH</span></span><span class="l2" style="display:block">Vol ₦3.1B</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 18 9 19 17 14 25 16 33 10 41 12 49 8 57 9 63 5" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦5,890,200</span><span class="r2 up" style="display:block">+1.8%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="gain" data-fav="1" data-name="tether usdt" onclick="go('coin-detail')">
+          <span class="coin c-usdt">T</span>
+          <span class="grow"><span class="l1" style="display:block">Tether <span class="muted" style="font-size:11.5px">USDT</span></span><span class="l2" style="display:block">Vol ₦12.9B</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 13 9 12.7 17 13.2 25 12.8 33 13 41 12.7 49 13.1 57 12.8 63 13" fill="none" stroke="#9AA3C7" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦1,545</span><span class="r2 up" style="display:block">+0.1%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="lose" data-fav="1" data-name="solana sol" onclick="go('coin-detail')">
+          <span class="coin c-sol">S</span>
+          <span class="grow"><span class="l1" style="display:block">Solana <span class="muted" style="font-size:11.5px">SOL</span></span><span class="l2" style="display:block">Vol ₦1.8B</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 6 9 9 17 7 25 12 33 11 41 16 49 14 57 19 63 20" fill="none" stroke="#E5484D" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦245,300</span><span class="r2 down" style="display:block">-2.4%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="gain" data-fav="0" data-name="bnb binance" onclick="go('coin-detail')">
+          <span class="coin c-bnb">B</span>
+          <span class="grow"><span class="l1" style="display:block">BNB <span class="muted" style="font-size:11.5px">BNB</span></span><span class="l2" style="display:block">Vol ₦940M</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 16 9 17 17 13 25 15 33 11 41 13 49 9 57 11 63 8" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦1,062,750</span><span class="r2 up" style="display:block">+0.9%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="lose" data-fav="0" data-name="xrp ripple" onclick="go('coin-detail')">
+          <span class="coin c-xrp">X</span>
+          <span class="grow"><span class="l1" style="display:block">XRP <span class="muted" style="font-size:11.5px">XRP</span></span><span class="l2" style="display:block">Vol ₦620M</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 8 9 10 17 9 25 13 33 12 41 15 49 17 57 16 63 19" fill="none" stroke="#E5484D" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦3,890</span><span class="r2 down" style="display:block">-1.2%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="gain" data-fav="0" data-name="cardano ada" onclick="go('coin-detail')">
+          <span class="coin c-ada">A</span>
+          <span class="grow"><span class="l1" style="display:block">Cardano <span class="muted" style="font-size:11.5px">ADA</span></span><span class="l2" style="display:block">Vol ₦310M</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 21 9 18 17 19 25 14 33 15 41 10 49 11 57 7 63 4" fill="none" stroke="#17B26A" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦1,120</span><span class="r2 up" style="display:block">+4.6%</span></span>
+        </button>
+        <button class="lrow tap mkt" data-cat="lose" data-fav="0" data-name="dogecoin doge" onclick="go('coin-detail')">
+          <span class="coin c-doge">D</span>
+          <span class="grow"><span class="l1" style="display:block">Dogecoin <span class="muted" style="font-size:11.5px">DOGE</span></span><span class="l2" style="display:block">Vol ₦210M</span></span>
+          <svg class="spark" width="58" height="24" viewBox="0 0 64 26"><path d="M1 9 9 11 17 10 25 14 33 13 41 15 49 14 57 18 63 17" fill="none" stroke="#E5484D" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><span class="r1 money" style="display:block">₦285</span><span class="r2 down" style="display:block">-0.8%</span></span>
+        </button>
+        <div class="lrow" id="mktEmpty" style="display:none;justify-content:center"><span class="muted" style="font-size:13px;padding:8px 0">No coins match. Try another search.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 5. COIN DETAIL ================= -->
+  <section class="screen" id="s-coin-detail">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title" style="display:flex;align-items:center;gap:9px"><span class="coin c-btc" style="width:28px;height:28px;min-width:28px;font-size:11px">B</span>BTC / NGN</div>
+      <button class="iconbtn tap" aria-label="Add to favorites" style="color:var(--gold)"><svg class="ic" style="fill:currentColor"><use href="#i-star"/></svg></button>
+    </div>
+    <div class="scr-body">
+      <div class="bignum" style="font-size:31px">₦168,450,000</div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+        <span class="chip chip-ok"><svg class="ic xs"><use href="#i-trend"/></svg>+3.2%</span>
+        <span class="muted tnum" style="font-size:12.5px">+₦5,224,800 · past <span id="chartRangeLab">24h</span></span>
+      </div>
+      <div style="margin:18px -4px 10px">
+        <svg viewBox="0 0 350 170" style="width:100%;height:auto;display:block" aria-hidden="true">
+          <defs><linearGradient id="chFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#4353FF" stop-opacity=".38"/><stop offset="1" stop-color="#4353FF" stop-opacity="0"/>
+          </linearGradient></defs>
+          <g stroke="#252C55" stroke-width="1" stroke-dasharray="3 5"><line x1="0" y1="42" x2="350" y2="42"/><line x1="0" y1="85" x2="350" y2="85"/><line x1="0" y1="128" x2="350" y2="128"/></g>
+          <path id="chArea" fill="url(#chFill)" stroke="none"/>
+          <path id="chLine" fill="none" stroke="#4353FF" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle id="chDot" r="4" fill="#4353FF" stroke="#0A0E28" stroke-width="2.5"/>
+        </svg>
+      </div>
+      <div class="seg" style="margin-bottom:20px">
+        <button class="on" onclick="chartRange(this,'1D')">1D</button>
+        <button onclick="chartRange(this,'1W')">1W</button>
+        <button onclick="chartRange(this,'1M')">1M</button>
+        <button onclick="chartRange(this,'1Y')">1Y</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="card" style="padding:13px 14px"><div class="muted" style="font-size:11.5px;font-weight:500">24h high</div><div class="money" style="font-size:14.5px;margin-top:4px">₦171,020,000</div></div>
+        <div class="card" style="padding:13px 14px"><div class="muted" style="font-size:11.5px;font-weight:500">24h low</div><div class="money" style="font-size:14.5px;margin-top:4px">₦162,780,000</div></div>
+        <div class="card" style="padding:13px 14px"><div class="muted" style="font-size:11.5px;font-weight:500">24h volume</div><div class="money" style="font-size:14.5px;margin-top:4px">₦8.4B</div></div>
+        <div class="card" style="padding:13px 14px"><div class="muted" style="font-size:11.5px;font-weight:500">Market cap</div><div class="money" style="font-size:14.5px;margin-top:4px">₦3,320T</div></div>
+      </div>
+      <div class="seclab">About Bitcoin</div>
+      <p class="muted" style="font-size:13.5px;line-height:1.65">Bitcoin is the first and largest cryptocurrency, created in 2009. Supply is capped at 21 million coins. On Lentopay you can buy from as little as ₦1,000, hold securely in cold storage, or sell back to naira instantly.</p>
+    </div>
+    <div style="flex:0 0 auto;display:flex;gap:10px;padding:12px 20px 36px;border-top:1px solid var(--bd);background:rgba(10,14,40,.92)">
+      <button class="btn btn-primary" onclick="go('buy')">Buy</button>
+      <button class="btn btn-ghost" onclick="go('buy')">Sell</button>
+    </div>
+  </section>
+
+  <!-- ================= 6. BUY ================= -->
+  <section class="screen" id="s-buy">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Buy Bitcoin</div>
+      <button class="pill tap on" style="height:40px;display:flex;align-items:center;gap:7px" aria-label="Change coin">
+        <span class="coin c-btc" style="width:20px;height:20px;min-width:20px;font-size:9px">B</span>BTC<svg class="ic xs"><use href="#i-chevd"/></svg>
+      </button>
+    </div>
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:8px">
+      <div style="text-align:center;margin:10px 0 4px">
+        <div class="bignum" id="buyAmt" style="font-size:42px;letter-spacing:-.02em">₦0</div>
+        <div class="muted tnum" id="buyConv" style="font-size:13px;margin-top:8px">≈ 0.00000000 BTC @ ₦168,450,000</div>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin:14px 0 4px">
+        <button class="pill tap" onclick="buySet(50000)">₦50,000</button>
+        <button class="pill tap" onclick="buySet(100000)">₦100,000</button>
+        <button class="pill tap" onclick="buySet(250000)">₦250,000</button>
+      </div>
+      <div class="seclab" style="margin-top:14px;margin-bottom:10px">Pay with</div>
+      <button class="selrow tap on" id="pmBank" onclick="payMethod(this)">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-bank"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:500">Bank transfer <span class="chip chip-cobalt" style="margin-left:6px;font-size:10.5px;padding:3px 8px">Recommended</span></span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Free · settles in ~2 min</span></span>
+        <span class="radio"></span>
+      </button>
+      <button class="selrow tap" onclick="payMethod(this)">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-card"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:500">Debit card</span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">1.4% fee · instant</span></span>
+        <span class="radio"></span>
+      </button>
+      <button class="selrow tap" onclick="payMethod(this)">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-phone"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:500">USSD <span class="muted tnum" style="font-size:12px">*737#</span></span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Works without data · ~5 min</span></span>
+        <span class="radio"></span>
+      </button>
+      <div class="rrow" style="margin-top:10px"><span class="k">Fee</span><span class="v tnum" id="buyFee">₦150 flat</span></div>
+      <div class="numpad" style="margin-top:14px">
+        <button class="key" onclick="buyKey('1')">1</button><button class="key" onclick="buyKey('2')">2</button><button class="key" onclick="buyKey('3')">3</button>
+        <button class="key" onclick="buyKey('4')">4</button><button class="key" onclick="buyKey('5')">5</button><button class="key" onclick="buyKey('6')">6</button>
+        <button class="key" onclick="buyKey('7')">7</button><button class="key" onclick="buyKey('8')">8</button><button class="key" onclick="buyKey('9')">9</button>
+        <button class="key" onclick="buyKey('00')" style="font-size:17px">00</button>
+        <button class="key" onclick="buyKey('0')">0</button>
+        <button class="key" onclick="buyKey('del')" aria-label="Delete"><svg class="ic"><use href="#i-del"/></svg></button>
+      </div>
+      <button class="btn btn-primary" id="buyPreview" style="margin-top:14px" onclick="openBuyConfirm()" disabled>Preview order</button>
+    </div>
+  </section>
+
+  <!-- ================= 6b. BUY SUCCESS ================= -->
+  <section class="screen" id="s-buy-success">
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:110px">
+      <div class="okwrap"><svg viewBox="0 0 24 24"><path d="M4.5 12.5 10 18 19.5 7"/></svg></div>
+      <div style="text-align:center">
+        <div style="font-family:var(--sora);font-weight:700;font-size:21px">Purchase successful</div>
+        <div class="muted" style="font-size:13.5px;margin-top:6px">Your BTC is in your wallet. Receipt below.</div>
+      </div>
+      <div class="card" style="margin-top:24px;padding:6px 16px">
+        <div class="rrow"><span class="k">You bought</span><span class="v money" id="rcAmtBtc">0.00148 BTC</span></div>
+        <div class="rrow"><span class="k">Amount paid</span><span class="v money" id="rcAmtNgn">₦250,150</span></div>
+        <div class="rrow"><span class="k">Rate</span><span class="v tnum">₦168,450,000 / BTC</span></div>
+        <div class="rrow"><span class="k">Fee</span><span class="v tnum">₦150</span></div>
+        <div class="rrow"><span class="k">Payment method</span><span class="v">Bank transfer</span></div>
+        <div class="rrow"><span class="k">Reference</span><span class="v tnum">LP-8827-4410-TX</span></div>
+        <div class="rrow"><span class="k">Date</span><span class="v tnum">8 Jul 2026 · 09:41</span></div>
+        <div class="rrow"><span class="k">Status</span><span class="v"><span class="chip chip-ok"><svg class="ic xs"><use href="#i-check"/></svg>Completed</span></span></div>
+      </div>
+      <div style="margin-top:auto;padding-top:24px">
+        <button class="btn btn-ghost"><svg class="ic sm"><use href="#i-share"/></svg>Share receipt</button>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="resetTo('home')">Done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 7. SWAP ================= -->
+  <section class="screen" id="s-swap">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Swap</div>
+      <button class="iconbtn tap ghost" aria-label="Swap settings" onclick="void(0)"><svg class="ic"><use href="#i-refresh"/></svg></button>
+    </div>
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:8px">
+      <div style="position:relative">
+        <div class="card" style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);font-weight:500">
+            <span>You pay</span><span class="tnum" id="swFromBal">Balance: 1,240.50 USDT</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <div class="bignum" id="swFromAmt" style="font-size:27px;flex:1">1,000</div>
+            <button class="pill tap on" style="height:40px;display:flex;align-items:center;gap:7px">
+              <span class="coin" id="swFromIco" style="width:20px;height:20px;min-width:20px;font-size:9px;background:#26A17B">T</span><span id="swFromSym">USDT</span><svg class="ic xs"><use href="#i-chevd"/></svg>
+            </button>
+          </div>
+          <div class="muted tnum" id="swFromFiat" style="font-size:12px;margin-top:8px">≈ ₦1,545,000</div>
+        </div>
+        <button class="iconbtn tap" onclick="swapFlip()" aria-label="Flip pair" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:3;background:var(--grad);border-color:transparent;box-shadow:0 6px 16px rgba(35,51,214,.5)">
+          <svg class="ic" style="transform:rotate(90deg)"><use href="#i-swap"/></svg>
+        </button>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--t2);font-weight:500">
+            <span>You receive</span><span class="tnum" id="swToBal">Balance: 0.66 SOL</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;margin-top:12px">
+            <div class="bignum" id="swToAmt" style="font-size:27px;flex:1;color:#3ecf8e">6.298</div>
+            <button class="pill tap on" style="height:40px;display:flex;align-items:center;gap:7px">
+              <span class="coin" id="swToIco" style="width:20px;height:20px;min-width:20px;font-size:9px;background:linear-gradient(135deg,#9945FF,#14F195);color:#0c0c1d">S</span><span id="swToSym">SOL</span><svg class="ic xs"><use href="#i-chevd"/></svg>
+            </button>
+          </div>
+          <div class="muted tnum" id="swToFiat" style="font-size:12px;margin-top:8px">≈ ₦1,544,922</div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px;padding:6px 16px">
+        <div class="rrow"><span class="k">Rate</span><span class="v tnum" id="swRate">1 USDT ≈ 0.006298 SOL</span></div>
+        <div class="rrow"><span class="k">Network fee</span><span class="v tnum">0.35 USDT</span></div>
+        <div class="rrow"><span class="k">Max slippage</span><span class="v tnum">0.5% <span class="muted">· auto</span></span></div>
+      </div>
+      <p class="muted" style="font-size:11.5px;line-height:1.55;margin-top:12px">Quote refreshes every 15s. If the rate moves beyond 0.5%, we&rsquo;ll ask you to confirm again — you&rsquo;ll never get a worse rate silently.</p>
+      <div style="margin-top:auto;padding-top:18px">
+        <button class="btn btn-primary" onclick="openPin('swap')">Confirm swap</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 8. SEND ================= -->
+  <section class="screen" id="s-send">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Send USDT</div>
+      <button class="iconbtn tap ghost" aria-label="Scan QR"><svg class="ic"><use href="#i-target"/></svg></button>
+    </div>
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:8px">
+      <div class="seg" style="margin-bottom:18px">
+        <button class="on" id="sendTabTag" onclick="sendTab('tag')">To @lentotag</button>
+        <button id="sendTabAddr" onclick="sendTab('addr')">To wallet address</button>
+      </div>
+
+      <div id="sendPanelTag">
+        <div class="field">
+          <label for="tagInput">Recipient @lentotag</label>
+          <div class="input"><span class="muted" style="font-weight:700">@</span><input id="tagInput" value="adaeze" autocomplete="off"></div>
+        </div>
+        <div class="card" style="display:flex;align-items:center;gap:12px;border-color:rgba(23,178,106,.45);background:rgba(23,178,106,.07)">
+          <span style="width:42px;height:42px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--sora);font-weight:700;font-size:14px">AO</span>
+          <span style="flex:1">
+            <span style="display:block;font-size:14.5px;font-weight:700">Adaeze Okafor</span>
+            <span class="muted" style="display:block;font-size:12px;margin-top:2px">@adaeze · Lentopay user since 2024</span>
+          </span>
+          <span class="chip chip-ok"><svg class="ic xs"><use href="#i-shieldcheck"/></svg>Verified</span>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin-top:10px">Transfers between Lentopay users are instant and free.</p>
+      </div>
+
+      <div id="sendPanelAddr" style="display:none">
+        <div class="field">
+          <label for="addrInput">Wallet address</label>
+          <div class="input"><svg class="ic sm muted"><use href="#i-wallet"/></svg><input id="addrInput" value="TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t" autocomplete="off" style="font-size:12.5px"><button class="tap" style="background:none;border:none;color:var(--cobalt);min-width:44px;height:44px;display:flex;align-items:center;justify-content:center" aria-label="Paste"><svg class="ic sm"><use href="#i-copy"/></svg></button></div>
+        </div>
+        <div class="field" style="margin-bottom:6px"><label>Network</label></div>
+        <button class="selrow tap on" onclick="netPick(this)">
+          <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">TRC20 <span class="chip chip-ok" style="margin-left:6px;font-size:10.5px;padding:3px 8px">Cheapest</span></span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Fee 1 USDT · ~1 min</span></span>
+          <span class="radio"></span>
+        </button>
+        <button class="selrow tap" onclick="netPick(this)">
+          <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">BEP20</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Fee 0.3 USDT · ~3 min · BNB Smart Chain</span></span>
+          <span class="radio"></span>
+        </button>
+        <button class="selrow tap" onclick="netPick(this)">
+          <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">ERC20</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Fee 4.2 USDT · ~4 min · Ethereum</span></span>
+          <span class="radio"></span>
+        </button>
+        <p class="muted" style="font-size:11.5px;margin-top:10px;line-height:1.5">Double-check the network. Sending on the wrong network can lose your funds permanently.</p>
+      </div>
+
+      <div class="field" style="margin-top:18px">
+        <label for="sendAmt">Amount (USDT)</label>
+        <div class="input"><svg class="ic sm muted"><use href="#i-adl" ></use></svg><input id="sendAmt" value="250" inputmode="decimal"><button class="tap" style="background:none;border:none;color:var(--cobalt);font-family:var(--dm);font-weight:700;font-size:12.5px;min-width:44px;height:44px" onclick="document.getElementById('sendAmt').value='1240.50'">MAX</button></div>
+      </div>
+      <div class="rrow"><span class="k">They receive</span><span class="v tnum">250 USDT · ≈ ₦386,250</span></div>
+      <div style="margin-top:auto;padding-top:18px">
+        <button class="btn btn-primary" onclick="openPin('send')">Continue</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 9. BILLS HUB ================= -->
+  <section class="screen" id="s-bills" data-nav="pay">
+    <div class="scr-body">
+      <div style="font-family:var(--sora);font-weight:700;font-size:22px;margin-bottom:4px">Pay</div>
+      <p class="muted" style="font-size:13px;margin-bottom:18px">Settle everyday bills from your naira or USDT wallet.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-phone"/></svg></span><span style="color:var(--t1);font-size:12.5px">Airtime</span></button>
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic"><svg class="ic"><use href="#i-signal"/></svg></span><span style="color:var(--t1);font-size:12.5px">Data</span></button>
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-zap"/></svg></span><span style="color:var(--t1);font-size:12.5px">Electricity</span></button>
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic" style="background:rgba(229,72,77,.13);color:#ff8a8e"><svg class="ic"><use href="#i-tv"/></svg></span><span style="color:var(--t1);font-size:12.5px">Cable TV</span></button>
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-target"/></svg></span><span style="color:var(--t1);font-size:12.5px">Betting</span></button>
+        <button class="qa tap" style="padding:18px 4px 15px" onclick="go('bills-electricity')"><span class="qic"><svg class="ic"><use href="#i-globe"/></svg></span><span style="color:var(--t1);font-size:12.5px">Internet</span></button>
+      </div>
+      <div class="seclab">Sell gift cards</div>
+      <button class="gradcard tap" onclick="go('giftcards')" style="width:100%;display:flex;align-items:center;gap:14px;text-align:left;font-family:var(--dm);color:var(--t1)">
+        <span class="tico" style="background:rgba(242,244,255,.14);color:#fff;position:relative;z-index:1"><svg class="ic"><use href="#i-gift"/></svg></span>
+        <span style="position:relative;z-index:1;flex:1">
+          <span style="display:block;font-family:var(--sora);font-weight:600;font-size:14.5px">Turn gift cards into naira</span>
+          <span style="display:block;font-size:12px;color:rgba(242,244,255,.72);margin-top:3px">Amazon $100 → ₦148,500 · instant quotes</span>
+        </span>
+        <svg class="ic sm" style="position:relative;z-index:1;color:rgba(242,244,255,.7)"><use href="#i-chevr"/></svg>
+      </button>
+      <div class="seclab">Recent payments</div>
+      <div class="card" style="padding:4px 14px">
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-zap"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">IBEDC · Meter 45021998762</span><span class="l2" style="display:block">Yesterday · 19:45</span></span>
+          <span><span class="r1 money" style="display:block">₦18,500</span><span class="r2 up" style="display:block">Successful</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-phone"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">MTN airtime · 0803 214 7789</span><span class="l2" style="display:block">5 Jul · 08:12</span></span>
+          <span><span class="r1 money" style="display:block">₦2,000</span><span class="r2 up" style="display:block">Successful</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(229,72,77,.13);color:#ff8a8e"><svg class="ic"><use href="#i-tv"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">DSTV Compact · 7023 4481 90</span><span class="l2" style="display:block">1 Jul · 21:03</span></span>
+          <span><span class="r1 money" style="display:block">₦15,700</span><span class="r2 up" style="display:block">Successful</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-signal"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">GLO data 10GB · 0805 991 2246</span><span class="l2" style="display:block">28 Jun · 13:40</span></span>
+          <span><span class="r1 money" style="display:block">₦4,500</span><span class="r2 up" style="display:block">Successful</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 9b. ELECTRICITY ================= -->
+  <section class="screen" id="s-bills-electricity">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Electricity</div>
+    </div>
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:8px">
+      <div class="field" style="margin-bottom:6px"><label>Distribution company</label></div>
+      <button class="selrow tap on">
+        <span class="tico" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-zap"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">IBEDC — Ibadan Disco</span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Prepaid &amp; postpaid meters</span></span>
+        <svg class="ic sm muted"><use href="#i-chevd"/></svg>
+      </button>
+      <div class="field" style="margin-top:16px">
+        <label for="meterNo">Meter number</label>
+        <div class="input"><svg class="ic sm muted"><use href="#i-target"/></svg><input id="meterNo" value="45021998762" inputmode="numeric"></div>
+      </div>
+      <div class="card" style="display:flex;align-items:center;gap:12px;border-color:rgba(23,178,106,.45);background:rgba(23,178,106,.07);padding:13px 14px">
+        <svg class="ic" style="color:#3ecf8e"><use href="#i-shieldcheck"/></svg>
+        <span style="flex:1">
+          <span style="display:block;font-size:13.5px;font-weight:700;color:#3ecf8e">Meter verified</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">ADAEZE OKAFOR — Prepaid · Ring Rd, Ibadan</span>
+        </span>
+      </div>
+      <div class="field" style="margin-top:18px;margin-bottom:8px"><label>Amount</label></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="pill tap" onclick="elecAmt(this,'₦5,000')">₦5,000</button>
+        <button class="pill tap" onclick="elecAmt(this,'₦10,000')">₦10,000</button>
+        <button class="pill tap on" onclick="elecAmt(this,'₦18,500')">₦18,500</button>
+        <button class="pill tap" onclick="elecAmt(this,'₦20,000')">₦20,000</button>
+      </div>
+      <div class="field" style="margin-top:18px;margin-bottom:6px"><label>Pay with</label></div>
+      <button class="selrow tap on">
+        <span class="coin c-usdt" style="width:36px;height:36px;min-width:36px;font-size:13px">T</span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">USDT wallet</span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Balance 1,240.50 USDT · ≈ ₦1,916,573</span></span>
+        <svg class="ic sm muted"><use href="#i-chevd"/></svg>
+      </button>
+      <div class="card" style="margin-top:14px;padding:6px 16px">
+        <div class="rrow"><span class="k">You pay</span><span class="v money" id="elecPay">₦18,500 · 11.97 USDT</span></div>
+        <div class="rrow"><span class="k">Fee</span><span class="v tnum">₦0 — on us</span></div>
+        <div class="rrow"><span class="k">Token delivery</span><span class="v">Instant, in app + SMS</span></div>
+      </div>
+      <div style="margin-top:auto;padding-top:18px">
+        <button class="btn btn-primary" onclick="go('bills-success')">Pay ₦18,500</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 9c. BILLS SUCCESS ================= -->
+  <section class="screen" id="s-bills-success">
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:110px">
+      <div class="okwrap"><svg viewBox="0 0 24 24"><path d="M4.5 12.5 10 18 19.5 7"/></svg></div>
+      <div style="text-align:center">
+        <div style="font-family:var(--sora);font-weight:700;font-size:21px">Payment successful</div>
+        <div class="muted" style="font-size:13.5px;margin-top:6px">Load this token on your meter. We&rsquo;ve also sent it by SMS.</div>
+      </div>
+      <button class="card tap" onclick="void(0)" style="width:100%;margin-top:24px;text-align:center;border-color:rgba(67,83,255,.5);background:rgba(67,83,255,.08);font-family:var(--dm);color:var(--t1)">
+        <span class="muted" style="display:block;font-size:11.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase">Prepaid token</span>
+        <span class="money" style="display:block;font-size:21px;margin-top:8px;letter-spacing:.04em">4829-1017-5533-2296</span>
+        <span style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;color:var(--cobalt);font-size:12.5px;font-weight:500"><svg class="ic xs"><use href="#i-copy"/></svg>Tap to copy</span>
+      </button>
+      <div class="card" style="margin-top:12px;padding:6px 16px">
+        <div class="rrow"><span class="k">Disco</span><span class="v">IBEDC — Ibadan</span></div>
+        <div class="rrow"><span class="k">Meter</span><span class="v tnum">45021998762 · ADAEZE OKAFOR</span></div>
+        <div class="rrow"><span class="k">Units</span><span class="v tnum">142.3 kWh</span></div>
+        <div class="rrow"><span class="k">Paid</span><span class="v money">₦18,500 <span class="muted" style="font-weight:400">(11.97 USDT)</span></span></div>
+        <div class="rrow"><span class="k">Reference</span><span class="v tnum">LP-EL-2214-9083</span></div>
+      </div>
+      <div style="margin-top:auto;padding-top:24px">
+        <button class="btn btn-ghost"><svg class="ic sm"><use href="#i-share"/></svg>Share receipt</button>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="resetTo('bills')">Done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 10. GIFT CARDS ================= -->
+  <section class="screen" id="s-giftcards">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Sell gift cards</div>
+    </div>
+    <div class="scr-body" id="gcForm" style="padding-top:8px">
+      <div class="field" style="margin-bottom:8px"><label>Pick a brand</label></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <button class="card tap gcb on" onclick="gcBrand(this)" style="text-align:center;padding:16px 6px;border-color:var(--cobalt);background:rgba(67,83,255,.09)"><span style="font-family:var(--sora);font-weight:800;font-size:13.5px;letter-spacing:-.02em">amazon</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">₦1,485/$</span></button>
+        <button class="card tap gcb" onclick="gcBrand(this)" style="text-align:center;padding:16px 6px"><span style="font-family:var(--sora);font-weight:800;font-size:13.5px;letter-spacing:-.02em">iTunes</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">₦1,410/$</span></button>
+        <button class="card tap gcb" onclick="gcBrand(this)" style="text-align:center;padding:16px 6px"><span style="font-family:var(--sora);font-weight:800;font-size:13.5px;letter-spacing:-.02em">STEAM</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">₦1,450/$</span></button>
+        <button class="card tap gcb" onclick="gcBrand(this)" style="text-align:center;padding:16px 6px"><span style="font-family:var(--sora);font-weight:800;font-size:13px;letter-spacing:-.02em">Google Play</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">₦1,395/$</span></button>
+        <button class="card tap gcb" onclick="gcBrand(this)" style="text-align:center;padding:16px 6px"><span style="font-family:var(--sora);font-weight:800;font-size:13.5px;letter-spacing:-.02em">RAZER</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">₦1,430/$</span></button>
+        <button class="card tap gcb" onclick="void(0)" style="text-align:center;padding:16px 6px"><span class="muted" style="font-size:13px;font-weight:500">More…</span><span class="muted" style="display:block;font-size:10.5px;margin-top:5px">32 brands</span></button>
+      </div>
+      <div class="seclab">Card value</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="pill tap" onclick="gcVal(this,25)">$25</button>
+        <button class="pill tap" onclick="gcVal(this,50)">$50</button>
+        <button class="pill tap on" onclick="gcVal(this,100)">$100</button>
+        <button class="pill tap" onclick="gcVal(this,200)">$200</button>
+      </div>
+      <div class="gradcard" style="padding:16px 18px">
+        <div style="position:relative;z-index:1;display:flex;align-items:center;gap:12px">
+          <span style="flex:1">
+            <span style="display:block;font-size:12px;color:rgba(242,244,255,.72)">You&rsquo;ll receive</span>
+            <span class="money" id="gcQuote" style="display:block;font-size:25px;margin-top:4px">₦148,500</span>
+            <span class="muted" id="gcQuoteSub" style="display:block;font-size:11.5px;margin-top:3px;color:rgba(242,244,255,.65)">$100 Amazon (US) · physical card</span>
+          </span>
+          <span class="chip chip-gold" id="gcRateBadge">₦1,485/$</span>
+        </div>
+      </div>
+      <div class="seclab" style="margin-bottom:8px">Payout speed</div>
+      <div class="seg">
+        <button class="on" id="gcInstant" onclick="gcSpeed('instant')">Instant quote</button>
+        <button id="gcManual" onclick="gcSpeed('manual')">Manual review · ~15 min</button>
+      </div>
+      <p class="muted" id="gcSpeedNote" style="font-size:11.5px;margin-top:8px;line-height:1.5">Instant: automated check, paid to your naira wallet immediately. Rate shown is final.</p>
+      <div class="seclab" style="margin-bottom:8px">Card photo</div>
+      <div class="dropzone tap" role="button" tabindex="0">
+        <svg class="ic lg" style="margin:0 auto 8px;display:block;color:#7480b3"><use href="#i-camera"/></svg>
+        <div style="font-size:13.5px;font-weight:500;color:var(--t1)">Upload card photo</div>
+        <div style="font-size:11.5px;margin-top:4px">Clear photo of the code · JPG or PNG · max 10MB</div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:18px" onclick="gcSubmit()">Submit card</button>
+    </div>
+    <div class="scr-body" id="gcPending" style="display:none;flex-direction:column;padding-top:110px">
+      <div class="okwrap" style="background:rgba(242,166,26,.12);border-color:rgba(217,119,6,.5)"><svg viewBox="0 0 24 24" style="stroke:#f5b544"><circle cx="12" cy="12" r="9" style="stroke-dasharray:none;animation:none;stroke-dashoffset:0"/><path d="M12 7v5l3.5 2"/></svg></div>
+      <div style="text-align:center">
+        <div style="font-family:var(--sora);font-weight:700;font-size:21px">Card submitted</div>
+        <div class="muted" style="font-size:13.5px;margin-top:6px;line-height:1.6">We&rsquo;re checking your card now.<br>We&rsquo;ll update you in about 15 minutes.</div>
+        <div style="margin-top:14px"><span class="chip chip-amber"><svg class="ic xs"><use href="#i-clock"/></svg>Under review</span></div>
+      </div>
+      <div class="card" style="margin-top:24px;padding:6px 16px">
+        <div class="rrow"><span class="k">Card</span><span class="v" id="gcRcBrand">Amazon (US) · $100</span></div>
+        <div class="rrow"><span class="k">Quoted payout</span><span class="v money" id="gcRcQuote">₦148,500</span></div>
+        <div class="rrow"><span class="k">Submitted</span><span class="v tnum">8 Jul 2026 · 09:41</span></div>
+        <div class="rrow"><span class="k">Reference</span><span class="v tnum">LP-GC-5511-2087</span></div>
+      </div>
+      <div style="margin-top:auto;padding-top:24px">
+        <button class="btn btn-primary" onclick="gcReset();resetTo('home')">Back to Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 11. SAVINGS ================= -->
+  <section class="screen" id="s-savings">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">USDT Savings</div>
+    </div>
+    <div class="scr-body" style="padding-top:8px">
+      <div class="gradcard" style="border-color:rgba(242,166,26,.45)">
+        <div style="position:relative;z-index:1">
+          <span class="chip chip-gold"><svg class="ic xs"><use href="#i-save"/></svg>Earn while you hold</span>
+          <div class="bignum" style="font-size:31px;margin-top:12px">Up to 12% <span style="font-size:16px;font-weight:600;color:rgba(242,244,255,.75)">p.a.</span></div>
+          <div style="font-size:12.5px;color:rgba(242,244,255,.72);margin-top:6px">On USDT · interest accrues daily · no hidden fees</div>
+        </div>
+      </div>
+      <div class="seclab">Choose a plan</div>
+      <button class="selrow tap svp" data-rate="8" data-days="365" data-name="Flexible" onclick="svPlan(this)">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-refresh"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">Flexible <span class="money" style="color:#9daaff">8% p.a.</span></span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Withdraw anytime · interest paid daily</span></span>
+        <span class="radio"></span>
+      </button>
+      <button class="selrow tap svp" data-rate="10" data-days="30" data-name="30-day Fixed" onclick="svPlan(this)">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-clock"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">30-day Fixed <span class="money" style="color:#9daaff">10% p.a.</span></span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Locked 30 days · paid at maturity</span></span>
+        <span class="radio"></span>
+      </button>
+      <button class="selrow tap svp on" data-rate="12" data-days="90" data-name="90-day Fixed" onclick="svPlan(this)">
+        <span class="tico" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-save"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:700">90-day Fixed <span class="money" style="color:#f5b544">12% p.a.</span> <span class="chip chip-gold" style="margin-left:4px;font-size:10.5px;padding:3px 8px">Best rate</span></span>
+        <span class="muted" style="display:block;font-size:12px;margin-top:2px">Locked 90 days · paid at maturity</span></span>
+        <span class="radio"></span>
+      </button>
+      <div class="seclab">Estimate your earnings</div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:baseline">
+          <label for="svSlider" style="font-size:12.5px;font-weight:500;color:var(--t2)">Amount to save</label>
+          <span class="money tnum" id="svAmtLab" style="font-size:17px">1,000 USDT</span>
+        </div>
+        <input id="svSlider" type="range" min="100" max="10000" step="100" value="1000" oninput="svCalc()" style="width:100%;margin:14px 0 4px;accent-color:#4353FF;height:28px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2)"><span>100</span><span>10,000 USDT</span></div>
+        <div style="border-top:1px dashed rgba(37,44,85,.8);margin-top:14px;padding-top:12px;display:flex;justify-content:space-between;align-items:center">
+          <span>
+            <span class="muted" style="display:block;font-size:11.5px" id="svProjLab">Projected interest · 90 days @ 12% p.a.</span>
+            <span class="money up" id="svProj" style="display:block;font-size:19px;margin-top:4px">+29.59 USDT</span>
+          </span>
+          <button class="btn btn-primary" style="width:auto;height:44px;padding:0 18px;font-size:13.5px" onclick="openPin('save')">Start saving</button>
+        </div>
+      </div>
+      <div class="seclab">Active plan</div>
+      <div class="card" style="display:flex;gap:16px;align-items:center">
+        <div class="ringwrap">
+          <svg width="74" height="74" viewBox="0 0 74 74">
+            <circle cx="37" cy="37" r="31" fill="none" stroke="#252C55" stroke-width="7"/>
+            <circle cx="37" cy="37" r="31" fill="none" stroke="#4353FF" stroke-width="7" stroke-linecap="round" stroke-dasharray="194.8" stroke-dashoffset="138.3"/>
+          </svg>
+          <span class="pct">29%</span>
+        </div>
+        <div style="flex:1">
+          <div style="font-size:14px;font-weight:700">90-day Fixed · <span class="money">1,000 USDT</span></div>
+          <div class="muted" style="font-size:12px;margin-top:4px">Day 26 of 90 · accrued <span class="up money" style="font-size:12px">+8.55 USDT</span></div>
+          <div class="muted" style="font-size:12px;margin-top:3px">Matures 10 Sep 2026 · pays 1,029.59 USDT</div>
+        </div>
+        <svg class="ic sm muted"><use href="#i-chevr"/></svg>
+      </div>
+      <p class="muted" style="font-size:11px;line-height:1.55;margin-top:14px">Yields come from over-collateralized institutional lending. Rates reviewed monthly; your locked rate never changes mid-term.</p>
+    </div>
+  </section>
+
+  <!-- ================= 12. E-FUND ================= -->
+  <section class="screen" id="s-efund">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">E-Fund</div>
+    </div>
+    <div class="scr-body" style="padding-top:8px">
+      <p class="muted" style="font-size:13px;margin-bottom:14px">Curated private-market assets. Invest from $50 in dollar terms.</p>
+      <div class="pills" style="margin-bottom:14px">
+        <button class="pill on" onclick="efTab(this,'all')">All</button>
+        <button class="pill" onclick="efTab(this,'con')">Conservative</button>
+        <button class="pill" onclick="efTab(this,'bal')">Balanced</button>
+        <button class="pill" onclick="efTab(this,'agg')">Aggressive</button>
+      </div>
+      <button class="card tap eff" data-band="bal" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1);margin-bottom:10px" onclick="openEfund('Lagos Solar Grid Notes','18% target ROI','12 months','$100','bal')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tico" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-sun"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Lagos Solar Grid Notes</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Infrastructure debt · 12 mo · Min $100</span></span>
+          <span class="chip chip-cobalt">Balanced</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,44,85,.55)">
+          <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:14.5px">18%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Funded</span><span class="money" style="font-size:14.5px">82%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Investors</span><span class="money" style="font-size:14.5px">1,204</span></span>
+        </div>
+      </button>
+      <button class="card tap eff" data-band="agg" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1);margin-bottom:10px" onclick="openEfund('AgriYield Series B','22% target ROI','18 months','$250','agg')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-leaf"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">AgriYield Series B</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Agritech venture · 18 mo · Min $250</span></span>
+          <span class="chip chip-bad" style="color:#ff9a9e">Aggressive</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,44,85,.55)">
+          <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:14.5px">22%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Funded</span><span class="money" style="font-size:14.5px">64%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Investors</span><span class="money" style="font-size:14.5px">688</span></span>
+        </div>
+      </button>
+      <button class="card tap eff" data-band="agg" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1);margin-bottom:10px" onclick="openEfund('Pre-IPO Tech Basket','25% target ROI','24 months','$500','agg')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-trend"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Pre-IPO Tech Basket</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Late-stage equity · 24 mo · Min $500</span></span>
+          <span class="chip chip-bad" style="color:#ff9a9e">Aggressive</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,44,85,.55)">
+          <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:14.5px">25%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Funded</span><span class="money" style="font-size:14.5px">47%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Investors</span><span class="money" style="font-size:14.5px">302</span></span>
+        </div>
+      </button>
+      <button class="card tap eff" data-band="con" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1);margin-bottom:10px" onclick="openEfund('Naira Money Market Plus','14% target ROI','6 months','$50','con')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-bank"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Naira Money Market Plus</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">T-bills &amp; commercial paper · 6 mo · Min $50</span></span>
+          <span class="chip chip-ok">Conservative</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,44,85,.55)">
+          <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:14.5px">14%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Funded</span><span class="money" style="font-size:14.5px">91%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Investors</span><span class="money" style="font-size:14.5px">2,913</span></span>
+        </div>
+      </button>
+      <button class="card tap eff" data-band="con" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1);margin-bottom:10px" onclick="openEfund('FGN Eurobond Ladder','9.5% target ROI','12 months','$100','con')">
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-shieldcheck"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">FGN Eurobond Ladder</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Sovereign USD bonds · 12 mo · Min $100</span></span>
+          <span class="chip chip-ok">Conservative</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(37,44,85,.55)">
+          <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:14.5px">9.5%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Funded</span><span class="money" style="font-size:14.5px">73%</span></span>
+          <span><span class="muted" style="display:block;font-size:10.5px">Investors</span><span class="money" style="font-size:14.5px">1,547</span></span>
+        </div>
+      </button>
+      <p class="muted" style="font-size:11px;line-height:1.55;margin-top:6px">Investments are subject to SEC regulations; capital at risk. Target returns are not guaranteed. Read each offer document before investing.</p>
+    </div>
+  </section>
+
+  <!-- ================= 13. PROFILE ================= -->
+  <section class="screen" id="s-profile" data-nav="profile">
+    <div class="scr-body">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">
+        <span style="width:62px;height:62px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--sora);font-weight:700;font-size:21px;box-shadow:0 10px 24px -8px rgba(35,51,214,.6)">AO</span>
+        <span style="flex:1">
+          <span style="display:block;font-family:var(--sora);font-weight:700;font-size:19px">Adaeze Okafor</span>
+          <span class="muted" style="display:block;font-size:13px;margin-top:2px">@adaeze · joined Mar 2024</span>
+        </span>
+        <button class="iconbtn tap" onclick="go('notifications')" aria-label="Notifications"><svg class="ic"><use href="#i-bell"/></svg></button>
+      </div>
+      <button class="card tap" onclick="go('kyc')" style="width:100%;text-align:left;font-family:var(--dm);color:var(--t1)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="chip chip-ok"><svg class="ic xs"><use href="#i-shieldcheck"/></svg>Tier 2 · Verified</span>
+          <span style="margin-left:auto;color:var(--cobalt);font-size:13px;font-weight:700;display:flex;align-items:center;gap:3px">Upgrade<svg class="ic xs"><use href="#i-chevr"/></svg></span>
+        </div>
+        <div style="height:8px;border-radius:5px;background:var(--s2);margin-top:13px;overflow:hidden">
+          <div style="width:66%;height:100%;border-radius:5px;background:var(--grad)"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--t2);margin-top:7px">
+          <span>Tier 2 of 3</span><span>Tier 3 unlocks unlimited withdrawals</span>
+        </div>
+      </button>
+      <div class="seclab">Account</div>
+      <div class="card" style="padding:4px 14px">
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-lock"/></svg></span><span class="grow"><span class="l1" style="display:block">Security</span><span class="l2" style="display:block">Passcode, biometrics, 2FA</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-bank"/></svg></span><span class="grow"><span class="l1" style="display:block">Bank accounts</span><span class="l2" style="display:block">GTBank ••7204 · Kuda ••1188</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(242,166,26,.13);color:#f5b544"><svg class="ic"><use href="#i-users"/></svg></span><span class="grow"><span class="l1" style="display:block">Referrals</span><span class="l2" style="display:block">Earn ₦1,000 per friend · 4 joined</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-file"/></svg></span><span class="grow"><span class="l1" style="display:block">Statements &amp; reports</span><span class="l2" style="display:block">Monthly PDF, tax export</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-help"/></svg></span><span class="grow"><span class="l1" style="display:block">Support</span><span class="l2" style="display:block">Chat with us · avg reply 2 min</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+        <button class="lrow tap" onclick="void(0)"><span class="tico" style="background:rgba(154,163,199,.12);color:var(--t2)"><svg class="ic"><use href="#i-info"/></svg></span><span class="grow"><span class="l1" style="display:block">About Lentopay</span><span class="l2" style="display:block">v1.0 · Terms · Privacy</span></span><svg class="ic sm muted"><use href="#i-chevr"/></svg></button>
+      </div>
+      <button class="btn btn-danger" style="margin-top:20px" onclick="resetTo('onboarding')"><svg class="ic sm"><use href="#i-logout"/></svg>Log out</button>
+      <p class="muted" style="text-align:center;font-size:10.5px;margin-top:18px;line-height:1.6">Licensed by the Central Bank of Nigeria · SEC-registered<br>PCI-DSS Level 1 · ISO 27001 · 99.98% uptime last 90 days</p>
+    </div>
+  </section>
+
+  <!-- ================= 14. KYC ================= -->
+  <section class="screen" id="s-kyc">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Verification tiers</div>
+    </div>
+    <div class="scr-body" style="padding-top:8px">
+      <div class="card" style="margin-bottom:10px;opacity:.75">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-check"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Tier 1 — BVN</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">BVN + phone number</span></span>
+          <span class="chip chip-ok"><svg class="ic xs"><use href="#i-check"/></svg>Done</span>
+        </div>
+        <div class="rrow" style="margin-top:8px;padding-bottom:2px"><span class="k">Daily limit</span><span class="v tnum">₦50,000 · no crypto withdrawals</span></div>
+      </div>
+      <div class="card" style="margin-bottom:10px;border-color:var(--cobalt);background:rgba(67,83,255,.08);box-shadow:0 0 0 3px rgba(67,83,255,.12)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="tico" style="background:rgba(67,83,255,.18);color:#9daaff"><svg class="ic"><use href="#i-shieldcheck"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Tier 2 — ID + selfie</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">NIN or passport + liveness check</span></span>
+          <span class="chip chip-cobalt">You are here</span>
+        </div>
+        <div class="rrow" style="margin-top:8px"><span class="k">Daily limit</span><span class="v tnum">₦5,000,000</span></div>
+        <div class="rrow" style="padding-bottom:2px"><span class="k">Crypto withdrawals</span><span class="v tnum">Up to 5,000 USDT/day</span></div>
+      </div>
+      <div class="card" style="margin-bottom:10px;border-color:rgba(242,166,26,.4)">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span class="tico" style="background:rgba(242,166,26,.14);color:#f5b544"><svg class="ic"><use href="#i-star"/></svg></span>
+          <span style="flex:1"><span style="display:block;font-size:14.5px;font-weight:700">Tier 3 — Address proof</span>
+          <span class="muted" style="display:block;font-size:12px;margin-top:2px">Utility bill or bank statement</span></span>
+          <span class="chip chip-gold">Unlock</span>
+        </div>
+        <div class="rrow" style="margin-top:8px"><span class="k">Daily limit</span><span class="v tnum">Unlimited</span></div>
+        <div class="rrow" style="padding-bottom:2px"><span class="k">Extras</span><span class="v">E-Fund access · higher card limits</span></div>
+      </div>
+      <div class="seclab">Upgrade to Tier 3</div>
+      <button class="selrow tap" id="kycDoc1" onclick="kycUpload(this,'Utility bill')">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-file"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:500">Utility bill</span>
+        <span class="muted kyc-sub" style="display:block;font-size:12px;margin-top:2px">PHCN, water or waste bill · last 3 months</span></span>
+        <span class="kyc-state" style="color:var(--cobalt);font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px"><svg class="ic sm"><use href="#i-share"/></svg>Upload</span>
+      </button>
+      <button class="selrow tap" id="kycDoc2" onclick="kycUpload(this,'Bank statement')">
+        <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-bank"/></svg></span>
+        <span style="flex:1"><span style="display:block;font-size:14px;font-weight:500">Bank statement</span>
+        <span class="muted kyc-sub" style="display:block;font-size:12px;margin-top:2px">Any Nigerian bank · shows your address</span></span>
+        <span class="kyc-state" style="color:var(--cobalt);font-size:12.5px;font-weight:700;display:flex;align-items:center;gap:5px"><svg class="ic sm"><use href="#i-share"/></svg>Upload</span>
+      </button>
+      <button class="btn btn-primary" id="kycSubmit" style="margin-top:16px" onclick="kycSubmit()" disabled>Submit for review</button>
+      <p class="muted" style="font-size:11.5px;text-align:center;margin-top:12px">Reviews finish in under 24 hours. We&rsquo;ll notify you either way.</p>
+    </div>
+  </section>
+
+  <!-- ================= 15. NOTIFICATIONS ================= -->
+  <section class="screen" id="s-notifications">
+    <div class="scr-head">
+      <button class="iconbtn tap" onclick="back()" aria-label="Back"><svg class="ic"><use href="#i-back"/></svg></button>
+      <div class="scr-title">Notifications</div>
+      <button class="tap" style="background:none;border:none;color:var(--cobalt);font-family:var(--dm);font-size:12.5px;font-weight:500;min-height:44px">Mark all read</button>
+    </div>
+    <div class="scr-body" style="padding-top:8px">
+      <div class="card" style="padding:4px 14px">
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-adown"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">Deposit confirmed</span><span class="l2" style="display:block;line-height:1.5">₦250,000 from GTBank ••7204 is in your naira wallet.</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">09:38</span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(242,166,26,.13);color:#f5b544"><svg class="ic"><use href="#i-bell"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">Price alert · BTC</span><span class="l2" style="display:block;line-height:1.5">Bitcoin crossed ₦168,000,000 — up 3.2% in 24h.</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">08:12</span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-save"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">Savings matured</span><span class="l2" style="display:block;line-height:1.5">Your 30-day plan paid out 508.22 USDT (+8.22 interest).</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">Yesterday</span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(217,119,6,.14);color:#f5b544"><svg class="ic"><use href="#i-clock"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">Gift card under review</span><span class="l2" style="display:block;line-height:1.5">Amazon $100 — we&rsquo;ll update you in ~15 minutes.</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">6 Jul</span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-shieldcheck"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">New device signed in</span><span class="l2" style="display:block;line-height:1.5">iPhone 15 · Lagos, NG. Wasn&rsquo;t you? Lock your account.</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">5 Jul</span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(242,166,26,.13);color:#f5b544"><svg class="ic"><use href="#i-gift"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block;font-weight:700">Referral bonus paid</span><span class="l2" style="display:block;line-height:1.5">₦1,000 for inviting Emeka. Invite more, earn more.</span></span>
+          <span class="r2 muted" style="align-self:flex-start;margin-top:4px">3 Jul</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 16. CARDS ================= -->
+  <section class="screen" id="s-cards" data-nav="cards">
+    <div class="scr-body">
+      <div style="font-family:var(--sora);font-weight:700;font-size:22px;margin-bottom:16px">Cards</div>
+      <div style="border-radius:20px;padding:20px;background:linear-gradient(135deg,#2333D6 0%,#4353FF 55%,#1a2589 130%);position:relative;overflow:hidden;box-shadow:0 18px 40px -14px rgba(35,51,214,.65)">
+        <div style="position:absolute;width:260px;height:260px;border-radius:50%;right:-90px;top:-130px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%)"></div>
+        <div style="display:flex;align-items:center;gap:8px;position:relative">
+          <svg viewBox="0 0 48 48" style="width:28px;height:28px"><rect width="48" height="48" rx="12" fill="#fff"/><path d="M16 11v19a6 6 0 0 0 6 6h5" stroke="#2333D6" stroke-width="4.5" stroke-linecap="round" fill="none"/><path d="M26 11h4a7 7 0 0 1 0 14h-4V11z" fill="#2333D6"/></svg>
+          <span style="font-family:var(--sora);font-weight:700;font-size:15px;color:#fff">lentopay</span>
+          <span style="margin-left:auto;font-size:11px;font-weight:700;color:rgba(255,255,255,.85);letter-spacing:.08em">VIRTUAL · USD</span>
+        </div>
+        <div class="money" style="font-size:19px;letter-spacing:.14em;color:#fff;margin-top:26px">•••• •••• •••• 4921</div>
+        <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:18px;position:relative">
+          <span><span style="display:block;font-size:9.5px;color:rgba(255,255,255,.65);letter-spacing:.1em">CARD HOLDER</span><span style="display:block;font-size:13px;font-weight:700;color:#fff;margin-top:3px">ADAEZE OKAFOR</span></span>
+          <span><span style="display:block;font-size:9.5px;color:rgba(255,255,255,.65);letter-spacing:.1em">EXPIRES</span><span style="display:block;font-size:13px;font-weight:700;color:#fff;margin-top:3px" class="tnum">09/28</span></span>
+          <span style="font-family:var(--sora);font-weight:800;font-size:15px;color:#fff;font-style:italic">VISA</span>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:16px">
+        <span style="flex:1"><span class="muted" style="display:block;font-size:11.5px">Card balance</span><span class="money" style="display:block;font-size:21px;margin-top:2px">$412.50</span></span>
+        <button class="btn btn-primary tap" style="width:auto;height:44px;padding:0 16px;font-size:13.5px" onclick="void(0)"><svg class="ic sm"><use href="#i-plus"/></svg>Fund</button>
+        <button class="btn btn-ghost tap" style="width:auto;height:44px;padding:0 16px;font-size:13.5px" onclick="void(0)"><svg class="ic sm"><use href="#i-snow"/></svg>Freeze</button>
+      </div>
+      <div class="card" style="margin-top:14px;padding:12px 14px;display:flex;gap:10px;align-items:center;border-color:rgba(242,166,26,.4)">
+        <svg class="ic" style="color:#f5b544"><use href="#i-info"/></svg>
+        <span class="muted" style="font-size:12px;line-height:1.5">Works on Netflix, Spotify, AWS &amp; anywhere Visa is accepted online. Funding rate today: <span class="tnum" style="color:var(--t1)">₦1,560/$</span>.</span>
+      </div>
+      <div class="seclab">Card transactions</div>
+      <div class="card" style="padding:4px 14px">
+        <div class="lrow">
+          <span class="tico" style="background:rgba(229,72,77,.13);color:#ff8a8e"><svg class="ic"><use href="#i-tv"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Netflix.com</span><span class="l2" style="display:block">Today · 06:02</span></span>
+          <span><span class="r1 money" style="display:block">-$7.99</span><span class="r2 muted" style="display:block">₦12,464</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-signal"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Spotify P2P</span><span class="l2" style="display:block">5 Jul · 22:41</span></span>
+          <span><span class="r1 money" style="display:block">-$2.99</span><span class="r2 muted" style="display:block">₦4,664</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(67,83,255,.14);color:#9daaff"><svg class="ic"><use href="#i-globe"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Apple.com/bill</span><span class="l2" style="display:block">2 Jul · 09:15</span></span>
+          <span><span class="r1 money" style="display:block">-$0.99</span><span class="r2 muted" style="display:block">₦1,544</span></span>
+        </div>
+        <div class="lrow">
+          <span class="tico" style="background:rgba(23,178,106,.13);color:#3ecf8e"><svg class="ic"><use href="#i-plus"/></svg></span>
+          <span class="grow"><span class="l1" style="display:block">Card funded</span><span class="l2" style="display:block">1 Jul · 18:30</span></span>
+          <span><span class="r1 money up" style="display:block">+$100.00</span><span class="r2 muted" style="display:block">₦156,000</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GENERIC SUCCESS ================= -->
+  <section class="screen" id="s-tx-success">
+    <div class="scr-body" style="display:flex;flex-direction:column;padding-top:150px">
+      <div class="okwrap"><svg viewBox="0 0 24 24"><path d="M4.5 12.5 10 18 19.5 7"/></svg></div>
+      <div style="text-align:center">
+        <div style="font-family:var(--sora);font-weight:700;font-size:21px" id="txTitle">Done</div>
+        <div class="muted" style="font-size:13.5px;margin-top:8px;line-height:1.6;padding:0 12px" id="txSub">Your transaction is complete.</div>
+      </div>
+      <div class="card" style="margin-top:26px;padding:6px 16px" id="txRows"></div>
+      <div style="margin-top:auto;padding-top:24px">
+        <button class="btn btn-ghost"><svg class="ic sm"><use href="#i-share"/></svg>Share receipt</button>
+        <button class="btn btn-primary" style="margin-top:10px" onclick="resetTo('home')">Done</button>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /screens -->
+
+  <!-- ================= BOTTOM NAV ================= -->
+  <nav class="bnav" id="bnav">
+    <button class="bni tap" data-nav="home" onclick="navGo('home')"><svg class="ic"><use href="#i-home"/></svg>Home</button>
+    <button class="bni tap" data-nav="markets" onclick="navGo('markets')"><svg class="ic"><use href="#i-chart"/></svg>Markets</button>
+    <button class="bni tap" data-nav="pay" onclick="navGo('bills')"><svg class="ic"><use href="#i-pay"/></svg>Pay</button>
+    <button class="bni tap" data-nav="cards" onclick="navGo('cards')"><svg class="ic"><use href="#i-card"/></svg>Cards</button>
+    <button class="bni tap" data-nav="profile" onclick="navGo('profile')"><svg class="ic"><use href="#i-user"/></svg>Profile</button>
+  </nav>
+  <div class="homeind"></div>
+
+  <!-- ================= SHEETS ================= -->
+  <div class="backdrop" id="backdrop" onclick="closeSheets()"></div>
+
+  <div class="sheet" id="sheet-buy" role="dialog" aria-label="Confirm purchase">
+    <div class="grab"></div>
+    <div class="sheettitle">Confirm purchase</div>
+    <div class="rrow"><span class="k">You buy</span><span class="v money" id="cfBtc">0.00148 BTC</span></div>
+    <div class="rrow"><span class="k">Amount</span><span class="v money" id="cfNgn">₦250,000</span></div>
+    <div class="rrow"><span class="k">Rate</span><span class="v tnum">₦168,450,000 / BTC</span></div>
+    <div class="rrow"><span class="k">Fee</span><span class="v tnum">₦150</span></div>
+    <div class="rrow"><span class="k">Total</span><span class="v money" id="cfTotal">₦250,150</span></div>
+    <div class="rrow"><span class="k">Pay with</span><span class="v">Bank transfer · GTBank ••7204</span></div>
+    <p class="muted" style="font-size:11.5px;margin:10px 0 16px;line-height:1.5">Rate locked for 60 seconds. Your BTC lands as soon as your transfer is confirmed — usually under 2 minutes.</p>
+    <button class="btn btn-primary" onclick="confirmBuy()">Confirm buy</button>
+    <button class="btn btn-outline" style="margin-top:10px" onclick="closeSheets()">Cancel</button>
+  </div>
+
+  <div class="sheet" id="sheet-pin" role="dialog" aria-label="Enter PIN">
+    <div class="grab"></div>
+    <div class="sheettitle" style="text-align:center">Enter transaction PIN</div>
+    <p class="muted" style="text-align:center;font-size:12.5px;margin-top:-6px" id="pinSub">Authorize sending 250 USDT to @adaeze</p>
+    <div class="pindots" id="pinDots">
+      <span class="pdot"></span><span class="pdot"></span><span class="pdot"></span><span class="pdot"></span>
+    </div>
+    <div class="numpad">
+      <button class="key" onclick="pinKey('1')">1</button><button class="key" onclick="pinKey('2')">2</button><button class="key" onclick="pinKey('3')">3</button>
+      <button class="key" onclick="pinKey('4')">4</button><button class="key" onclick="pinKey('5')">5</button><button class="key" onclick="pinKey('6')">6</button>
+      <button class="key" onclick="pinKey('7')">7</button><button class="key" onclick="pinKey('8')">8</button><button class="key" onclick="pinKey('9')">9</button>
+      <button class="key" onclick="pinKey('bio')" aria-label="Use biometrics" style="color:#9daaff"><svg class="ic lg"><use href="#i-finger"/></svg></button>
+      <button class="key" onclick="pinKey('0')">0</button>
+      <button class="key" onclick="pinKey('del')" aria-label="Delete"><svg class="ic"><use href="#i-del"/></svg></button>
+    </div>
+  </div>
+
+  <div class="sheet" id="sheet-efund" role="dialog" aria-label="Investment details">
+    <div class="grab"></div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="sheettitle" style="margin-bottom:0;flex:1" id="efTitle">Lagos Solar Grid Notes</div>
+      <span class="chip chip-cobalt" id="efBand">Balanced</span>
+    </div>
+    <div style="display:flex;gap:18px;margin:14px 0 4px">
+      <span><span class="muted" style="display:block;font-size:10.5px">Target ROI</span><span class="money up" style="font-size:16px" id="efRoi">18%</span></span>
+      <span><span class="muted" style="display:block;font-size:10.5px">Term</span><span class="money" style="font-size:16px" id="efTerm">12 months</span></span>
+      <span><span class="muted" style="display:block;font-size:10.5px">Minimum</span><span class="money" style="font-size:16px" id="efMin">$100</span></span>
+    </div>
+    <div class="seclab" style="margin:14px 0 4px;font-size:13px">Portfolio allocation</div>
+    <div class="alloc">
+      <span style="flex:5.2;background:#4353FF"></span><span style="flex:2.6;background:#F2A61A"></span><span style="flex:1.4;background:#17B26A"></span><span style="flex:.8;background:#9AA3C7"></span>
+    </div>
+    <div class="legend">
+      <span><i style="background:#4353FF"></i>Solar assets 52%</span>
+      <span><i style="background:#F2A61A"></i>Grid contracts 26%</span>
+      <span><i style="background:#17B26A"></i>FGN bonds 14%</span>
+      <span><i style="background:#9AA3C7"></i>Cash 8%</span>
+    </div>
+    <div class="seclab" style="margin:16px 0 8px;font-size:13px">Invest</div>
+    <div style="display:flex;gap:8px" id="efAmts">
+      <button class="pill tap on" onclick="efAmt(this,'$100')">$100</button>
+      <button class="pill tap" onclick="efAmt(this,'$250')">$250</button>
+      <button class="pill tap" onclick="efAmt(this,'$500')">$500</button>
+      <button class="pill tap" onclick="efAmt(this,'$1,000')">$1,000</button>
+    </div>
+    <p class="muted" style="font-size:10.5px;line-height:1.55;margin:14px 0">Investments are subject to SEC regulations; capital at risk. Target returns are not guaranteed. Funded from your USDT wallet at today&rsquo;s rate.</p>
+    <button class="btn btn-primary" id="efInvestBtn" onclick="efInvest()">Invest $100</button>
+  </div>
+
+</div><!-- /phone -->
+</div><!-- /stage -->
+
+<script>
+/* ============ NAVIGATION ============ */
+const SCREENS=[
+  ['Core',[['onboarding','Onboarding'],['signin','Sign in'],['home','Home'],['markets','Markets'],['coin-detail','Coin detail — BTC/NGN']]],
+  ['Trade',[['buy','Buy'],['buy-success','Buy — success'],['swap','Swap'],['send','Send']]],
+  ['Payments',[['bills','Pay hub'],['bills-electricity','Electricity — IBEDC'],['bills-success','Electricity — token'],['giftcards','Gift cards']]],
+  ['Grow',[['savings','Savings'],['efund','E-Fund']]],
+  ['Account',[['cards','Cards'],['profile','Profile'],['kyc','KYC tiers'],['notifications','Notifications']]]
+];
+let stack=[], current='onboarding';
+const $=id=>document.getElementById(id);
+
+function show(id,dir){
+  const nxt=$('s-'+id);
+  if(!nxt)return;
+  closeSheets();
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(s===nxt)return;
+    const wasActive=s.classList.contains('active');
+    s.classList.remove('active','enter-l');
+    if(wasActive&&dir>0){
+      s.classList.add('exit-l');
+      setTimeout(()=>s.classList.remove('exit-l'),260);
+    }else{
+      s.classList.remove('exit-l');
+    }
+  });
+  if(!nxt.classList.contains('active')){
+    nxt.classList.remove('exit-l');
+    if(dir<0)nxt.classList.add('enter-l');
+    void nxt.offsetWidth; /* force reflow so the entrance transition runs */
+    nxt.classList.remove('enter-l');
+    nxt.classList.add('active');
+  }
+  current=id;
+  const body=nxt.querySelector('.scr-body'); if(body)body.scrollTop=0;
+  updateNav(); updatePicker();
+}
+function go(id){ stack.push(current); show(id,1); }
+function back(){ show(stack.pop()||'home',-1); }
+function navGo(id){ stack=[]; show(id,1); }
+function resetTo(id){ stack=[]; show(id,1); }
+
+function updateNav(){
+  const scr=$('s-'+current), nav=$('bnav'), key=scr?scr.getAttribute('data-nav'):null;
+  nav.classList.toggle('hide',!key);
+  document.querySelectorAll('.bni').forEach(b=>b.classList.toggle('on',b.dataset.nav===key));
+}
+
+/* ============ SCREEN PICKER ============ */
+(function buildPicker(){
+  const wrap=$('pickerList'); let html='';
+  SCREENS.forEach(([group,items])=>{
+    html+='<div class="grouplab">'+group+'</div>';
+    items.forEach(([id,label])=>{
+      html+='<button class="pchip" data-id="'+id+'" onclick="navGo(\''+id+'\')"><span class="dot"></span>'+label+'</button>';
+    });
+  });
+  wrap.innerHTML=html;
+})();
+function updatePicker(){
+  document.querySelectorAll('.pchip').forEach(c=>c.classList.toggle('on',c.dataset.id===current));
+}
+
+/* ============ SIGN IN ============ */
+let loginPin='';
+function loginKey(k){
+  if(k==='bio'){ loginPin=''; paintDots('loginDots',0); resetTo('home'); return; }
+  if(k==='del'){ loginPin=loginPin.slice(0,-1); }
+  else if(loginPin.length<4){ loginPin+=k; }
+  paintDots('loginDots',loginPin.length);
+  if(loginPin.length===4){ setTimeout(()=>{ loginPin=''; paintDots('loginDots',0); resetTo('home'); },220); }
+}
+function paintDots(id,n){
+  $(id).querySelectorAll('.pdot').forEach((d,i)=>d.classList.toggle('fill',i<n));
+}
+
+/* ============ HOME: balance ============ */
+const BAL={NGN:['₦12,847,203.54','≈ 8,315.34 USDT'],USDT:['8,315.34 USDT','≈ ₦12,847,203.54']};
+let balCur='NGN', balHidden=false;
+function renderBal(){
+  $('balMain').textContent = balHidden ? '₦ ••••••••' : BAL[balCur][0];
+  $('balSub').textContent  = balHidden ? '≈ •••••'    : BAL[balCur][1];
+  $('eyeIc').querySelector('use').setAttribute('href', balHidden?'#i-eyeoff':'#i-eye');
+}
+function toggleEye(){ balHidden=!balHidden; renderBal(); }
+function setCur(c){
+  balCur=c;
+  const on={background:'#fff',color:'#0A0E28'}, off={background:'transparent',color:'rgba(242,244,255,.8)'};
+  Object.assign($('curNGN').style, c==='NGN'?on:off);
+  Object.assign($('curUSDT').style, c==='USDT'?on:off);
+  renderBal();
+}
+
+/* ============ MARKETS ============ */
+let mktCat='all';
+function mktTab(btn,cat){
+  mktCat=cat;
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===btn));
+  mktFilter();
+}
+function mktFilter(){
+  const q=$('mktSearch').value.trim().toLowerCase(); let shown=0;
+  document.querySelectorAll('#mktList .mkt').forEach(r=>{
+    let ok=true;
+    if(mktCat==='gain')ok=r.dataset.cat==='gain';
+    if(mktCat==='lose')ok=r.dataset.cat==='lose';
+    if(mktCat==='fav')ok=r.dataset.fav==='1';
+    if(ok&&q)ok=r.dataset.name.includes(q);
+    r.style.display=ok?'':'none'; if(ok)shown++;
+  });
+  $('mktEmpty').style.display=shown?'none':'flex';
+}
+
+/* ============ COIN DETAIL: chart ============ */
+const CH={
+  '1D':[120,112,118,98,104,86,92,74,82,64,70,58,66,48,40],
+  '1W':[140,128,134,110,120,96,106,84,96,70,82,60,72,50,36],
+  '1M':[60,74,66,92,84,110,100,124,112,132,118,100,84,64,44],
+  '1Y':[150,142,146,130,136,118,126,104,96,108,88,72,80,54,30]
+};
+const CHLAB={'1D':'24h','1W':'7 days','1M':'30 days','1Y':'12 months'};
+function setChart(key){
+  const pts=CH[key];
+  let d='M0 '+pts[0];
+  pts.forEach((y,i)=>{ if(i>0)d+=' L'+(i*25)+' '+y; });
+  $('chLine').setAttribute('d',d);
+  $('chArea').setAttribute('d',d+' L350 170 L0 170 Z');
+  $('chDot').setAttribute('cx',350); $('chDot').setAttribute('cy',pts[pts.length-1]);
+  $('chartRangeLab').textContent=CHLAB[key];
+}
+function chartRange(btn,key){
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===btn));
+  setChart(key);
+}
+setChart('1D');
+
+/* ============ BUY ============ */
+const BTC_RATE=168450000;
+let buyVal='';
+const fmt=n=>Number(n||0).toLocaleString('en-NG');
+function renderBuy(){
+  const n=parseInt(buyVal||'0',10);
+  $('buyAmt').textContent='₦'+fmt(n);
+  $('buyConv').textContent='≈ '+(n/BTC_RATE).toFixed(8)+' BTC @ ₦'+fmt(BTC_RATE);
+  $('buyPreview').disabled=!(n>0);
+}
+function buyKey(k){
+  if(k==='del')buyVal=buyVal.slice(0,-1);
+  else if(buyVal.length<10)buyVal=(buyVal+k).replace(/^0+(?=\d)/,'');
+  renderBuy();
+}
+function buySet(v){ buyVal=String(v); renderBuy(); }
+function payMethod(el){
+  el.parentElement.querySelectorAll('.selrow').forEach(r=>r.classList.toggle('on',r===el));
+  const t=el.textContent;
+  $('buyFee').textContent = t.includes('Bank') ? '₦150 flat' : (t.includes('card') ? '1.4% of amount' : '₦200 flat');
+}
+function openBuyConfirm(){
+  const n=parseInt(buyVal||'0',10); if(!n)return;
+  $('cfBtc').textContent=(n/BTC_RATE).toFixed(8).replace(/0+$/,'').replace(/\.$/,'')+' BTC';
+  $('cfNgn').textContent='₦'+fmt(n);
+  $('cfTotal').textContent='₦'+fmt(n+150);
+  openSheet('sheet-buy');
+}
+function confirmBuy(){
+  const n=parseInt(buyVal||'0',10);
+  $('rcAmtBtc').textContent=(n/BTC_RATE).toFixed(8).replace(/0+$/,'').replace(/\.$/,'')+' BTC';
+  $('rcAmtNgn').textContent='₦'+fmt(n+150);
+  closeSheets();
+  setTimeout(()=>go('buy-success'),160);
+}
+
+/* ============ SWAP ============ */
+function swapFlip(){
+  const pairs=[['swFromAmt','swToAmt'],['swFromSym','swToSym'],['swFromBal','swToBal'],['swFromFiat','swToFiat']];
+  pairs.forEach(([a,b])=>{
+    const A=$(a),B=$(b),t=A.textContent; A.textContent=B.textContent; B.textContent=t;
+  });
+  const FI=$('swFromIco'),TI=$('swToIco');
+  const tTxt=FI.textContent, tCss=FI.style.cssText;
+  FI.textContent=TI.textContent; FI.style.cssText=TI.style.cssText;
+  TI.textContent=tTxt; TI.style.cssText=tCss;
+  $('swRate').textContent = $('swFromSym').textContent==='USDT' ? '1 USDT ≈ 0.006298 SOL' : '1 SOL ≈ 158.77 USDT';
+}
+
+/* ============ SEND ============ */
+function sendTab(which){
+  $('sendTabTag').classList.toggle('on',which==='tag');
+  $('sendTabAddr').classList.toggle('on',which==='addr');
+  $('sendPanelTag').style.display = which==='tag'?'':'none';
+  $('sendPanelAddr').style.display = which==='addr'?'':'none';
+}
+function netPick(el){
+  el.parentElement.querySelectorAll('.selrow').forEach(r=>r.classList.toggle('on',r===el));
+}
+
+/* ============ SHEETS / PIN ============ */
+function openSheet(id){ $('backdrop').classList.add('open'); $(id).classList.add('open'); }
+function closeSheets(){
+  $('backdrop').classList.remove('open');
+  document.querySelectorAll('.sheet').forEach(s=>s.classList.remove('open'));
+  pinVal=''; paintDots('pinDots',0);
+}
+let pinVal='', pinCtx='send';
+function openPin(ctx){
+  pinCtx=ctx;
+  const subs={
+    send:'Authorize sending 250 USDT to @adaeze',
+    swap:'Authorize swapping '+$('swFromAmt').textContent+' '+$('swFromSym').textContent+' → '+$('swToSym').textContent,
+    save:'Authorize locking '+$('svAmtLab').textContent+' in savings'
+  };
+  $('pinSub').textContent=subs[ctx]||'Authorize this transaction';
+  openSheet('sheet-pin');
+}
+function pinKey(k){
+  if(k==='bio'){ pinDone(); return; }
+  if(k==='del')pinVal=pinVal.slice(0,-1);
+  else if(pinVal.length<4)pinVal+=k;
+  paintDots('pinDots',pinVal.length);
+  if(pinVal.length===4)setTimeout(pinDone,200);
+}
+function pinDone(){
+  const ctx=pinCtx;
+  closeSheets();
+  setTimeout(()=>{
+    if(ctx==='send')showTx('Sent successfully','250 USDT is on its way to @adaeze. Lentopay-to-Lentopay transfers are instant and free.',[
+      ['Recipient','Adaeze Okafor · @adaeze'],['Amount','250 USDT'],['Value','≈ ₦386,250'],['Fee','Free'],['Reference','LP-TX-7731-0264'],['Date','8 Jul 2026 · 09:41']]);
+    if(ctx==='swap')showTx('Swap complete','You swapped '+$('swFromAmt').textContent+' '+$('swFromSym').textContent+' for '+$('swToAmt').textContent+' '+$('swToSym').textContent+'.',[
+      ['You paid',$('swFromAmt').textContent+' '+$('swFromSym').textContent],['You received',$('swToAmt').textContent+' '+$('swToSym').textContent],['Rate',$('swRate').textContent],['Network fee','0.35 USDT'],['Reference','LP-SW-4419-8850'],['Date','8 Jul 2026 · 09:41']]);
+    if(ctx==='save'){
+      const amt=$('svAmtLab').textContent, plan=document.querySelector('.svp.on');
+      showTx('Savings plan active',amt+' locked in '+plan.dataset.name+' at '+plan.dataset.rate+'% p.a. Interest accrues daily.',[
+        ['Plan',plan.dataset.name+' · '+plan.dataset.rate+'% p.a.'],['Amount',amt],['Projected interest',$('svProj').textContent],['Matures',plan.dataset.days==='365'?'Flexible — anytime':addDays(+plan.dataset.days)],['Reference','LP-SV-9902-1174']]);
+    }
+  },180);
+}
+function addDays(d){
+  const dt=new Date(2026,6,8); dt.setDate(dt.getDate()+d);
+  return dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+function showTx(title,sub,rows){
+  $('txTitle').textContent=title; $('txSub').textContent=sub;
+  $('txRows').innerHTML=rows.map(([k,v])=>'<div class="rrow"><span class="k">'+k+'</span><span class="v tnum">'+v+'</span></div>').join('');
+  go('tx-success');
+}
+
+/* ============ ELECTRICITY ============ */
+function elecAmt(btn,label){
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===btn));
+  const n=parseInt(label.replace(/[₦,]/g,''),10);
+  $('elecPay').textContent=label+' · '+(n/1545).toFixed(2)+' USDT';
+  document.querySelector('#s-bills-electricity .btn-primary').textContent='Pay '+label;
+}
+
+/* ============ GIFT CARDS ============ */
+let gcState={brand:'Amazon (US)',rate:1485,val:100,speed:'instant'};
+function gcRender(){
+  $('gcQuote').textContent='₦'+fmt(gcState.val*gcState.rate);
+  $('gcQuoteSub').textContent='$'+gcState.val+' '+gcState.brand+' · physical card';
+  $('gcRateBadge').textContent='₦'+fmt(gcState.rate)+'/$';
+}
+function gcBrand(el){
+  document.querySelectorAll('.gcb').forEach(b=>{
+    const on=b===el;
+    b.style.borderColor=on?'var(--cobalt)':'';
+    b.style.background=on?'rgba(67,83,255,.09)':'';
+  });
+  const name=el.querySelector('span').textContent;
+  const rate=parseInt(el.textContent.match(/₦([\d,]+)\/\$/)[1].replace(/,/g,''),10);
+  const map={amazon:'Amazon (US)',iTunes:'iTunes (US)',STEAM:'Steam (US)','Google Play':'Google Play (US)',RAZER:'Razer Gold (US)'};
+  gcState.brand=map[name]||name; gcState.rate=rate; gcRender();
+}
+function gcVal(btn,v){
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===btn));
+  gcState.val=v; gcRender();
+}
+function gcSpeed(s){
+  gcState.speed=s;
+  $('gcInstant').classList.toggle('on',s==='instant');
+  $('gcManual').classList.toggle('on',s==='manual');
+  $('gcSpeedNote').textContent = s==='instant'
+    ? 'Instant: automated check, paid to your naira wallet immediately. Rate shown is final.'
+    : 'Manual: our team verifies unclear or high-value cards. Payout lands after approval — about 15 minutes.';
+}
+function gcSubmit(){
+  $('gcRcBrand').textContent=gcState.brand+' · $'+gcState.val;
+  $('gcRcQuote').textContent='₦'+fmt(gcState.val*gcState.rate);
+  $('gcForm').style.display='none';
+  $('gcPending').style.display='flex';
+}
+function gcReset(){
+  $('gcForm').style.display='';
+  $('gcPending').style.display='none';
+}
+
+/* ============ SAVINGS ============ */
+function svPlan(el){
+  document.querySelectorAll('.svp').forEach(r=>r.classList.toggle('on',r===el));
+  svCalc();
+}
+function svCalc(){
+  const amt=+$('svSlider').value, plan=document.querySelector('.svp.on');
+  const rate=+plan.dataset.rate, days=+plan.dataset.days;
+  $('svAmtLab').textContent=fmt(amt)+' USDT';
+  const interest=amt*rate/100*days/365;
+  $('svProj').textContent='+'+interest.toFixed(2)+' USDT';
+  $('svProjLab').textContent = days===365
+    ? 'Projected interest · 1 year @ '+rate+'% p.a. (flexible)'
+    : 'Projected interest · '+days+' days @ '+rate+'% p.a.';
+}
+svCalc();
+
+/* ============ E-FUND ============ */
+function efTab(btn,band){
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===btn));
+  document.querySelectorAll('.eff').forEach(c=>{
+    c.style.display=(band==='all'||c.dataset.band===band)?'':'none';
+  });
+}
+let efAmtSel='$100';
+function openEfund(title,roi,term,min,band){
+  $('efTitle').textContent=title;
+  $('efRoi').textContent=roi.replace(' target ROI','');
+  $('efTerm').textContent=term;
+  $('efMin').textContent=min;
+  const bandEl=$('efBand');
+  bandEl.className='chip '+(band==='con'?'chip-ok':band==='bal'?'chip-cobalt':'chip-bad');
+  bandEl.textContent=band==='con'?'Conservative':band==='bal'?'Balanced':'Aggressive';
+  efAmtSel=min;
+  $('efAmts').querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p.textContent===min));
+  $('efInvestBtn').textContent='Invest '+min;
+  openSheet('sheet-efund');
+}
+function efAmt(btn,v){
+  btn.parentElement.querySelectorAll('.pill').forEach(p=>p.classList.toggle('on',p===btn));
+  efAmtSel=v; $('efInvestBtn').textContent='Invest '+v;
+}
+function efInvest(){
+  const title=$('efTitle').textContent;
+  closeSheets();
+  setTimeout(()=>showTx('Investment submitted','We received your '+efAmtSel+' order for '+title+'. Allocation confirms within 24 hours — we’ll notify you.',[
+    ['Asset',title],['Amount',efAmtSel+' (from USDT wallet)'],['Target ROI',$('efRoi').textContent+' · '+$('efTerm').textContent],['Status','Pending allocation'],['Reference','LP-EF-3308-6621']]),180);
+}
+
+/* ============ KYC ============ */
+function kycUpload(el,name){
+  if(el.dataset.up)return;
+  el.dataset.up='1';
+  el.classList.add('on');
+  el.style.borderColor='rgba(23,178,106,.5)';
+  el.querySelector('.kyc-state').innerHTML='<svg class="ic sm" style="color:#3ecf8e"><use href="#i-check"/></svg><span style="color:#3ecf8e">Uploaded</span>';
+  el.querySelector('.kyc-sub').textContent=name+'_adaeze.pdf · 1.2 MB';
+  if($('kycDoc1').dataset.up&&$('kycDoc2').dataset.up)$('kycSubmit').disabled=false;
+}
+function kycSubmit(){
+  const b=$('kycSubmit');
+  b.disabled=true;
+  b.className='btn';
+  b.style.cssText='margin-top:16px;background:rgba(242,166,26,.13);border:1px solid rgba(217,119,6,.5);color:#f5b544;opacity:1';
+  b.innerHTML='<svg class="ic sm"><use href="#i-clock"/></svg>Submitted · under review (~24h)';
+}
+
+/* ============ INIT ============ */
+$('s-onboarding').classList.add('active');
+updateNav(); updatePicker();
+</script>
+
+<div id="lp-hub-nav" style="position:fixed;bottom:18px;right:18px;z-index:2147483647;display:flex;gap:8px;font-family:'DM Sans',system-ui,sans-serif">
+<a href="index.html" style="display:inline-flex;align-items:center;gap:7px;background:#0A0E28;color:#fff;border:1px solid rgba(255,255,255,.22);text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(10,14,40,.35)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>All sections</a>
+<a href="prototype-admin.html" style="display:inline-flex;align-items:center;gap:7px;background:#2333D6;color:#fff;text-decoration:none;font-size:13px;font-weight:500;border-radius:99px;padding:9px 16px;box-shadow:0 6px 20px rgba(35,51,214,.4)">Next: 10<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+</div>
+</body>
+</html>
