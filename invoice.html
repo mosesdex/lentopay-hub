@@ -50,6 +50,7 @@ input[type=range]:focus-visible{outline:3px solid var(--cobalt);outline-offset:4
 .reco-banner{display:flex;gap:12px;align-items:flex-start;margin-top:16px;background:linear-gradient(120deg,#FDF6E9,#FFF);border:1.5px solid var(--gold);border-radius:14px;padding:15px 17px;font-size:15.5px}
 .reco-banner .bic{flex:none;width:34px;height:34px;border-radius:10px;background:var(--gold);color:#fff;display:flex;align-items:center;justify-content:center}
 .reco-banner b{font-family:'Sora';font-weight:600}
+.vatline{margin-top:6px;font-size:15px;color:var(--muted);font-variant-numeric:tabular-nums}
 .tierdesc{margin-top:14px;font-size:16px;color:var(--muted)}
 .cols{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
 @media(max-width:820px){.cols{grid-template-columns:1fr}}
@@ -132,9 +133,10 @@ footer a{color:var(--royal)}
 
   <div class="card">
     <div class="amount-row">
-      <div class="amount money" id="amount">₦15,500,000</div>
+      <div class="amount money" id="amount">₦16,662,500</div>
       <div class="tiername" id="tiername">Full Vision</div>
     </div>
+    <div class="vatline" id="vatline">Package ₦15,500,000 + VAT 7.5% ₦1,162,500</div>
 
     <div class="tiers" id="tierbtns" role="group" aria-label="Preset packages"></div>
     <p class="tierdesc" id="tierdesc"></p>
@@ -165,7 +167,7 @@ footer a{color:var(--royal)}
             Download invoice (PDF)</button>
           <a class="btn ghost" href="index.html">Back to project hub</a>
         </div>
-        <p class="terms">Amounts are exclusive of VAT (7.5%) and third-party pass-through costs (licensing, custody, KYC checks, infrastructure), which are billed at cost as set out in the Development Proposal & SOW. Selecting and downloading an invoice is an offer summary; work begins on signed acceptance and receipt of the Phase 1 payment.</p>
+        <p class="terms">Totals include VAT at 7.5%. Third-party pass-through costs (licensing, custody, KYC checks, infrastructure) are billed at cost as set out in the Development Proposal & SOW. Selecting and downloading an invoice is an offer summary; work begins on signed acceptance and receipt of the Phase 1 payment.</p>
       </div>
     </div>
   </div>
@@ -173,9 +175,6 @@ footer a{color:var(--royal)}
 
 <footer>Lentopay Exchange - Interactive Invoice · Prepared for Oshodi-Tapa Agboola · Prepared by Dexter Cyberlab © 2026 · <a href="https://www.dextercyberlab.com" rel="noopener">www.dextercyberlab.com</a></footer>
 
-<div class="print-sheet" id="printsheet"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
 const TIERS = [
@@ -221,6 +220,9 @@ const PLAN = [
   { n: "4", label: "Final phase - Delivery", when: "Paid last, after delivery & acceptance", pct: 10, last: true },
 ];
 const FULL = [{ n: "1", label: "One payment - full project", when: "Due at signing", pct: 100 }];
+const VAT_RATE = 0.075;
+const vatOf = v => Math.round(v * VAT_RATE);
+const totalOf = v => v + vatOf(v);
 const fmt = n => "₦" + Math.round(n).toLocaleString("en-NG");
 const state = { value: 15500000, payFull: false };
 
@@ -228,7 +230,8 @@ function tierIndex(v){ let i = 0; TIERS.forEach((t, k) => { if (v >= t.at) i = k
 
 function render(){
   const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
-  document.getElementById("amount").textContent = fmt(v);
+  document.getElementById("amount").textContent = fmt(totalOf(v));
+  document.getElementById("vatline").textContent = "Package " + fmt(v) + "  +  VAT 7.5% " + fmt(vatOf(v));
   document.getElementById("tiername").textContent = tier.name;
   document.getElementById("tierdesc").textContent = tier.desc;
   // tier buttons
@@ -254,10 +257,12 @@ function render(){
   document.getElementById("featlist").innerHTML = rows;
   // plan
   const sched = state.payFull ? FULL : PLAN;
+  const gross = totalOf(v);
   document.getElementById("plan").innerHTML = sched.map(p =>
-    `<div class="plan-row ${p.last ? "last" : ""}"><div class="ph"><div class="n">${p.n}</div><div>${p.label}<div class="when">${p.when}</div></div></div><div style="text-align:right"><div class="amt money">${fmt(v * p.pct / 100)}</div><div class="pct">${p.pct}%</div></div></div>`).join("");
+    `<div class="plan-row ${p.last ? "last" : ""}"><div class="ph"><div class="n">${p.n}</div><div>${p.label}<div class="when">${p.when}</div></div></div><div style="text-align:right"><div class="amt money">${fmt(gross * p.pct / 100)}</div><div class="pct">${p.pct}%</div></div></div>`).join("") +
+    `<div class="plan-row" style="border-top:2px solid var(--fog)"><div class="ph"><div style="font-weight:500">Total due <span class="when">incl. VAT 7.5%</span></div></div><div class="amt money">${fmt(gross)}</div></div>`;
   document.getElementById("planhint").textContent = state.payFull
-    ? "One single payment at signing covers the entire project."
+    ? "One single payment at signing covers the entire project, VAT included."
     : "Minimum plan - payments follow the build phases. The final phase is always paid last, after delivery.";
   document.getElementById("pm-plan").className = state.payFull ? "" : "on";
   document.getElementById("pm-plan").setAttribute("aria-pressed", String(!state.payFull));
@@ -268,59 +273,150 @@ function setVal(v){ state.value = v; render(); }
 function setPayMode(f){ state.payFull = f; render(); }
 
 document.getElementById("dl").addEventListener("click", () => {
-  const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
-  const feats = TIERS.slice(0, ti + 1).flatMap(t => t.feats);
-  document.getElementById("printsheet").innerHTML = `
-    <div class="ph-head">
-      <div><img src="${document.getElementById('dclogo').src}" alt="Dexter Cyberlab" style="height:46px;display:block;margin-bottom:5px"><div>www.dextercyberlab.com</div></div>
-      <div style="text-align:right"><b>INVOICE DCL-2026-001</b><br>Date: 8 July 2026 · Valid 30 days<br>Currency: Nigerian Naira (₦)</div>
-    </div>
-    <table><tr><th style="width:33%">Billed to</th><th style="width:33%">Project</th><th>Package</th></tr>
-    <tr><td>Oshodi-Tapa Agboola</td><td>Lentopay Exchange - mobile app + web admin console</td><td><b>${tier.name}</b></td></tr></table>
-    <h2>Deliverables included</h2>
-    <table>${feats.map((f, i) => `<tr><td style="width:24px">${i + 1}</td><td>${f}</td></tr>`).join("")}
-    <tr class="tot"><td>Total</td><td style="text-align:right">${fmt(v)}</td></tr></table>
-    <h2>${state.payFull ? "Payment - in full at signing" : "Payment plan (minimum schedule)"}</h2>
-    <table><tr><th>Installment</th><th>Due</th><th style="text-align:right">Share</th><th style="text-align:right">Amount</th></tr>
-    ${(state.payFull ? FULL : PLAN).map(p => `<tr><td>${p.label}</td><td>${p.when}</td><td style="text-align:right">${p.pct}%</td><td style="text-align:right">${fmt(v * p.pct / 100)}</td></tr>`).join("")}
-    <tr class="tot"><td colspan="3">Total</td><td style="text-align:right">${fmt(v)}</td></tr></table>
-    <p style="margin-top:12px;font-size:10.5px;color:#5A6285">Amounts are exclusive of VAT (7.5%) and third-party pass-through costs (licensing, custody, KYC checks, infrastructure), billed at cost per the Development Proposal & SOW. The final phase payment is due after delivery and acceptance. This invoice is valid for 30 days from the date above. Bank details are provided on acceptance.</p>
-    <div class="sig"><div>Accepted by (Client): Oshodi-Tapa Agboola</div><div>For Dexter Cyberlab</div></div>`;
-  downloadPDF();
+  const btn = document.getElementById("dl");
+  btn.disabled = true; const prev = btn.lastChild.textContent; btn.lastChild.textContent = " Preparing PDF...";
+  try { buildPDF(); } catch (e) { downloadHTMLInvoice(); }
+  btn.disabled = false; btn.lastChild.textContent = prev;
 });
 
-async function downloadPDF(){
-  const btn = document.getElementById("dl");
-  const el = document.getElementById("printsheet");
-  btn.disabled = true; const prev = btn.lastChild.textContent; btn.lastChild.textContent = " Preparing PDF...";
-  try {
-    if (!window.html2canvas || !window.jspdf) throw new Error("libs");
-    const canvas = await html2canvas(el, { scale: 2, backgroundColor: "#ffffff", useCORS: true });
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p", "pt", "a4");
-    const w = pdf.internal.pageSize.getWidth();
-    const pageH = pdf.internal.pageSize.getHeight();
-    const fullH = canvas.height * w / canvas.width;
-    if (fullH <= pageH) {
-      pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, w, fullH);
-    } else {
-      const pagePx = Math.floor(canvas.width * pageH / w);
-      let sy = 0, page = 0;
-      while (sy < canvas.height) {
-        const slice = document.createElement("canvas");
-        slice.width = canvas.width; slice.height = Math.min(pagePx, canvas.height - sy);
-        slice.getContext("2d").drawImage(canvas, 0, sy, canvas.width, slice.height, 0, 0, canvas.width, slice.height);
-        if (page > 0) pdf.addPage();
-        pdf.addImage(slice.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, w, slice.height * w / canvas.width);
-        sy += pagePx; page++;
-      }
-    }
-    pdf.save("Lentopay-Invoice-DCL-2026-001.pdf");
-  } catch (e) {
-    window.print(); // fallback if PDF libraries fail to load
-  } finally {
-    btn.disabled = false; btn.lastChild.textContent = prev;
-  }
+// Amounts in the PDF use "NGN" because standard PDF fonts have no naira glyph.
+const pdfMoney = n => "NGN " + Math.round(n).toLocaleString("en-NG");
+
+function buildPDF(){
+  if (!window.jspdf) throw new Error("jspdf not loaded");
+  const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
+  const gross = totalOf(v);
+  const feats = TIERS.slice(0, ti + 1).flatMap(x => x.feats);
+  const sched = state.payFull ? FULL : PLAN;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF("p", "pt", "a4");
+  const W = 595.28, M = 48, CW = W - 2 * M;
+  const NIGHT = [10, 14, 40], ROYAL = [35, 51, 214], GRAY = [90, 98, 133], FOG = [233, 237, 248], LINE = [215, 221, 240];
+  let y = 46;
+
+  const ensure = need => { if (y + need > 794) { doc.addPage(); y = 46; } };
+
+  // header: logo + meta
+  const img = document.getElementById("dclogo");
+  const lw = 190, lh = lw * img.naturalHeight / img.naturalWidth;
+  doc.addImage(img.src, "JPEG", M, y, lw, lh);
+  doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(...NIGHT);
+  doc.text("INVOICE DCL-2026-001", W - M, y + 8, { align: "right" });
+  doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...GRAY);
+  doc.text("Date: 8 July 2026  ·  Valid 30 days", W - M, y + 22, { align: "right" });
+  doc.text("Currency: Nigerian Naira (NGN)", W - M, y + 34, { align: "right" });
+  doc.text("www.dextercyberlab.com", W - M, y + 46, { align: "right" });
+  y += Math.max(lh, 50) + 14;
+  doc.setDrawColor(...ROYAL); doc.setLineWidth(2); doc.line(M, y, W - M, y); y += 22;
+
+  // billed to / from / project
+  const col = CW / 3;
+  const block = (x, label, l1, l2) => {
+    doc.setFontSize(7.5); doc.setTextColor(...GRAY); doc.setFont("helvetica", "bold");
+    doc.text(label.toUpperCase(), x, y);
+    doc.setFontSize(10); doc.setTextColor(...NIGHT);
+    doc.text(l1, x, y + 14);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(...GRAY);
+    doc.text(l2, x, y + 27);
+  };
+  block(M, "Billed to", "Oshodi-Tapa Agboola", "Lentopay Exchange project");
+  block(M + col, "From", "Dexter Cyberlab", "www.dextercyberlab.com");
+  block(M + 2 * col, "Project", "Lentopay Exchange", "Mobile app + web admin console");
+  y += 48;
+
+  // package + total banner
+  doc.setFillColor(...FOG); doc.roundedRect(M, y, CW, 40, 6, 6, "F");
+  doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(...ROYAL);
+  doc.text("Package: " + tier.name + (tier.recommended ? "  (Recommended)" : ""), M + 14, y + 25);
+  doc.text("Total due: " + pdfMoney(gross), W - M - 14, y + 25, { align: "right" });
+  y += 58;
+
+  const tableHeader = (cols, widths) => {
+    ensure(24);
+    doc.setFillColor(...FOG); doc.rect(M, y, CW, 20, "F");
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.7); doc.rect(M, y, CW, 20, "S");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(...NIGHT);
+    let x = M;
+    cols.forEach((c, i) => { const right = c.startsWith(">"); const txt = right ? c.slice(1) : c;
+      doc.text(txt, right ? x + widths[i] - 8 : x + 8, y + 13, right ? { align: "right" } : undefined); x += widths[i]; });
+    y += 20;
+  };
+  const tableRow = (cells, widths, bold) => {
+    doc.setFont("helvetica", bold ? "bold" : "normal"); doc.setFontSize(9);
+    const wraps = cells.map((c, i) => doc.splitTextToSize(String(c.startsWith && c.startsWith(">") ? c.slice(1) : c), widths[i] - 16));
+    const rh = Math.max(...wraps.map(wr => wr.length)) * 11 + 9;
+    ensure(rh);
+    if (bold) { doc.setFillColor(244, 246, 252); doc.rect(M, y, CW, rh, "F"); }
+    doc.setDrawColor(...LINE); doc.setLineWidth(0.7); doc.rect(M, y, CW, rh, "S");
+    let x = M;
+    cells.forEach((c, i) => { const right = String(c).startsWith(">");
+      doc.setTextColor(...NIGHT);
+      doc.text(wraps[i], right ? x + widths[i] - 8 : x + 8, y + 13, right ? { align: "right" } : undefined); x += widths[i]; });
+    y += rh;
+  };
+
+  // deliverables
+  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...NIGHT);
+  ensure(30); doc.text("Deliverables included", M, y); y += 10;
+  const dW = [30, CW - 30];
+  tableHeader(["#", "Deliverable"], dW);
+  feats.forEach((f, i) => tableRow([String(i + 1), f], dW));
+  tableRow(["", ">Subtotal:  " + pdfMoney(v)], dW);
+  tableRow(["", ">VAT (7.5%):  " + pdfMoney(vatOf(v))], dW);
+  tableRow(["", ">Total due:  " + pdfMoney(gross)], dW, true);
+  y += 20;
+
+  // payment plan
+  doc.setFont("helvetica", "bold"); doc.setFontSize(11); doc.setTextColor(...NIGHT);
+  ensure(30); doc.text(state.payFull ? "Payment - in full at signing" : "Payment plan (minimum schedule)", M, y); y += 10;
+  const pW = [180, CW - 180 - 60 - 95, 60, 95];
+  tableHeader(["Installment", "Due", ">Share", ">Amount"], pW);
+  sched.forEach(pl => tableRow([pl.label, pl.when, ">" + pl.pct + "%", ">" + pdfMoney(gross * pl.pct / 100)], pW));
+  tableRow(["Total (incl. VAT 7.5%)", "", ">100%", ">" + pdfMoney(gross)], pW, true);
+  y += 18;
+
+  // terms
+  ensure(70);
+  doc.setFont("helvetica", "normal"); doc.setFontSize(7.8); doc.setTextColor(...GRAY);
+  const terms = doc.splitTextToSize("Totals include VAT at 7.5%. Third-party pass-through costs (licensing, custody, KYC checks, infrastructure) are billed at cost per the Development Proposal & SOW. " + (state.payFull ? "" : "The final phase payment is due after delivery and acceptance. ") + "This invoice is valid for 30 days from the date above. Bank details are provided on acceptance.", CW);
+  doc.text(terms, M, y); y += terms.length * 10 + 34;
+
+  // signatures
+  ensure(50);
+  doc.setDrawColor(...NIGHT); doc.setLineWidth(0.8);
+  doc.line(M, y, M + 210, y); doc.line(W - M - 210, y, W - M, y);
+  doc.setFontSize(8); doc.setTextColor(...NIGHT);
+  doc.text("Accepted by (Client): Oshodi-Tapa Agboola", M, y + 12);
+  doc.text("For Dexter Cyberlab", W - M - 210, y + 12);
+
+  doc.save("Lentopay-Invoice-DCL-2026-001.pdf");
+}
+
+// Last-resort fallback: still a DOWNLOAD (self-contained HTML invoice), never a print dialog.
+function downloadHTMLInvoice(){
+  const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
+  const gross = totalOf(v);
+  const feats = TIERS.slice(0, ti + 1).flatMap(x => x.feats);
+  const sched = state.payFull ? FULL : PLAN;
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Lentopay Invoice DCL-2026-001</title><style>body{font-family:system-ui,sans-serif;color:#0A0E28;max-width:760px;margin:30px auto;font-size:13px}.hd{display:flex;justify-content:space-between;border-bottom:3px solid #2333D6;padding-bottom:12px;margin-bottom:16px}table{width:100%;border-collapse:collapse;margin:6px 0 18px}th,td{border:1px solid #D7DDF0;padding:7px 9px;text-align:left;font-size:12px}th{background:#E9EDF8}.tot td{font-weight:700;background:#F4F6FC}.sig{display:flex;gap:40px;margin-top:34px}.sig div{flex:1;border-top:1px solid #0A0E28;padding-top:6px;font-size:11px}</style></head><body>
+<div class="hd"><div><img src="${document.getElementById("dclogo").src}" style="height:44px"><div>www.dextercyberlab.com</div></div><div style="text-align:right"><b>INVOICE DCL-2026-001</b><br>Date: 8 July 2026 · Valid 30 days<br>Currency: Nigerian Naira (₦)</div></div>
+<table><tr><th>Billed to</th><th>Project</th><th>Package</th></tr><tr><td>Oshodi-Tapa Agboola</td><td>Lentopay Exchange - mobile app + web admin console</td><td><b>${tier.name}</b></td></tr></table>
+<h3>Deliverables included</h3>
+<table>${feats.map((f, i) => `<tr><td style="width:24px">${i + 1}</td><td>${f}</td></tr>`).join("")}
+<tr><td>Subtotal</td><td style="text-align:right">${fmt(v)}</td></tr>
+<tr><td>VAT (7.5%)</td><td style="text-align:right">${fmt(vatOf(v))}</td></tr>
+<tr class="tot"><td>Total due</td><td style="text-align:right">${fmt(gross)}</td></tr></table>
+<h3>${state.payFull ? "Payment - in full at signing" : "Payment plan (minimum schedule)"}</h3>
+<table><tr><th>Installment</th><th>Due</th><th style="text-align:right">Share</th><th style="text-align:right">Amount</th></tr>
+${sched.map(pl => `<tr><td>${pl.label}</td><td>${pl.when}</td><td style="text-align:right">${pl.pct}%</td><td style="text-align:right">${fmt(gross * pl.pct / 100)}</td></tr>`).join("")}
+<tr class="tot"><td colspan="3">Total (incl. VAT 7.5%)</td><td style="text-align:right">${fmt(gross)}</td></tr></table>
+<p style="font-size:11px;color:#5A6285">Totals include VAT at 7.5%. Third-party pass-through costs are billed at cost per the Development Proposal & SOW. ${state.payFull ? "" : "The final phase payment is due after delivery and acceptance. "}Valid 30 days. Bank details are provided on acceptance.</p>
+<div class="sig"><div>Accepted by (Client): Oshodi-Tapa Agboola</div><div>For Dexter Cyberlab</div></div>
+</body></html>`;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+  a.download = "Lentopay-Invoice-DCL-2026-001.html";
+  document.body.appendChild(a); a.click(); a.remove();
 }
 
 render();
