@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Lentopay Exchange - Interactive Invoice - Dexter Cyberlab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--royal:#2333D6;--cobalt:#4353FF;--night:#0A0E28;--gold:#F2A61A;--fog:#E9EDF8;--off:#FAFBFD;
+--success:#17B26A;--alert:#E5484D;--muted:#5A6285;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--off);color:var(--night);line-height:1.6;font-size:16px}
+h1,h2,h3{font-family:'Sora',system-ui,sans-serif;line-height:1.25}
+.money{font-family:'Sora',sans-serif;font-weight:700;font-variant-numeric:tabular-nums}
+.top{background:linear-gradient(135deg,#2333D6 0%,#141b66 60%,#0A0E28 100%);color:#fff;padding:40px 24px 120px}
+.top-in{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand .mark{width:44px;height:44px;border-radius:12px;background:#fff;color:var(--royal);display:flex;align-items:center;justify-content:center;font-family:'Sora';font-weight:800;font-size:18px}
+.brand .nm{font-family:'Sora';font-weight:700;font-size:19px}
+.brand .sub{font-size:12.5px;color:#C6CDF5}
+.meta{text-align:right;font-size:13.5px;color:#C6CDF5}
+.meta b{color:#fff;font-weight:600}
+.title{max-width:980px;margin:26px auto 0}
+.title h1{font-size:clamp(24px,4vw,34px);font-weight:800}
+.title p{color:#C6CDF5;max-width:640px;margin-top:8px;font-size:15px}
+.sheet{max-width:980px;margin:-80px auto 60px;padding:0 24px}
+.card{background:#fff;border:1px solid var(--fog);border-radius:18px;box-shadow:0 10px 40px rgba(10,14,40,.09);padding:28px;margin-bottom:20px}
+.billto{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:14.5px}
+.billto .lbl{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:4px}
+.billto b{font-family:'Sora';font-weight:600}
+.amount-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.amount{font-size:clamp(34px,6vw,52px);color:var(--royal)}
+.tiername{font-family:'Sora';font-weight:600;font-size:15px;background:var(--fog);color:var(--royal);border-radius:99px;padding:7px 16px}
+.slider-wrap{margin:26px 0 8px}
+input[type=range]{width:100%;height:44px;-webkit-appearance:none;appearance:none;background:transparent;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:10px;border-radius:99px;background:linear-gradient(90deg,var(--royal) var(--fill,0%),var(--fog) var(--fill,0%))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:4px solid var(--royal);margin-top:-9px;box-shadow:0 2px 10px rgba(35,51,214,.4)}
+input[type=range]:focus-visible{outline:3px solid var(--cobalt);outline-offset:4px;border-radius:99px}
+.range-ends{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:2px}
+.tiers{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.tiers button{font-family:'DM Sans';font-size:13px;font-weight:500;border:1.5px solid var(--fog);background:#fff;color:var(--muted);border-radius:99px;padding:9px 14px;cursor:pointer;min-height:40px}
+.tiers button:hover{border-color:var(--cobalt);color:var(--royal)}
+.tiers button.on{background:var(--royal);border-color:var(--royal);color:#fff}
+.tierdesc{margin-top:14px;font-size:14.5px;color:var(--muted)}
+.cols{display:grid;grid-template-columns:1.15fr .85fr;gap:20px}
+@media(max-width:820px){.cols{grid-template-columns:1fr}}
+.card h2{font-size:19px;margin-bottom:6px}
+.card .hint{font-size:13.5px;color:var(--muted);margin-bottom:16px}
+ul.feat{list-style:none}
+ul.feat li{display:flex;gap:11px;padding:9px 0;border-bottom:1px solid #F1F3FA;font-size:14.5px;align-items:flex-start}
+ul.feat li:last-child{border-bottom:0}
+ul.feat li .ic{flex:none;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+ul.feat li.inc .ic{background:#E4F7EE;color:var(--success)}
+ul.feat li.lock{color:#9AA3BE}
+ul.feat li.lock .ic{background:#F1F3FA;color:#9AA3BE}
+ul.feat li.lock .unlock{display:block;font-size:12px;color:var(--gold);font-weight:500}
+.plan-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid #F1F3FA;font-size:14.5px}
+.plan-row:last-of-type{border-bottom:0}
+.plan-row .ph{display:flex;align-items:center;gap:11px}
+.plan-row .n{width:30px;height:30px;border-radius:9px;background:var(--royal);color:#fff;font-family:'Sora';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.plan-row.last .n{background:var(--gold)}
+.plan-row .when{font-size:12.5px;color:var(--muted)}
+.plan-row .amt{font-size:15.5px}
+.plan-row .pct{font-size:12px;color:var(--muted);text-align:right}
+.plan-note{margin-top:14px;background:#FDF6E9;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:11px 14px;font-size:13px;color:#5c4a1e}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.btn{display:inline-flex;align-items:center;gap:9px;border-radius:12px;padding:14px 22px;font-family:'DM Sans';font-size:15px;font-weight:500;cursor:pointer;text-decoration:none;border:0;min-height:48px}
+.btn.primary{background:var(--royal);color:#fff}
+.btn.primary:hover{background:var(--cobalt)}
+.btn.ghost{background:#fff;border:1.5px solid var(--fog);color:var(--night)}
+.btn.ghost:hover{border-color:var(--cobalt);color:var(--royal)}
+.btn svg{width:17px;height:17px}
+footer{max-width:980px;margin:0 auto;padding:0 24px 50px;font-size:13px;color:var(--muted);text-align:center}
+footer a{color:var(--royal)}
+.terms{font-size:12.5px;color:var(--muted);margin-top:16px;line-height:1.6}
+/* ---- print sheet ---- */
+.print-sheet{display:none}
+@media print{
+  body>*{display:none !important}
+  body{background:#fff}
+  .print-sheet{display:block !important;padding:10mm 2mm;color:#0A0E28;font-size:12px}
+  .print-sheet .ph-head{display:flex;justify-content:space-between;border-bottom:3px solid #2333D6;padding-bottom:12px;margin-bottom:16px}
+  .print-sheet h1{font-size:22px}
+  .print-sheet h2{font-size:14px;margin:16px 0 6px}
+  .print-sheet table{width:100%;border-collapse:collapse;margin-top:6px}
+  .print-sheet th,.print-sheet td{border:1px solid #D7DDF0;padding:7px 9px;text-align:left;font-size:11.5px}
+  .print-sheet th{background:#E9EDF8}
+  .print-sheet .tot td{font-weight:700;background:#F4F6FC}
+  .print-sheet .sig{display:flex;gap:40px;margin-top:34px}
+  .print-sheet .sig div{flex:1;border-top:1px solid #0A0E28;padding-top:6px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="mark">DC</div>
+      <div><div class="nm">Dexter Cyberlab</div><div class="sub">www.dextercyberlab.com</div></div>
+    </div>
+    <div class="meta">
+      Invoice <b>DCL-2026-001</b><br>
+      Date <b>8 July 2026</b> · Valid <b>30 days</b><br>
+      Currency <b>Nigerian Naira (₦)</b>
+    </div>
+  </div>
+  <div class="title">
+    <h1>Lentopay Exchange - Build Your Package</h1>
+    <p>Move the bar to the budget that works for you. The deliverables and the phase-by-phase payment plan update instantly. When you are happy, download your invoice.</p>
+  </div>
+</div>
+
+<div class="sheet">
+  <div class="card billto">
+    <div><div class="lbl">Billed to</div><b>Oshodi-Tapa Agboola</b><br>Lentopay Exchange project</div>
+    <div><div class="lbl">From</div><b>Dexter Cyberlab</b><br>www.dextercyberlab.com</div>
+    <div><div class="lbl">Project</div><b>Lentopay Exchange</b><br>Mobile app + web admin console</div>
+  </div>
+
+  <div class="card">
+    <div class="amount-row">
+      <div class="amount money" id="amount">₦10,000,000</div>
+      <div class="tiername" id="tiername">Core Exchange</div>
+    </div>
+    <div class="slider-wrap">
+      <input type="range" id="slider" min="10000000" max="15500000" step="100000" value="10000000"
+             aria-label="Project budget in naira, from 10 million to 15.5 million">
+      <div class="range-ends"><span>₦10,000,000 minimum</span><span>₦15,500,000 full build</span></div>
+    </div>
+    <div class="tiers" id="tierbtns" role="group" aria-label="Preset packages"></div>
+    <p class="tierdesc" id="tierdesc"></p>
+  </div>
+
+  <div class="cols">
+    <div class="card">
+      <h2>What you receive</h2>
+      <p class="hint">Everything ticked is included at the amount you selected. Greyed items unlock as you move the bar up.</p>
+      <ul class="feat" id="featlist"></ul>
+    </div>
+    <div>
+      <div class="card">
+        <h2>Payment plan</h2>
+        <p class="hint">Minimum plan - payments follow the build phases. The final phase is always paid last, after delivery.</p>
+        <div id="plan"></div>
+        <div class="plan-note">You may pay more upfront if you prefer, but this is the minimum schedule. The final phase payment is only due after you have received and accepted the work.</div>
+      </div>
+      <div class="card">
+        <div class="actions">
+          <button class="btn primary" id="dl">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Download invoice (PDF)
+          </button>
+          <a class="btn ghost" href="index.html">Back to project hub</a>
+        </div>
+        <p class="terms">Amounts are exclusive of VAT (7.5%) and third-party pass-through costs (licensing, custody, KYC checks, infrastructure), which are billed at cost as set out in the Development Proposal & SOW. Selecting and downloading an invoice is an offer summary; work begins on signed acceptance and receipt of the Phase 1 payment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Lentopay Exchange - Interactive Invoice · Prepared for Oshodi-Tapa Agboola · Prepared by Dexter Cyberlab © 2026 · <a href="https://www.dextercyberlab.com" rel="noopener">www.dextercyberlab.com</a></footer>
+
+<div class="print-sheet" id="printsheet"></div>
+
+<script>
+const TIERS = [
+  { at: 10000000, name: "Core Exchange",
+    desc: "The essential licensed exchange app: wallet, KYC, buy/sell/swap and naira in/out, plus your choice of one or two engagement features (for example bills or referrals).",
+    feats: [
+      "Mobile app (iOS + Android, one codebase) - core exchange",
+      "Secure wallet with double-entry ledger",
+      "Tiered KYC onboarding (BVN, ID + selfie)",
+      "Buy / Sell / Swap (USDT-quoted, firm quotes)",
+      "Naira deposits & withdrawals via virtual accounts",
+      "Choice of 1-2 extra features (e.g. bill payments or referrals)",
+      "Admin console - users, KYC queue, transactions",
+      "Security hardening + pre-launch penetration test",
+      "4 weeks post-launch support" ] },
+  { at: 11500000, name: "Core + Payments",
+    desc: "The core exchange plus the full everyday-payments layer that keeps users coming back daily.",
+    feats: [
+      "Full bill payments suite (airtime, data, electricity, TV)",
+      "Bills cashback engagement loop",
+      "Referral program with rewards tracking",
+      "Push notifications + price alerts & watchlist" ] },
+  { at: 13000000, name: "Growth Package",
+    desc: "Adds the gift card marketplace and retention features - the biggest proven volume drivers in the Nigerian market.",
+    feats: [
+      "Gift card marketplace + admin review queue & rates engine",
+      "Virtual card screen & management",
+      "Expanded asset list + cNGN stablecoin",
+      "In-app support & dispute center",
+      "Support extended to 8 weeks" ] },
+  { at: 14500000, name: "Wealth Package",
+    desc: "Adds the savings and trading depth that turns users into long-term holders (savings go-live subject to SEC product approval).",
+    feats: [
+      "Stablecoin savings plans (flexible + fixed)",
+      "Spot order book + matching engine",
+      "Proof-of-reserves reporting page",
+      "Compliance & AML dashboards (velocity rules, alerts)" ] },
+  { at: 15500000, name: "Full Vision",
+    desc: "Everything in the PRD v2.0 - the complete Lentopay Exchange as researched, specified and prototyped.",
+    feats: [
+      "E-Fund investment module (gated on licensing)",
+      "Animated logo & brand motion built into the app",
+      "12 weeks priority support + team handover training" ] },
+];
+// Payment plan: phases 1-3 paid as you go, final phase paid last after delivery.
+const PLAN = [
+  { n: "1", label: "Phase 1 - Kickoff & foundation", when: "Due at signing, before work starts", pct: 40 },
+  { n: "2", label: "Phase 2 - Core build demo", when: "Due at mid-build milestone demo", pct: 25 },
+  { n: "3", label: "Phase 3 - Beta release", when: "Due when the beta is in your hands", pct: 25 },
+  { n: "4", label: "Final phase - Delivery", when: "Paid last, after delivery & acceptance", pct: 10, last: true },
+];
+const fmt = n => "₦" + Math.round(n).toLocaleString("en-NG");
+const slider = document.getElementById("slider");
+const state = { value: 10000000 };
+
+function tierIndex(v){ let i = 0; TIERS.forEach((t, k) => { if (v >= t.at) i = k; }); return i; }
+
+function render(){
+  const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
+  document.getElementById("amount").textContent = fmt(v);
+  document.getElementById("tiername").textContent = tier.name;
+  document.getElementById("tierdesc").textContent = tier.desc;
+  slider.value = v;
+  slider.style.setProperty("--fill", ((v - 10000000) / (15500000 - 10000000) * 100) + "%");
+  // tier buttons
+  document.getElementById("tierbtns").innerHTML = TIERS.map((t, k) =>
+    `<button class="${k === ti ? "on" : ""}" onclick="setVal(${t.at})" aria-pressed="${k === ti}">${t.name} · ${fmt(t.at)}</button>`).join("");
+  // features
+  let rows = "";
+  TIERS.forEach((t, k) => t.feats.forEach(f => {
+    const inc = k <= ti;
+    rows += inc
+      ? `<li class="inc"><span class="ic"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span>${f}</span></li>`
+      : `<li class="lock"><span class="ic"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span><span>${f}<span class="unlock">Unlocks at ${fmt(t.at)}</span></span></li>`;
+  }));
+  document.getElementById("featlist").innerHTML = rows;
+  // plan
+  document.getElementById("plan").innerHTML = PLAN.map(p =>
+    `<div class="plan-row ${p.last ? "last" : ""}"><div class="ph"><div class="n">${p.n}</div><div>${p.label}<div class="when">${p.when}</div></div></div><div style="text-align:right"><div class="amt money">${fmt(v * p.pct / 100)}</div><div class="pct">${p.pct}%</div></div></div>`).join("");
+}
+function setVal(v){ state.value = v; render(); }
+slider.addEventListener("input", () => { state.value = +slider.value; render(); });
+
+document.getElementById("dl").addEventListener("click", () => {
+  const v = state.value, ti = tierIndex(v), tier = TIERS[ti];
+  const feats = TIERS.slice(0, ti + 1).flatMap(t => t.feats);
+  document.getElementById("printsheet").innerHTML = `
+    <div class="ph-head">
+      <div><h1 style="font-family:Sora">Dexter Cyberlab</h1><div>www.dextercyberlab.com</div></div>
+      <div style="text-align:right"><b>INVOICE DCL-2026-001</b><br>Date: 8 July 2026 · Valid 30 days<br>Currency: Nigerian Naira (₦)</div>
+    </div>
+    <table><tr><th style="width:33%">Billed to</th><th style="width:33%">Project</th><th>Package</th></tr>
+    <tr><td>Oshodi-Tapa Agboola</td><td>Lentopay Exchange - mobile app + web admin console</td><td><b>${tier.name}</b></td></tr></table>
+    <h2>Deliverables included</h2>
+    <table>${feats.map((f, i) => `<tr><td style="width:24px">${i + 1}</td><td>${f}</td></tr>`).join("")}
+    <tr class="tot"><td>Total</td><td style="text-align:right">${fmt(v)}</td></tr></table>
+    <h2>Payment plan (minimum schedule)</h2>
+    <table><tr><th>Installment</th><th>Due</th><th style="text-align:right">Share</th><th style="text-align:right">Amount</th></tr>
+    ${PLAN.map(p => `<tr><td>${p.label}</td><td>${p.when}</td><td style="text-align:right">${p.pct}%</td><td style="text-align:right">${fmt(v * p.pct / 100)}</td></tr>`).join("")}
+    <tr class="tot"><td colspan="3">Total</td><td style="text-align:right">${fmt(v)}</td></tr></table>
+    <p style="margin-top:12px;font-size:10.5px;color:#5A6285">Amounts are exclusive of VAT (7.5%) and third-party pass-through costs (licensing, custody, KYC checks, infrastructure), billed at cost per the Development Proposal & SOW. The final phase payment is due after delivery and acceptance. This invoice is valid for 30 days from the date above. Bank details are provided on acceptance.</p>
+    <div class="sig"><div>Accepted by (Client): Oshodi-Tapa Agboola</div><div>For Dexter Cyberlab</div></div>`;
+  window.print();
+});
+
+render();
+</script>
+</body>
+</html>
